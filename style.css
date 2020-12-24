@@ -1,0 +1,91 @@
+    body {
+      background-color:#AFCBF0;
+      padding: 1.5em;
+      min-height: 100vh;
+      max-height: 105vh;
+      text-align: center;
+    }
+    .mcard {
+      padding: 10%;
+      padding-bottom: 12%;
+      border-radius: 16%;
+      background-color: #1572EB;
+      min-height: 45vh;
+    }
+    .blue-groove-border {
+      border-color: #0A346B;
+      border-width: 1em;
+      border-style: groove;
+    }
+
+    #one {
+      position:fixed;
+      background-color:#0A346B;
+      width: 80%;
+      text-align: center;
+
+      border-radius: 10em;
+      border-top-left-radius: 5em;
+      border-bottom-left-radius: 50%;
+
+      box-shadow:
+        rgba(90,83,184,0.4)
+        10px 10px;
+
+      border-color: #AFCBF0;
+      border-width: 0.8em;
+      border-top-width: 0em;
+      border-style: solid;
+
+      margin-top: -2%;
+      margin-right: 10%;
+      margin-left: 10%;
+    }
+    header {
+      color: #AFCBF0;
+      font-family: 'Fira Code';
+      text-align: center;
+      font-size: 160%;
+    }
+    .Index {
+      color: #2644FF;
+      text-align: center;
+      font-size: large;
+    }
+
+    .bu {
+      color: #2664FF;
+      background-color: #AFCBF0;
+      font-size: 130%;
+    }
+
+    .dashed-box {
+        border-radius: 20%;
+        border-color: #5A83B8;
+        border-style: dashed;
+        color: #AFCBF0;
+        background-color: #0E4D9E;
+        margin: 5% 40% 2% 40%;
+    }
+
+      .text {
+        width: 60%;
+        padding: 2% 20% 0% 20%;
+        color: #AFCBF0;
+        font-family: sans-serif;
+        font-size: 120%;
+        font-weight: bold;
+        margin: 0% 0% -8% 0%;
+      }
+
+      .largeimg {
+        margin: 0px 10px 10px 10px;
+        padding: 1em 0em 0em 0em;
+
+        border-radius: 10%;
+        border-color: #AFCBF0;
+        border-style: solid;
+        border-width: 0.5em;
+
+        width: 20%;
+      }
