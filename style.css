@@ -40,6 +40,7 @@
       border-radius: 10em;
       border-top-left-radius: 5em;
       border-bottom-left-radius: 50%;
+      z-index: 100;
 
       box-shadow:
         rgba(90,83,184,0.4)
