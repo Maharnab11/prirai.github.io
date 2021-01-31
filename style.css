@@ -1,4 +1,5 @@
     body {
+      font-family: 'Fira Code';
       background-color:#0A346B;
       padding: 1.5em;
       min-height: 100vh;
@@ -12,6 +13,19 @@
       background-color: #1572EB;
       min-height: 45vh;
     }*/
+    a:link {
+      font-style: oblique;
+      color: #5A83B8;
+    }
+
+    a:visited {
+      color: #1572eb;
+    }
+
+    a:hover {
+      background-color: #0E4D9E;
+      color: #AFCBF0;
+    }
         
     button a:link {
       color: #AFCBF0;
@@ -140,10 +154,14 @@
 
       .round-img {
         border-radius: 50%;
+        border-width: 2em;
         padding: 0% 5% 0% 5%;
+        opacity: 0.5;
       }
 
       .round-img:hover {
         border-width: 2em;
         border-radius: 10%;
+        animation: shake 0.5s;
+        opacity: 1;
       }
