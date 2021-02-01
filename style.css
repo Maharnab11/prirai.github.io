@@ -82,7 +82,6 @@
 
     .mcard {
       contain: content;
-      padding: 1em;
       margin-top: 15%;
       min-height: 50em;
       border-radius: 1em;
@@ -92,22 +91,18 @@
                  0 0  0 4px rgb(255,255,255),
                  0.3em 0.3em 1em rgba(0,0,0,0.5);
     }
-    /*.blue-groove-border {
-      border-color: #0A346B;
-      border-width: 1em;
-      border-style: groove;
-    }
-    */
 
     #fixed-top {
       position: fixed;
-      background-color:#0A346B;
+      background-color:#0E4D9E;
       width: 80%;
+      top:0px;
       text-align: center;
       transition: 0.5s;
-      border-radius: 10em;
+      /*border-radius: 10em;
       border-top-left-radius: 5em;
-      border-bottom-left-radius: 50%;
+      border-bottom-left-radius: 50%;*/
+      border-radius: 0em 2em 3em 4em;
       z-index: 100;
 
       box-shadow:
@@ -119,10 +114,16 @@
       border-top-width: 0em;
       border-style: solid;
 
-      margin-top: -2%;
       margin-right: 10%;
       margin-left: 10%;
     }
+
+    /*.blue-groove-border {
+      border-color: #0A346B;
+      border-width: 1em;
+      border-style: groove;
+    }
+    */
 
     .Index {
       color: #2644FF;
@@ -177,4 +178,77 @@
         border-radius: 10%;
         animation: shake 0.5s;
         opacity: 1;
+      }
+
+      .upper-text {
+        font-size: 3em;
+      }
+
+      @media only screen and (max-width: 6in) {
+        body {
+          font-family: 'Fira Code';
+          background-color:#0A346B;
+          padding: 0em;
+          min-height: 100vh;
+          max-height: 105vh;
+          text-align: center;
+          margin: 0em;
+          max-width: 100%;
+          text-align: left;
+        }
+  
+        #fixed-top {
+          position: absolute;
+          border-radius: 0px;
+          top: 0px;
+          left: 0px;
+          width: 100%;
+          z-index: 10;
+          margin: 0px;
+        }
+
+        nav ul {
+          margin: 0px;
+          padding: 0px 0px 5px 30px;
+        }
+    
+        nav li {
+          display: inline-flexbox;
+          margin-right: 0px;
+        }
+
+        li {
+          font-size: 94%;
+        }
+
+        header {
+          color: #AFCBF0;
+          font-family: 'Fira Code';
+          text-align: center;
+          font-size: 100%;
+        }
+
+        .mcard{
+          contain: content;
+          min-height: 50em;
+          border-radius: 0em;
+          background-color: #AFCBF0;
+          margin: 0px;
+          margin-top: 10em;
+          border-radius: 0.4em;
+        }
+  
+        .main-text {
+          padding: 10% 0% 0% 0%;
+          color: #0A346B;
+          font-size: 1.8em;
+          font-weight: bold;
+          width: 100%;
+        }
+
+        
+      iframe {
+        border-radius: 2%;
+        width: 100%;
+      }
       }
