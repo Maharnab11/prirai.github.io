@@ -6,6 +6,16 @@
       max-height: 105vh;
       text-align: center;
     }
+
+    nav ul {
+      margin: 0px;
+      padding: 5px 0px 5px 30px;
+    }
+
+    nav li {
+      display: inline-table;
+      margin-right: 0px;
+    }
     /*.mcard {
       padding: 10%;
       padding-bottom: 12%;
@@ -27,35 +37,39 @@
       color: #AFCBF0;
     }
         
-    button a:link {
+    li a:link {
       color: #AFCBF0;
       border-color: #0A346B;
       text-decoration: overline;
     }
 
-    button a:visited {
+    li a:visited {
       color: #AFCBF0;
       border-color: #0A346B;
       text-decoration: solid;
     }
 
-    button a:hover {
+    li a:hover {
       color: #0A346B;
       background-color: #AFCBF0;
       text-decoration: dashed;
       text-decoration-color: #0A346B;
     }
+
+    .pg-active {
+      color: #0A346B;
+      background-color: #AFCBF0;
+    }
     
-    button a:active {
+    li a:active {
       color: yellow;
       border-color: #AFCBF0;
       text-decoration: line-through;
+      transition: 0.5s;
     }
 
-    .bu {
-      color: #AFCBF0;
-      background-color: #0E4D9E;
-      font-size: 130%;
+    li {
+      font-size: 160%;
     }
    
     .bu:hover {
@@ -109,20 +123,19 @@
       margin-right: 10%;
       margin-left: 10%;
     }
-    
-    header {
-      color: #AFCBF0;
-      font-family: 'Fira Code';
-      text-align: center;
-      font-size: 160%;
-    }
+
     .Index {
       color: #2644FF;
       text-align: center;
       font-size: large;
     }
 
-
+    header {
+      color: #AFCBF0;
+      font-family: 'Fira Code';
+      text-align: center;
+      font-size: 160%;
+    }
 
       .main-text {
         width: 70%;
