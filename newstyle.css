@@ -1,0 +1,35 @@
+@media screen and (min-width: 768px)
+{
+body {
+    text-align: center;
+}
+
+.search {
+    background-color: #5A83B8;
+    border: none;
+    color: #AFCBF0;
+    word-wrap: break-word;
+    outline: none;
+    display: inline;
+    flex: 100%;
+    tap-highlight-color: transparent;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  .inp-box {
+    box-shadow:
+    rgba(90,83,184,0.4)
+    2px 2px;
+
+  border-color: #AFCBF0;
+  font-size: x-large;
+  width: 50em;
+  height: 7em;
+  border-width: 1em;
+  border-top-width: 0.3em;
+  border-style: solid;
+  border-radius: 10%;
+  text-align: center;
+  }
+}

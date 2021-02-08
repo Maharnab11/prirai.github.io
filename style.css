@@ -1,3 +1,5 @@
+@media screen and (min-width: 1001px) 
+{
     body {
       font-family: 'Fira Code';
       background-color:#0A346B;
@@ -135,14 +137,14 @@
       color: #AFCBF0;
       font-family: 'Fira Code';
       text-align: center;
-      font-size: 160%;
+      width: 100%;
     }
 
       .main-text {
         width: 70%;
         padding: 2% 20% 0% 20%;
         color: #0A346B;
-        font-size: 1.8em;
+        font-size: 200%;
         font-weight: bold;
         margin: 0% 0% 0% 0%;
       }
@@ -159,6 +161,7 @@
       }
 
       .round-img-box {
+        display: list-item;
         contain: content;
         background-color: #5A83B8;
         border-radius: 10%;
@@ -183,6 +186,7 @@
       .upper-text {
         font-size: 3em;
       }
+    }
 
       @media only screen and (max-width: 1000px) {
         body {
@@ -194,52 +198,56 @@
           text-align: center;
           margin: 0em;
           max-width: 100%;
-          text-align: left;
         }
   
         #fixed-top {
-          position: absolute;
+          position: fixed;
+          background-color:#0E4D9E;
           border-radius: 0px;
+          border-width: 0em;
           top: 0px;
           left: 0px;
           width: 100%;
-          z-index: 10;
-          margin: 0px;
+          z-index: 1;
+          margin-bottom: 4em;
+          padding: 0px;
+          text-align: center;
         }
 
         nav ul {
           margin: 0px;
           padding: 0px 0px 5px 30px;
+          width: max-content;
         }
     
         nav li {
-          display: inline-flexbox;
+          display: contents;
           margin-right: 0px;
         }
 
         li {
-          font-size: 94%;
+          font-size: 140%;
         }
 
         header {
           color: #AFCBF0;
           font-family: 'Fira Code';
           text-align: center;
-          font-size: 100%;
+          font-size: 280%;
         }
 
         .mcard{
+          position: relative;
+          margin-top: 25%;
           contain: content;
           min-height: 50em;
           border-radius: 0em;
           background-color: #AFCBF0;
-          margin: 0px;
-          margin-top: 10em;
           border-radius: 0.4em;
+          z-index: 2;
         }
   
         .main-text {
-          padding: 10% 0% 0% 0%;
           color: #0A346B;
           font-size: 1.8em;
           font-weight: bold;
@@ -250,5 +258,70 @@
       iframe {
         border-radius: 2%;
         width: 100%;
+      }
+
+      nav ul {
+        margin: 0px;
+        padding: 5px 0px 5px 30px;
+      }
+  
+      nav li {
+        display: inline-table;
+        margin-right: 0px;
+      }
+      /*.mcard {
+        padding: 10%;
+        padding-bottom: 12%;
+        border-radius: 16%;
+        background-color: #1572EB;
+        min-height: 45vh;
+      }*/
+      a:link {
+        font-style: oblique;
+        color: #5A83B8;
+      }
+  
+      a:visited {
+        color: #1572eb;
+      }
+  
+      a:hover {
+        background-color: #0E4D9E;
+        color: #AFCBF0;
+      }
+          
+      li a:link {
+        color: #AFCBF0;
+        border-color: #0A346B;
+        text-decoration: overline;
+      }
+  
+      li a:visited {
+        color: #AFCBF0;
+        border-color: #0A346B;
+        text-decoration: solid;
+      }
+  
+      li a:hover {
+        color: #0A346B;
+        background-color: #AFCBF0;
+        text-decoration: dashed;
+        text-decoration-color: #0A346B;
+      }
+  
+      .pg-active {
+        color: #0A346B;
+        background-color: #AFCBF0;
+      }
+      
+      li a:active {
+        color: yellow;
+        border-color: #AFCBF0;
+        text-decoration: line-through;
+        transition: 0.5s;
+      }
+  
+      li {
+        font-size: 160%;
       }
       }
