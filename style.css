@@ -186,6 +186,9 @@
       .upper-text {
         font-size: 3em;
       }
+
+      #schedule {
+        position: fixed; top: 0%; left: 70%; border: #5A83B8; border-radius: 20%; border-width: 5%; color: #AFCBF0; font-weight: 100; text-align: left;">      }
     }
 
       @media only screen and (max-width: 1000px) {
