@@ -25,6 +25,7 @@
       background-color: #1572EB;
       min-height: 45vh;
     }*/
+    /*------------------------------------Links Styling----------------------------------------------------------------------*/
     a:link {
       font-style: oblique;
       color: #5A83B8;
@@ -58,11 +59,6 @@
       text-decoration-color: #0A346B;
     }
 
-    .pg-active {
-      color: #0A346B;
-      background-color: #AFCBF0;
-    }
-    
     li a:active {
       color: yellow;
       border-color: #AFCBF0;
@@ -74,6 +70,13 @@
       font-size: 160%;
     }
    
+/*----------------------------------------------------------------------------------------------------------------------------------*/
+    .pg-active {
+      color: #0A346B;
+      background-color: #AFCBF0;
+    }
+    
+    
     .bu:hover {
       background-color: #AFCBF0;
     }
@@ -191,12 +194,19 @@
         position: fixed;
         top: 0%; 
         border-color: #5A83B8; 
-        border-radius: 20%; 
+        border-radius: 1em; 
         border-width: 0.5em; 
         border-style: dashed;
         color: #AFCBF0; 
         font-weight: 100; 
         text-align: left;
+        padding-right: 2em;
+      }
+
+      .posts {
+        position: absolute;
+        top: 60%;
+        left: 40%;
       }
     }
 
@@ -207,7 +217,6 @@
           padding: 0em;
           min-height: 100vh;
           max-height: 105vh;
-          max-width: 250px;
           text-align: center;
           margin: 0em;
           max-width: 100%;
@@ -335,6 +344,10 @@
   
       li {
         font-size: 160%;
+      }
+
+      #embedded-feed {
+        visibility: hidden;
       }
       }
 
