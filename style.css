@@ -194,13 +194,14 @@
         position: fixed;
         top: 0%;
         border-color: #5A83B8;
-        border-radius: 1em;
-        border-width: 0.5em;
+        border-radius: 0.4em;
+        border-width: 0.1em;
         border-style: dashed;
         color: #AFCBF0;
         font-weight: 100;
         text-align: left;
         padding-right: 2em;
+        z-index: 99;
 
         height:100%;
         color: #0A346B;
@@ -221,11 +222,6 @@
         left:70%;
       }
 
-      .posts {
-        position: absolute;
-        top: 60%;
-        left: 40%;
-      }
     }
 
       @media only screen and (max-width: 1000px) {
@@ -281,8 +277,7 @@
           position: relative;
           margin-top: 25%;
           contain: content;
-          min-height: 50em;
-          border-radius: 0em;
+          min-height: 130%;
           border-radius: 0.4em;
           z-index: 2;
         }
@@ -369,7 +364,7 @@
       }
 
       .schedule {
-        font-size: 140%;
+        font-size: x-large;
         color: #AFCBF0;
         font-weight: 100;
         text-align: left;
