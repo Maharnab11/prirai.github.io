@@ -6,7 +6,7 @@ code { font-family: 'Fira Code', monospace; }
   code { font-family: 'Fira Code VF', monospace; }
 }
 
-@media screen and (min-width: 800px)
+@media screen and (min-width: 1000px)
 {
     body {
       font-family: 'Fira Code';
@@ -233,7 +233,7 @@ code { font-family: 'Fira Code', monospace; }
 
     }
 
-      @media only screen and (max-width: 800px) {
+      @media only screen and (max-width: 1000px) {
         body {
           font-family: 'Fira Code';
           background-color: #AFCBF0;
