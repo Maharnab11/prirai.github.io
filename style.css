@@ -281,13 +281,15 @@ code { font-family: 'Fira Code', monospace; }
           background-color: black;
           position: relative;
           margin-top: 25%;
+          padding-left: 10%;
+          padding-right: 10%;
           min-height: 130%;
           border-radius: 0.4em;
           z-index: 2;
         }
 
         .main-text {
-          color: #0A346B;
+          color: #AFCBF0;
           font-size: 160%;
           font-weight: 400;
         }
