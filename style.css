@@ -10,7 +10,7 @@ code { font-family: 'Fira Code', monospace; }
 {
     body {
       font-family: 'Fira Code';
-      background-image: url("./images/wallp.webp");
+      background-image: url("images/wallp.webp");
       padding: 1.5em;
       max-height: 100vh;
       max-width: 100vw;
