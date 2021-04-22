@@ -11,11 +11,34 @@ code { font-family: 'Fira Code', monospace; }
     body {
       font-family: 'Fira Code';
       background-image: url("images/wallp.webp");
+      background-attachment: fixed;
       padding: 1.5em;
       max-height: 100vh;
       max-width: 100vw;
       text-align: center;
     }
+
+    #fixed-top {
+        position: fixed;
+        background-color:#0E4D9E;
+        width: 80%;
+        top:0px;
+        text-align: center;
+        transition: 0.5s;
+        z-index: 100;
+        box-shadow:
+          rgba(90,83,184,0.4)
+          10px 10px;
+
+        border-radius: 0em 2em 3em 4em;
+        border-color: #AFCBF0;
+        border-width: 0.8em;
+        border-top-width: 0em;
+        border-style: solid;
+
+        margin-right: 10%;
+        margin-left: 10%;
+        }
 
     nav ul {
       margin: 0px;
@@ -26,13 +49,6 @@ code { font-family: 'Fira Code', monospace; }
       display: inline-table;
       margin-right: 0px;
     }
-    /*.mcard {
-      padding: 10%;
-      padding-bottom: 12%;
-      border-radius: 16%;
-      background-color: #1572EB;
-      min-height: 45vh;
-    }*/
     /*------------------------------------Links Styling----------------------------------------------------------------------*/
     a:link {
       font-style: oblique;
@@ -107,31 +123,6 @@ code { font-family: 'Fira Code', monospace; }
                  0.3em 0.3em 1em rgba(0,0,0,0.5);
     }
 
-    #fixed-top {
-      position: fixed;
-      background-color:#0E4D9E;
-      width: 80%;
-      top:0px;
-      text-align: center;
-      transition: 0.5s;
-      /*border-radius: 10em;
-      border-top-left-radius: 5em;
-      border-bottom-left-radius: 50%;*/
-      z-index: 100;
-
-      box-shadow:
-        rgba(90,83,184,0.4)
-        10px 10px;
-
-        border-radius: 0em 2em 3em 4em;
-      border-color: #AFCBF0;
-      border-width: 0.8em;
-      border-top-width: 0em;
-      border-style: solid;
-
-      margin-right: 10%;
-      margin-left: 10%;
-    }
 
     /*.blue-groove-border {
       border-color: #0A346B;
@@ -238,8 +229,7 @@ code { font-family: 'Fira Code', monospace; }
           font-family: 'Fira Code';
           background-color: #AFCBF0;
           padding: 0em;
-          min-height: 100vh;
-          max-height: 105vh;
+          min-height: 100%;
           text-align: center;
           margin: 0em;
           max-width: 100%;
