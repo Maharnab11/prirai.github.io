@@ -1,5 +1,5 @@
 # prirai.github.io
-Website development
+My website
 
 ##Color-scheme being used:
 
