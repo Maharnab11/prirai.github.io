@@ -206,16 +206,18 @@ code { font-family: 'Fira Code', monospace; }
         height:100%;
         color: #0A346B;
         min-width: 30%;
-        max-width: 40%;
         background-color: black;
       }
 
       #sc-left {
         left: 0%;
+        margin-right: 2%;
       }
 
       #sc-mid {
-        left:30%;
+        left:32%;
+        max-width: 36%;
+        margin-right: 2%;
       }
 
       #sc-right {
