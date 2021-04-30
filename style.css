@@ -272,10 +272,11 @@ code { font-family: 'Fira Code', monospace; }
         .mcard{
           background-color: black;
           position: relative;
-          margin-top: 25%;
+          margin-top: 45%;
           padding-left: 10%;
           padding-right: 10%;
-          min-height: 130%;
+          padding-top: 20%;
+          min-height: 50em;
           border-radius: 0.4em;
           z-index: 2;
         }
@@ -363,6 +364,10 @@ code { font-family: 'Fira Code', monospace; }
 
       .schedule {
         font-weight: 100;
+      }
+
+      .p-light-text {
+        color : #AFCBF0;
       }
     }
 
