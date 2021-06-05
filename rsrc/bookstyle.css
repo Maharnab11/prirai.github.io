@@ -1,0 +1,94 @@
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: normal}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+.example {font-size: large}
+
+body {
+	text-align: justify; 
+	padding: 5%; 
+	background-image: none; 
+	background-color: #000000;
+	color: #ffffff;
+	font-family: 'fira code',serif;
+	font-size: large;
+	}
+	
+.example {
+	font-size: large;}
+	
+	/* Imported from root style.css file.*/
+	a:link {
+      font-style: oblique;
+      color: #5A83B8;
+    }
+
+    a:visited {
+      color: #1572eb;
+    }
+
+    a:hover {
+      background-color: #0E4D9E;
+      color: #AFCBF0;
+    }
+
+    li a:link {
+      color: #AFCBF0;
+      border-color: #0A346B;
+      text-decoration: none;
+    }
+
+    li a:visited {
+      color: #AFCBF0;
+      border-color: #0A346B;
+      text-decoration: solid;
+    }
+
+    li a:hover {
+      color: #0A346B;
+      background-color: #AFCBF0;
+      text-decoration: dashed;
+      text-decoration-color: #0A346B;
+    }
+
+    li a:active {
+      color: yellow;
+      border-color: #AFCBF0;
+      text-decoration: line-through;
+      transition: 0.5s;
+    }
+    
+    li {
+    font-size: 95%;
+    }
+
+/*----------------------------------------------------------------------------------------------------------------------------------*/
+    .pg-active {
+      color: #0A346B;
+      background-color: #AFCBF0;
+    }
+
+
+    .bu:hover {
+      background-color: #AFCBF0;
+    }
