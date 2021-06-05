@@ -1,0 +1,7 @@
+var head = document.getElementsByTagName("head")[0]; // Grab the head element
+var link = document.createElement("link"); // Create a link element
+link.id = "body"; // Set an ID to the link
+link.rel = "stylesheet"; // Set the type to stylesheet
+link.type = "text/css"; // Set MIME type to text/css
+link.href = "./bookstyle.css"; // CSS location
+head.appendChild(link); // Append to the head the link

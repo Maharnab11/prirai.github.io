@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is
+The GNU C Library Reference Manual, for version
+2.32.
+
+Copyright (C) 1993-2020 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version
+1.3 or any later version published by the Free
+Software Foundation; with the Invariant Sections being "Free Software
+Needs Free Documentation" and "GNU Lesser General Public License",
+the Front-Cover texts being "A GNU Manual", and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Time Types (The GNU C Library)</title>
+
+<meta name="description" content="Time Types (The GNU C Library)">
+<meta name="keywords" content="Time Types (The GNU C Library)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Date-and-Time.html" rel="up" title="Date and Time">
+<link href="Calculating-Elapsed-Time.html" rel="next" title="Calculating Elapsed Time">
+<link href="Time-Basics.html" rel="prev" title="Time Basics">
+ <link rel="stylesheet" href="../bookstyle.css" type="text/css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css"> <style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<span id="Time-Types"></span><div class="header">
+<p>
+Next: <a href="Calculating-Elapsed-Time.html" accesskey="n" rel="next">Calculating Elapsed Time</a>, Previous: <a href="Time-Basics.html" accesskey="p" rel="prev">Time Basics</a>, Up: <a href="Date-and-Time.html" accesskey="u" rel="up">Date and Time</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Time-Types-1"></span><h3 class="section">21.2 Time Types</h3>
+
+<p>ISO C and POSIX define several data types for representing elapsed
+times, simple calendar times, and broken-down times.
+</p>
+<dl>
+<dt id="index-clock_005ft">Data Type: <strong>clock_t</strong></dt>
+<dd>
+<p><code>clock_t</code> is used to measure processor and CPU time.
+It may be an integer or a floating-point type.
+Its values are counts of <em>clock ticks</em> since some arbitrary event
+in the past.
+The number of clock ticks per second is system-specific.
+See <a href="Processor-And-CPU-Time.html">Processor And CPU Time</a>, for further detail.
+<span id="index-clock-ticks"></span>
+<span id="index-ticks_002c-clock"></span>
+</p></dd></dl>
+
+<dl>
+<dt id="index-time_005ft">Data Type: <strong>time_t</strong></dt>
+<dd>
+<p><code>time_t</code> is the simplest data type used to represent simple
+calendar time.
+</p>
+<p>In ISO C, <code>time_t</code> can be either an integer or a floating-point
+type, and the meaning of <code>time_t</code> values is not specified.  The
+only things a strictly conforming program can do with <code>time_t</code>
+values are: pass them to <code>difftime</code> to get the elapsed time
+between two simple calendar times (see <a href="Calculating-Elapsed-Time.html">Calculating Elapsed Time</a>),
+and pass them to the functions that convert them to broken-down time
+(see <a href="Broken_002ddown-Time.html">Broken-down Time</a>).
+</p>
+<p>On POSIX-conformant systems, <code>time_t</code> is an integer type and its
+values represent the number of seconds elapsed since the <em>epoch</em>,
+which is 00:00:00 on January 1, 1970, Coordinated Universal Time.
+</p>
+<p>The GNU C Library additionally guarantees that <code>time_t</code> is a signed
+type, and that all of its functions operate correctly on negative
+<code>time_t</code> values, which are interpreted as times before the epoch.
+<span id="index-epoch-1"></span>
+</p></dd></dl>
+
+<dl>
+<dt id="index-struct-timespec">Data Type: <strong>struct timespec</strong></dt>
+<dd>
+<span id="index-timespec"></span>
+<p><code>struct timespec</code> represents a simple calendar time, or an
+elapsed time, with sub-second resolution.  It is declared in
+<samp>time.h</samp> and has the following members:
+</p>
+<dl compact="compact">
+<dt><code>time_t tv_sec</code></dt>
+<dd><p>The number of whole seconds elapsed since the epoch (for a simple
+calendar time) or since some other starting point (for an elapsed
+time).
+</p>
+</dd>
+<dt><code>long int tv_nsec</code></dt>
+<dd><p>The number of nanoseconds elapsed since the time given by the
+<code>tv_sec</code> member.
+</p>
+<p>When <code>struct timespec</code> values are produced by GNU C Library
+functions, the value in this field will always be greater than or
+equal to zero, and less than 1,000,000,000.
+When <code>struct timespec</code> values are supplied to GNU C Library
+functions, the value in this field must be in the same range.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt id="index-struct-timeval">Data Type: <strong>struct timeval</strong></dt>
+<dd>
+<span id="index-timeval"></span>
+<p><code>struct timeval</code> is an older type for representing a simple
+calendar time, or an elapsed time, with sub-second resolution. It is
+almost the same as <code>struct timespec</code>, but provides only
+microsecond resolution.  It is declared in <samp>sys/time.h</samp> and has
+the following members:
+</p>
+<dl compact="compact">
+<dt><code>time_t tv_sec</code></dt>
+<dd><p>The number of whole seconds elapsed since the epoch (for a simple
+calendar time) or since some other starting point (for an elapsed
+time).
+</p>
+</dd>
+<dt><code>long int tv_usec</code></dt>
+<dd><p>The number of microseconds elapsed since the time given by the
+<code>tv_sec</code> member.
+</p>
+<p>When <code>struct timeval</code> values are produced by GNU C Library
+functions, the value in this field will always be greater than or
+equal to zero, and less than 1,000,000.
+When <code>struct timeval</code> values are supplied to GNU C Library
+functions, the value in this field must be in the same range.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt id="index-struct-tm">Data Type: <strong>struct tm</strong></dt>
+<dd>
+<p>This is the data type used to represent a broken-down time.  It has
+separate fields for year, month, day, and so on.
+See <a href="Broken_002ddown-Time.html">Broken-down Time</a>, for further details.
+</p></dd></dl>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Calculating-Elapsed-Time.html" accesskey="n" rel="next">Calculating Elapsed Time</a>, Previous: <a href="Time-Basics.html" accesskey="p" rel="prev">Time Basics</a>, Up: <a href="Date-and-Time.html" accesskey="u" rel="up">Date and Time</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

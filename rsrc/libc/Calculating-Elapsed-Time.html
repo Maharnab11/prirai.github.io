@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is
+The GNU C Library Reference Manual, for version
+2.32.
+
+Copyright (C) 1993-2020 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version
+1.3 or any later version published by the Free
+Software Foundation; with the Invariant Sections being "Free Software
+Needs Free Documentation" and "GNU Lesser General Public License",
+the Front-Cover texts being "A GNU Manual", and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Calculating Elapsed Time (The GNU C Library)</title>
+
+<meta name="description" content="Calculating Elapsed Time (The GNU C Library)">
+<meta name="keywords" content="Calculating Elapsed Time (The GNU C Library)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Date-and-Time.html" rel="up" title="Date and Time">
+<link href="Processor-And-CPU-Time.html" rel="next" title="Processor And CPU Time">
+<link href="Time-Types.html" rel="prev" title="Time Types">
+ <link rel="stylesheet" href="../bookstyle.css" type="text/css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css"> <style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<span id="Calculating-Elapsed-Time"></span><div class="header">
+<p>
+Next: <a href="Processor-And-CPU-Time.html" accesskey="n" rel="next">Processor And CPU Time</a>, Previous: <a href="Time-Types.html" accesskey="p" rel="prev">Time Types</a>, Up: <a href="Date-and-Time.html" accesskey="u" rel="up">Date and Time</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Calculating-Elapsed-Time-1"></span><h3 class="section">21.3 Calculating Elapsed Time</h3>
+
+<p>Often, one wishes to calculate an elapsed time as the difference
+between two simple calendar times.  The GNU C Library provides only one
+function for this purpose.
+</p>
+<dl>
+<dt id="index-difftime">Function: <em>double</em> <strong>difftime</strong> <em>(time_t <var>end</var>, time_t <var>begin</var>)</em></dt>
+<dd>
+<p>Preliminary:
+| MT-Safe 
+| AS-Safe 
+| AC-Safe 
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>The <code>difftime</code> function returns the number of seconds of elapsed
+time from calendar time <var>begin</var> to calendar time <var>end</var>, as
+a value of type <code>double</code>.
+</p>
+<p>On POSIX-conformant systems, the advantage of using
+&lsquo;<samp>difftime (<var>end</var>, <var>begin</var>)</samp>&rsquo; over &lsquo;<samp><var>end</var> - <var>begin</var></samp>&rsquo;
+is that it will produce the mathematically correct result even if
+<var>end</var> and <var>begin</var> are so far apart that a simple subtraction
+would overflow.  However, if they are so far apart that a <code>double</code>
+cannot exactly represent the difference, the result will be inexact.
+</p>
+<p>On other systems, <code>time_t</code> values might be encoded in a way that
+prevents subtraction from working directly, and then <code>difftime</code>
+would be the only way to compute their difference.
+</p></dd></dl>
+
+<p>The GNU C Library does not provide any functions for computing the
+difference between two values of type <code>struct&nbsp;timeval</code><!-- /@w --> or
+<code>struct&nbsp;timespec</code><!-- /@w -->.  Here is the recommended way to do this
+calculation by hand.  It works even on some peculiar operating systems
+where the <code>tv_sec</code> member has an unsigned type.
+</p>
+<div class="example">
+<pre class="example">
+
+/* <span class="roman">Subtract the &lsquo;struct timeval&rsquo; values X and Y,
+   storing the result in RESULT.
+   Return 1 if the difference is negative, otherwise 0.</span> */
+
+int
+timeval_subtract (struct timeval *result, struct timeval *x, struct timeval *y)
+{
+  /* <span class="roman">Perform the carry for the later subtraction by updating <var>y</var>.</span> */
+  if (x-&gt;tv_usec &lt; y-&gt;tv_usec) {
+    int nsec = (y-&gt;tv_usec - x-&gt;tv_usec) / 1000000 + 1;
+    y-&gt;tv_usec -= 1000000 * nsec;
+    y-&gt;tv_sec += nsec;
+  }
+  if (x-&gt;tv_usec - y-&gt;tv_usec &gt; 1000000) {
+    int nsec = (x-&gt;tv_usec - y-&gt;tv_usec) / 1000000;
+    y-&gt;tv_usec += 1000000 * nsec;
+    y-&gt;tv_sec -= nsec;
+  }
+
+  /* <span class="roman">Compute the time remaining to wait.
+     <code>tv_usec</code> is certainly positive.</span> */
+  result-&gt;tv_sec = x-&gt;tv_sec - y-&gt;tv_sec;
+  result-&gt;tv_usec = x-&gt;tv_usec - y-&gt;tv_usec;
+
+  /* <span class="roman">Return 1 if result is negative.</span> */
+  return x-&gt;tv_sec &lt; y-&gt;tv_sec;
+}
+</pre></div>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Processor-And-CPU-Time.html" accesskey="n" rel="next">Processor And CPU Time</a>, Previous: <a href="Time-Types.html" accesskey="p" rel="prev">Time Types</a>, Up: <a href="Date-and-Time.html" accesskey="u" rel="up">Date and Time</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

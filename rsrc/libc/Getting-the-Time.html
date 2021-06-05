@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is
+The GNU C Library Reference Manual, for version
+2.32.
+
+Copyright (C) 1993-2020 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version
+1.3 or any later version published by the Free
+Software Foundation; with the Invariant Sections being "Free Software
+Needs Free Documentation" and "GNU Lesser General Public License",
+the Front-Cover texts being "A GNU Manual", and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Getting the Time (The GNU C Library)</title>
+
+<meta name="description" content="Getting the Time (The GNU C Library)">
+<meta name="keywords" content="Getting the Time (The GNU C Library)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Calendar-Time.html" rel="up" title="Calendar Time">
+<link href="Setting-and-Adjusting-the-Time.html" rel="next" title="Setting and Adjusting the Time">
+<link href="Calendar-Time.html" rel="prev" title="Calendar Time">
+ <link rel="stylesheet" href="../bookstyle.css" type="text/css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css"> <style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<span id="Getting-the-Time"></span><div class="header">
+<p>
+Next: <a href="Setting-and-Adjusting-the-Time.html" accesskey="n" rel="next">Setting and Adjusting the Time</a>, Up: <a href="Calendar-Time.html" accesskey="u" rel="up">Calendar Time</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Getting-the-Time-1"></span><h4 class="subsection">21.5.1 Getting the Time</h4>
+
+<p>The GNU C Library provides several functions for getting the current
+calendar time, with different levels of resolution.
+</p>
+<dl>
+<dt id="index-time-1">Function: <em>time_t</em> <strong>time</strong> <em>(time_t *<var>result</var>)</em></dt>
+<dd>
+<p>Preliminary:
+| MT-Safe 
+| AS-Safe 
+| AC-Safe 
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>This is the simplest function for getting the current calendar time.
+It returns the calendar time as a value of type <code>time_t</code>; on
+POSIX systems, that means it has a resolution of one second.  It
+uses the same clock as &lsquo;<samp><span class="nolinebreak">clock_gettime</span>&nbsp;<span class="nolinebreak">(CLOCK_REALTIME_COARSE)</span></samp>&rsquo;<!-- /@w -->,
+when the clock is available or &lsquo;<samp><span class="nolinebreak">clock_gettime</span>&nbsp;<span class="nolinebreak">(CLOCK_REALTIME)</span></samp>&rsquo;<!-- /@w -->
+otherwise.
+</p>
+<p>If the argument <var>result</var> is not a null pointer, the calendar time
+value is also stored in <code>*<var>result</var></code>.
+</p>
+<p>This function cannot fail.
+</p></dd></dl>
+
+<p>Some applications need more precise timekeeping than is possible with
+a <code>time_t</code> alone.  Some applications also need more control over
+what is meant by &ldquo;the current time.&rdquo;  For these applications, POSIX
+provides a function <code>clock_gettime</code> that can retrieve the time
+with up to nanosecond precision, from a variety of different clocks.
+Clocks can be system-wide, measuring time the same for all processes;
+or they can be per-process or per-thread, measuring CPU time consumed
+by a particular process, or some other similar resource.  Each clock
+has its own resolution and epoch.  You can find the resolution of a
+clock with the function <code>clock_getres</code>.  There is no function to
+get the epoch for a clock; either it is fixed and documented, or the
+clock is not meant to be used to measure absolute times.
+</p>
+<dl>
+<dt id="index-clockid_005ft">Data Type: <strong>clockid_t</strong></dt>
+<dd>
+<p>The type <code>clockid_t</code> is used for constants that indicate which of
+several system clocks one wishes to use.
+</p></dd></dl>
+
+<p>All systems that support this family of functions will define at least
+this clock constant:
+</p>
+<dl>
+<dt id="index-CLOCK_005fREALTIME">Macro: <em>clockid_t</em> <strong>CLOCK_REALTIME</strong></dt>
+<dd>
+<p>This clock uses the POSIX epoch, 00:00:00 on January 1, 1970, Coordinated
+Universal Time. It is close to, but not necessarily in lock-step with, the
+clocks of <code>time</code> (above) and of <code>gettimeofday</code> (below).
+</p></dd></dl>
+
+<span id="index-monotonic-time"></span>
+<p>A second clock constant which is not universal, but still very common,
+is for a clock measuring <em>monotonic time</em>.  Monotonic time is
+useful for measuring elapsed times, because it guarantees that those
+measurements are not affected by changes to the system clock.
+</p>
+<dl>
+<dt id="index-CLOCK_005fMONOTONIC">Macro: <em>clockid_t</em> <strong>CLOCK_MONOTONIC</strong></dt>
+<dd>
+<p>System-wide clock that continuously measures the advancement of
+calendar time, ignoring discontinuous changes to the system&rsquo;s
+setting for absolute calendar time.
+</p>
+<p>The epoch for this clock is an unspecified point in the past.
+The epoch may change if the system is rebooted or suspended.
+Therefore, <code>CLOCK_MONOTONIC</code> cannot be used to measure
+absolute time, only elapsed time.
+</p></dd></dl>
+
+<p>Systems may support more than just these two clocks.
+</p>
+<dl>
+<dt id="index-clock_005fgettime">Function: <em>int</em> <strong>clock_gettime</strong> <em>(clockid_t <var>clock</var>, struct timespec *<var>ts</var>)</em></dt>
+<dd>
+<p>Get the current time accoding to the clock identified by <var>clock</var>,
+storing it as seconds and nanoseconds in <code>*<var>ts</var></code>.
+See <a href="Time-Types.html">Time Types</a>, for a description of <code>struct timespec</code>.
+</p>
+<p>The return value is <code>0</code> on success and <code>-1</code> on failure.  The
+following <code>errno</code> error condition is defined for this function:
+</p>
+<dl compact="compact">
+<dt><code>EINVAL</code></dt>
+<dd><p>The clock identified by <var>clock</var> is not supported.
+</p></dd>
+</dl>
+</dd></dl>
+
+<p><code>clock_gettime</code> reports the time scaled to seconds and
+nanoseconds, but the actual resolution of each clock may not be as
+fine as one nanosecond, and may not be the same for all clocks.  POSIX
+also provides a function for finding out the actual resolution of a
+clock:
+</p>
+<dl>
+<dt id="index-clock_005fgetres">Function: <em>int</em> <strong>clock_getres</strong> <em>(clockid_t <var>clock</var>, struct timespec *<var>res</var>)</em></dt>
+<dd>
+<p>Get the actual resolution of the clock identified by <var>clock</var>,
+storing it in <code>*<var>ts</var></code>.
+</p>
+<p>For instance, if the clock hardware for <code>CLOCK_REALTIME</code>
+uses a quartz crystal that oscillates at 32.768 kHz,
+then its resolution would be 30.518 microseconds,
+and &lsquo;<samp><span class="nolinebreak">clock_getres</span>&nbsp;<span class="nolinebreak">(CLOCK_REALTIME,</span>&nbsp;&amp;r)</samp>&rsquo;<!-- /@w --> would set
+<code>r.tv_sec</code> to 0 and <code>r.tv_nsec</code> to 30518.
+</p>
+<p>The return value is <code>0</code> on success and <code>-1</code> on failure.  The
+following <code>errno</code> error condition is defined for this function:
+</p>
+<dl compact="compact">
+<dt><code>EINVAL</code></dt>
+<dd><p>The clock identified by <var>clock</var> is not supported.
+</p></dd>
+</dl>
+</dd></dl>
+
+<p>These functions, and the constants that identify particular clocks,
+are declared in <samp>time.h</samp>.
+</p>
+<p><strong>Portability Note:</strong> On some systems, including systems that use
+older versions of the GNU C Library, programs that use <code>clock_gettime</code>
+or <code>clock_setres</code> must be linked with the <code>-lrt</code> library.
+This has not been necessary with the GNU C Library since version 2.17.
+</p>
+<p>The GNU C Library also provides an older, but still widely used, function
+for getting the current time with a resolution of microseconds.  This
+function is declared in <samp>sys/time.h</samp>.
+</p>
+<dl>
+<dt id="index-gettimeofday">Function: <em>int</em> <strong>gettimeofday</strong> <em>(struct timeval *<var>tp</var>, void *<var>tzp</var>)</em></dt>
+<dd>
+<p>Preliminary:
+| MT-Safe 
+| AS-Safe 
+| AC-Safe 
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>Get the current calendar time, storing it as seconds and microseconds
+in <code>*<var>tp</var></code>.  See <a href="Time-Types.html">Time Types</a>, for a description of
+<code>struct timeval</code>.  The clock of <code>gettimeofday</code> is close to,
+but not necessarily in lock-step with, the clocks of <code>time</code> and of
+&lsquo;<samp><span class="nolinebreak">clock_gettime</span>&nbsp;<span class="nolinebreak">(CLOCK_REALTIME)</span></samp>&rsquo;<!-- /@w --> (see above).
+</p>
+<p>On some historic systems, if <var>tzp</var> was not a null pointer,
+information about a system-wide time zone would be written to
+<code>*<var>tzp</var></code>.  This feature is obsolete and not supported on
+GNU systems.  You should always supply a null pointer for this
+argument.  Instead, use the facilities described in <a href="Time-Zone-Functions.html">Time Zone Functions</a> and in <a href="Broken_002ddown-Time.html">Broken-down Time</a> for working with time zones.
+</p>
+<p>This function cannot fail, and its return value is always <code>0</code>.
+</p>
+<p><strong>Portability Note:</strong> As of the 2008 revision of POSIX, this
+function is considered obsolete.  The GNU C Library will continue to provide
+this function indefinitely, but new programs should use
+<code>clock_gettime</code> instead.
+</p></dd></dl>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Setting-and-Adjusting-the-Time.html" accesskey="n" rel="next">Setting and Adjusting the Time</a>, Up: <a href="Calendar-Time.html" accesskey="u" rel="up">Calendar Time</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

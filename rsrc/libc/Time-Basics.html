@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is
+The GNU C Library Reference Manual, for version
+2.32.
+
+Copyright (C) 1993-2020 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version
+1.3 or any later version published by the Free
+Software Foundation; with the Invariant Sections being "Free Software
+Needs Free Documentation" and "GNU Lesser General Public License",
+the Front-Cover texts being "A GNU Manual", and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Time Basics (The GNU C Library)</title>
+
+<meta name="description" content="Time Basics (The GNU C Library)">
+<meta name="keywords" content="Time Basics (The GNU C Library)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Date-and-Time.html" rel="up" title="Date and Time">
+<link href="Time-Types.html" rel="next" title="Time Types">
+<link href="Date-and-Time.html" rel="prev" title="Date and Time">
+ <link rel="stylesheet" href="../bookstyle.css" type="text/css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css"> <style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<span id="Time-Basics"></span><div class="header">
+<p>
+Next: <a href="Time-Types.html" accesskey="n" rel="next">Time Types</a>, Up: <a href="Date-and-Time.html" accesskey="u" rel="up">Date and Time</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Time-Basics-1"></span><h3 class="section">21.1 Time Basics</h3>
+<span id="index-time"></span>
+
+<p>Discussing time in a technical manual can be difficult because the word
+&ldquo;time&rdquo; in English refers to lots of different things.  In this manual,
+we use a rigorous terminology to avoid confusion, and the only thing we
+use the simple word &ldquo;time&rdquo; for is to talk about the abstract concept.
+</p>
+<p>A <em>calendar time</em> is a point in the time continuum, for example
+November 4, 1990, at 18:02.5 UTC.  Sometimes this is called &ldquo;absolute
+time&rdquo;.
+<span id="index-calendar-time"></span>
+</p>
+<p>We don&rsquo;t speak of a &ldquo;date&rdquo;, because that is inherent in a calendar
+time.
+<span id="index-date"></span>
+</p>
+<p>An <em>interval</em> is a contiguous part of the time continuum between two
+calendar times, for example the hour between 9:00 and 10:00 on July 4,
+1980.
+<span id="index-interval"></span>
+</p>
+<p>An <em>elapsed time</em> is the length of an interval, for example, 35
+minutes.  People sometimes sloppily use the word &ldquo;interval&rdquo; to refer
+to the elapsed time of some interval.
+<span id="index-elapsed-time"></span>
+<span id="index-time_002c-elapsed"></span>
+</p>
+<p>An <em>amount of time</em> is a sum of elapsed times, which need not be of
+any specific intervals.  For example, the amount of time it takes to
+read a book might be 9 hours, independently of when and in how many
+sittings it is read.
+</p>
+<p>A <em>period</em> is the elapsed time of an interval between two events,
+especially when they are part of a sequence of regularly repeating
+events.
+<span id="index-period-of-time"></span>
+</p>
+<p>A <em>simple calendar time</em> is a calendar time represented as an
+elapsed time since a fixed, implementation-specific calendar time
+called the <em>epoch</em>.  This representation is convenient for doing
+calculations on calendar times, such as finding the elapsed time
+between two calendar times.  Simple calendar times are independent of
+time zone; they represent the same instant in time regardless of where
+on the globe the computer is.
+</p>
+<p>POSIX says that simple calendar times do not include leap seconds, but
+some (otherwise POSIX-conformant) systems can be configured to include
+leap seconds in simple calendar times.
+<span id="index-leap-seconds"></span>
+<span id="index-seconds_002c-leap"></span>
+<span id="index-simple-time"></span>
+<span id="index-simple-calendar-time"></span>
+<span id="index-calendar-time_002c-simple"></span>
+<span id="index-epoch"></span>
+</p>
+<p>A <em>broken-down time</em> is a calendar time represented by its
+components in the Gregorian calendar: year, month, day, hour, minute,
+and second.  A broken-down time value is relative to a specific time
+zone, and so it is also sometimes called a <em>local time</em>.
+Broken-down times are most useful for input and output, as they are
+easier for people to understand, but more difficult to calculate with.
+<span id="index-broken_002ddown-time"></span>
+<span id="index-local-time"></span>
+<span id="index-Gregorian-calendar"></span>
+<span id="index-calendar_002c-Gregorian"></span>
+</p>
+<p><em>CPU time</em> measures the amount of time that a single process has
+actively used a CPU to perform computations.  It does not include the
+time that process has spent waiting for external events.  The system
+tracks the CPU time used by each process separately.
+<span id="index-CPU-time"></span>
+</p>
+<p><em>Processor time</em> measures the amount of time <em>any</em> CPU has
+been in use by <em>any</em> process.  It is a basic system resource,
+since there&rsquo;s a limit to how much can exist in any given interval (the
+elapsed time of the interval times the number of CPUs in the computer)
+</p>
+<p>People often call this CPU time, but we reserve the latter term in
+this manual for the definition above.
+<span id="index-processor-time"></span>
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Time-Types.html" accesskey="n" rel="next">Time Types</a>, Up: <a href="Date-and-Time.html" accesskey="u" rel="up">Date and Time</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is
+The GNU C Library Reference Manual, for version
+2.32.
+
+Copyright (C) 1993-2020 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version
+1.3 or any later version published by the Free
+Software Foundation; with the Invariant Sections being "Free Software
+Needs Free Documentation" and "GNU Lesser General Public License",
+the Front-Cover texts being "A GNU Manual", and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Waiting with Explicit Clocks (The GNU C Library)</title>
+
+<meta name="description" content="Waiting with Explicit Clocks (The GNU C Library)">
+<meta name="keywords" content="Waiting with Explicit Clocks (The GNU C Library)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Non_002dPOSIX-Extensions.html" rel="up" title="Non-POSIX Extensions">
+<link href="Single_002dThreaded.html" rel="next" title="Single-Threaded">
+<link href="Initial-Thread-Signal-Mask.html" rel="prev" title="Initial Thread Signal Mask">
+ <link rel="stylesheet" href="../bookstyle.css" type="text/css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css"> <style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<span id="Waiting-with-Explicit-Clocks"></span><div class="header">
+<p>
+Next: <a href="Single_002dThreaded.html" accesskey="n" rel="next">Single-Threaded</a>, Previous: <a href="Initial-Thread-Signal-Mask.html" accesskey="p" rel="prev">Initial Thread Signal Mask</a>, Up: <a href="Non_002dPOSIX-Extensions.html" accesskey="u" rel="up">Non-POSIX Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Functions-for-Waiting-According-to-a-Specific-Clock"></span><h4 class="subsubsection">35.2.2.3 Functions for Waiting According to a Specific Clock</h4>
+
+<p>The GNU C Library provides several waiting functions that expect an explicit
+<code>clockid_t</code> argument.
+</p>
+<dl>
+<dt id="index-sem_005fclockwait">Function: <em>int</em> <strong>sem_clockwait</strong> <em>(sem_t *<var>sem</var>, clockid_t <var>clockid</var>,</em></dt>
+<dd><p>const struct timespec *<var>abstime</var>)
+Behaves like <code>sem_timedwait</code> except the time <var>abstime</var> is measured
+against the clock specified by <var>clockid</var> rather than
+<code>CLOCK_REALTIME</code>.  Currently, <var>clockid</var> must be either
+<code>CLOCK_MONOTONIC</code> or <code>CLOCK_REALTIME</code>.
+</p></dd></dl>
+
+<dl>
+<dt id="index-pthread_005fcond_005fclockwait">Function: <em>int</em> <strong>pthread_cond_clockwait</strong> <em>(pthread_cond_t *<var>cond</var>, pthread_mutex_t *<var>mutex</var>,</em></dt>
+<dd><p>clockid_t <var>clockid</var>, const struct timespec *<var>abstime</var>)
+Preliminary:
+| MT-Safe 
+| AS-Unsafe lock
+| AC-Unsafe lock
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>Behaves like <code>pthread_cond_timedwait</code> except the time <var>abstime</var> is
+measured against the clock specified by <var>clockid</var> rather than the clock
+specified or defaulted when <code>pthread_cond_init</code> was called.  Currently,
+<var>clockid</var> must be either <code>CLOCK_MONOTONIC</code> or
+<code>CLOCK_REALTIME</code>.
+</p></dd></dl>
+
+<dl>
+<dt id="index-pthread_005frwlock_005fclockrdlock">Function: <em>int</em> <strong>pthread_rwlock_clockrdlock</strong> <em>(pthread_rwlock_t *<var>rwlock</var>,</em></dt>
+<dd><p>clockid_t <var>clockid</var>,
+				       const struct timespec *<var>abstime</var>)
+</p>
+<p>Preliminary:
+| MT-Safe 
+| AS-Unsafe lock
+| AC-Unsafe lock
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>Behaves like <code>pthread_rwlock_timedrdlock</code> except the time
+<var>abstime</var> is measured against the clock specified by <var>clockid</var>
+rather than <code>CLOCK_REALTIME</code>.  Currently, <var>clockid</var> must be either
+<code>CLOCK_MONOTONIC</code> or <code>CLOCK_REALTIME</code>, otherwise <code>EINVAL</code> is
+returned.
+</p></dd></dl>
+
+<dl>
+<dt id="index-pthread_005frwlock_005fclockwrlock">Function: <em>int</em> <strong>pthread_rwlock_clockwrlock</strong> <em>(pthread_rwlock_t *<var>rwlock</var>,</em></dt>
+<dd><p>clockid_t <var>clockid</var>,
+				       const struct timespec *<var>abstime</var>)
+</p>
+<p>Preliminary:
+| MT-Safe 
+| AS-Unsafe lock
+| AC-Unsafe lock
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>Behaves like <code>pthread_rwlock_timedwrlock</code> except the time
+<var>abstime</var> is measured against the clock specified by <var>clockid</var>
+rather than <code>CLOCK_REALTIME</code>.  Currently, <var>clockid</var> must be either
+<code>CLOCK_MONOTONIC</code> or <code>CLOCK_REALTIME</code>, otherwise <code>EINVAL</code> is
+returned.
+</p></dd></dl>
+
+<dl>
+<dt id="index-pthread_005ftryjoin_005fnp">Function: <em>int</em> <strong>pthread_tryjoin_np</strong> <em>(pthread_t *<var>thread</var>,</em></dt>
+<dd><p>void **<var>thread_return</var>)
+</p>
+<p>Preliminary:
+| MT-Safe 
+| AS-Unsafe lock
+| AC-Unsafe lock
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>Behaves like <code>pthread_join</code> except that it will return <code>EBUSY</code>
+immediately if the thread specified by <var>thread</var> has not yet terminated.
+</p></dd></dl>
+
+<dl>
+<dt id="index-pthread_005ftimedjoin_005fnp">Function: <em>int</em> <strong>pthread_timedjoin_np</strong> <em>(pthread_t *<var>thread</var>,</em></dt>
+<dd><p>void **<var>thread_return</var>,
+				      const struct timespec *<var>abstime</var>)
+</p>
+<p>Preliminary:
+| MT-Safe 
+| AS-Unsafe lock
+| AC-Unsafe lock
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>Behaves like <code>pthread_tryjoin_np</code> except that it will block until the
+absolute time <var>abstime</var> measured against <code>CLOCK_REALTIME</code> is
+reached if the thread has not terminated by that time and return
+<code>EBUSY</code>. If <var>abstime</var> is equal to <code>NULL</code> then the function
+will wait forever in the same way as <code>pthread_join</code>.
+</p></dd></dl>
+
+<dl>
+<dt id="index-pthread_005fclockjoin_005fnp">Function: <em>int</em> <strong>pthread_clockjoin_np</strong> <em>(pthread_t *<var>thread</var>,</em></dt>
+<dd><p>void **<var>thread_return</var>,
+                                      clockid_t <var>clockid</var>,
+				      const struct timespec *<var>abstime</var>)
+</p>
+<p>Preliminary:
+| MT-Safe 
+| AS-Unsafe lock
+| AC-Unsafe lock
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>Behaves like <code>pthread_timedjoin_np</code> except that the absolute time in
+<var>abstime</var> is measured against the clock specified by <var>clockid</var>.
+</p></dd></dl>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Single_002dThreaded.html" accesskey="n" rel="next">Single-Threaded</a>, Previous: <a href="Initial-Thread-Signal-Mask.html" accesskey="p" rel="prev">Initial Thread Signal Mask</a>, Up: <a href="Non_002dPOSIX-Extensions.html" accesskey="u" rel="up">Non-POSIX Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

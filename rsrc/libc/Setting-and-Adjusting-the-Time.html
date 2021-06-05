@@ -1,0 +1,515 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is
+The GNU C Library Reference Manual, for version
+2.32.
+
+Copyright (C) 1993-2020 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version
+1.3 or any later version published by the Free
+Software Foundation; with the Invariant Sections being "Free Software
+Needs Free Documentation" and "GNU Lesser General Public License",
+the Front-Cover texts being "A GNU Manual", and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Setting and Adjusting the Time (The GNU C Library)</title>
+
+<meta name="description" content="Setting and Adjusting the Time (The GNU C Library)">
+<meta name="keywords" content="Setting and Adjusting the Time (The GNU C Library)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Calendar-Time.html" rel="up" title="Calendar Time">
+<link href="Broken_002ddown-Time.html" rel="next" title="Broken-down Time">
+<link href="Getting-the-Time.html" rel="prev" title="Getting the Time">
+ <link rel="stylesheet" href="../bookstyle.css" type="text/css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css"> <style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<span id="Setting-and-Adjusting-the-Time"></span><div class="header">
+<p>
+Next: <a href="Broken_002ddown-Time.html" accesskey="n" rel="next">Broken-down Time</a>, Previous: <a href="Getting-the-Time.html" accesskey="p" rel="prev">Getting the Time</a>, Up: <a href="Calendar-Time.html" accesskey="u" rel="up">Calendar Time</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Setting-and-Adjusting-the-Time-1"></span><h4 class="subsection">21.5.2 Setting and Adjusting the Time</h4>
+
+<p>The clock hardware inside a modern computer is quite reliable, but it
+can still be wrong.  The functions in this section allow one to set
+the system&rsquo;s idea of the current calendar time, and to adjust the rate
+at which the system counts seconds, so that the calendar time will
+both be accurate, and remain accurate.
+</p>
+<p>The functions in this section require special privileges to use.
+See <a href="Users-and-Groups.html">Users and Groups</a>.
+</p>
+<dl>
+<dt id="index-clock_005fsettime">Function: <em>int</em> <strong>clock_settime</strong> <em>(clockid_t <var>clock</var>, const struct timespec *<var>ts</var>)</em></dt>
+<dd>
+<p>Preliminary:
+| MT-Safe 
+| AS-Safe 
+| AC-Safe 
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>Change the current calendar time, according to the clock identified by
+<var>clock</var>, to be the simple calendar time in <code>*<var>ts</var></code>.
+</p>
+<p>Not all of the system&rsquo;s clocks can be changed.  For instance, the
+<code>CLOCK_REALTIME</code> clock can be changed (with the appropriate
+privileges), but the <code>CLOCK_MONOTONIC</code> clock cannot.
+</p>
+<p>Because simple calendar times are independent of time zone, this
+function should not be used when the time zone changes (e.g. if the
+computer is physically moved from one zone to another).  Instead, use
+the facilities described in <a href="Time-Zone-Functions.html">Time Zone Functions</a>.
+</p>
+<p><code>clock_settime</code> causes the clock to jump forwards or backwards,
+which can cause a variety of problems.  Changing the
+<code>CLOCK_REALTIME</code> clock with <code>clock_settime</code> does not affect
+when timers expire (see <a href="Setting-an-Alarm.html">Setting an Alarm</a>) or when sleeping
+processes wake up (see <a href="Sleeping.html">Sleeping</a>), which avoids some of the
+problems.  Still, for small changes made while the system is running,
+it is better to use <code>ntp_adjtime</code> (below) to make a smooth
+transition from one time to another.
+</p>
+<p>The return value is <code>0</code> on success and <code>-1</code> on failure.  The
+following <code>errno</code> error conditions are defined for this function:
+</p>
+<dl compact="compact">
+<dt><code>EINVAL</code></dt>
+<dd><p>The clock identified by <var>clock</var> is not supported or cannot be set
+at all, or the simple calendar time in <code>*<var>ts</var></code> is invalid
+(for instance, <code>ts-&gt;tv_nsec</code> is negative or greater than 999,999,999).
+</p>
+</dd>
+<dt><code>EPERM</code></dt>
+<dd><p>This process does not have the privileges required to set the clock
+identified by <var>clock</var>.
+</p></dd>
+</dl>
+
+<p><strong>Portability Note</strong>: On some systems, including systems that use
+older versions of the GNU C Library, programs that use <code>clock_settime</code>
+must be linked with the <code>-lrt</code> library.  This has not been
+necessary with the GNU C Library since version 2.17.
+</p></dd></dl>
+
+<span id="index-time_002c-high-precision"></span>
+<span id="index-clock_002c-high-accuracy"></span>
+<span id="index-clock_002c-disciplining"></span>
+<span id="index-sys_002ftimex_002eh"></span>
+<p>For systems that remain up and running for long periods, it is not
+enough to set the time once; one should also <em>discipline</em> the
+clock so that it does not drift away from the true calendar time.
+</p>
+<p>The <code>ntp_gettime</code> and <code>ntp_adjtime</code> functions provide an
+interface to monitor and discipline the system clock.  For example,
+you can fine-tune the rate at which the clock &ldquo;ticks,&rdquo; and make
+small adjustments to the current reported calendar time smoothly, by
+temporarily speeding up or slowing down the clock.
+</p>
+<p>These functions&rsquo; names begin with &lsquo;<samp>ntp_</samp>&rsquo; because they were
+designed for use by programs implementing the Network Time Protocol to
+synchronize a system&rsquo;s clock with other systems&rsquo; clocks and/or with
+external high-precision clock hardware.
+</p>
+<p>These functions, and the constants and structures they use, are
+declared in <samp>sys/timex.h</samp>.
+</p>
+<span id="index-struct-ntptimeval"></span>
+<dl>
+<dt id="index-struct-ntptimeval-1">Data Type: <strong>struct ntptimeval</strong></dt>
+<dd><p>This structure is used to report information about the system clock.
+It contains the following members:
+</p><dl compact="compact">
+<dt><code>struct timeval time</code></dt>
+<dd><p>The current calendar time, as if retrieved by <code>gettimeofday</code>.
+The <code>struct timeval</code> data type is described in
+<a href="Time-Types.html">Time Types</a>.
+</p>
+</dd>
+<dt><code>long int maxerror</code></dt>
+<dd><p>This is the maximum error, measured in microseconds.  Unless updated
+via <code>ntp_adjtime</code> periodically, this value will reach some
+platform-specific maximum value.
+</p>
+</dd>
+<dt><code>long int esterror</code></dt>
+<dd><p>This is the estimated error, measured in microseconds.  This value can
+be set by <code>ntp_adjtime</code> to indicate the estimated offset of the
+system clock from the true calendar time.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt id="index-ntp_005fgettime">Function: <em>int</em> <strong>ntp_gettime</strong> <em>(struct ntptimeval *<var>tptr</var>)</em></dt>
+<dd>
+<p>Preliminary:
+| MT-Safe 
+| AS-Safe 
+| AC-Safe 
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>The <code>ntp_gettime</code> function sets the structure pointed to by
+<var>tptr</var> to current values.  The elements of the structure afterwards
+contain the values the timer implementation in the kernel assumes.  They
+might or might not be correct.  If they are not, an <code>ntp_adjtime</code>
+call is necessary.
+</p>
+<p>The return value is <code>0</code> on success and other values on failure.  The
+following <code>errno</code> error conditions are defined for this function:
+</p>
+<dl compact="compact">
+<dt><code>TIME_ERROR</code>
+<span id="index-TIME_005fERROR"></span>
+</dt>
+<dd><p>The precision clock model is not properly set up at the moment, thus the
+clock must be considered unsynchronized, and the values should be
+treated with care.
+</p></dd>
+</dl>
+</dd></dl>
+
+<span id="index-struct-timex"></span>
+<dl>
+<dt id="index-struct-timex-1">Data Type: <strong>struct timex</strong></dt>
+<dd><p>This structure is used to control and monitor the system clock.  It
+contains the following members:
+</p><dl compact="compact">
+<dt><code>unsigned int modes</code></dt>
+<dd><p>This variable controls whether and which values are set.  Several
+symbolic constants have to be combined with <em>binary or</em> to specify
+the effective mode.  These constants start with <code>MOD_</code>.
+</p>
+</dd>
+<dt><code>long int offset</code></dt>
+<dd><p>This value indicates the current offset of the system clock from the true
+calendar time.  The value is given in microseconds.  If bit
+<code>MOD_OFFSET</code> is set in <code>modes</code>, the offset (and possibly other
+dependent values) can be set.  The offset&rsquo;s absolute value must not
+exceed <code>MAXPHASE</code>.
+</p>
+
+</dd>
+<dt><code>long int frequency</code></dt>
+<dd><p>This value indicates the difference in frequency between the true
+calendar time and the system clock.  The value is expressed as scaled
+PPM (parts per million, 0.0001%).  The scaling is <code>1 &lt;&lt;
+SHIFT_USEC</code>.  The value can be set with bit <code>MOD_FREQUENCY</code>, but
+the absolute value must not exceed <code>MAXFREQ</code>.
+</p>
+</dd>
+<dt><code>long int maxerror</code></dt>
+<dd><p>This is the maximum error, measured in microseconds.  A new value can be
+set using bit <code>MOD_MAXERROR</code>.  Unless updated via
+<code>ntp_adjtime</code> periodically, this value will increase steadily
+and reach some platform-specific maximum value.
+</p>
+</dd>
+<dt><code>long int esterror</code></dt>
+<dd><p>This is the estimated error, measured in microseconds.  This value can
+be set using bit <code>MOD_ESTERROR</code>.
+</p>
+</dd>
+<dt><code>int status</code></dt>
+<dd><p>This variable reflects the various states of the clock machinery.  There
+are symbolic constants for the significant bits, starting with
+<code>STA_</code>.  Some of these flags can be updated using the
+<code>MOD_STATUS</code> bit.
+</p>
+</dd>
+<dt><code>long int constant</code></dt>
+<dd><p>This value represents the bandwidth or stiffness of the PLL (phase
+locked loop) implemented in the kernel.  The value can be changed using
+bit <code>MOD_TIMECONST</code>.
+</p>
+</dd>
+<dt><code>long int precision</code></dt>
+<dd><p>This value represents the accuracy or the maximum error when reading the
+system clock.  The value is expressed in microseconds.
+</p>
+</dd>
+<dt><code>long int tolerance</code></dt>
+<dd><p>This value represents the maximum frequency error of the system clock in
+scaled PPM.  This value is used to increase the <code>maxerror</code> every
+second.
+</p>
+</dd>
+<dt><code>struct timeval time</code></dt>
+<dd><p>The current calendar time.
+</p>
+</dd>
+<dt><code>long int tick</code></dt>
+<dd><p>The elapsed time between clock ticks in microseconds.  A clock tick is a
+periodic timer interrupt on which the system clock is based.
+</p>
+</dd>
+<dt><code>long int ppsfreq</code></dt>
+<dd><p>This is the first of a few optional variables that are present only if
+the system clock can use a PPS (pulse per second) signal to discipline
+the system clock.  The value is expressed in scaled PPM and it denotes
+the difference in frequency between the system clock and the PPS signal.
+</p>
+</dd>
+<dt><code>long int jitter</code></dt>
+<dd><p>This value expresses a median filtered average of the PPS signal&rsquo;s
+dispersion in microseconds.
+</p>
+</dd>
+<dt><code>int shift</code></dt>
+<dd><p>This value is a binary exponent for the duration of the PPS calibration
+interval, ranging from <code>PPS_SHIFT</code> to <code>PPS_SHIFTMAX</code>.
+</p>
+</dd>
+<dt><code>long int stabil</code></dt>
+<dd><p>This value represents the median filtered dispersion of the PPS
+frequency in scaled PPM.
+</p>
+</dd>
+<dt><code>long int jitcnt</code></dt>
+<dd><p>This counter represents the number of pulses where the jitter exceeded
+the allowed maximum <code>MAXTIME</code>.
+</p>
+</dd>
+<dt><code>long int calcnt</code></dt>
+<dd><p>This counter reflects the number of successful calibration intervals.
+</p>
+</dd>
+<dt><code>long int errcnt</code></dt>
+<dd><p>This counter represents the number of calibration errors (caused by
+large offsets or jitter).
+</p>
+</dd>
+<dt><code>long int stbcnt</code></dt>
+<dd><p>This counter denotes the number of calibrations where the stability
+exceeded the threshold.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt id="index-ntp_005fadjtime">Function: <em>int</em> <strong>ntp_adjtime</strong> <em>(struct timex *<var>tptr</var>)</em></dt>
+<dd>
+<p>Preliminary:
+| MT-Safe 
+| AS-Safe 
+| AC-Safe 
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>The <code>ntp_adjtime</code> function sets the structure specified by
+<var>tptr</var> to current values.
+</p>
+<p>In addition, <code>ntp_adjtime</code> updates some settings to match what you
+pass to it in *<var>tptr</var>.  Use the <code>modes</code> element of *<var>tptr</var>
+to select what settings to update.  You can set <code>offset</code>,
+<code>freq</code>, <code>maxerror</code>, <code>esterror</code>, <code>status</code>,
+<code>constant</code>, and <code>tick</code>.
+</p>
+<p><code>modes</code> = zero means set nothing.
+</p>
+<p>Only the superuser can update settings.
+</p>
+
+<p>The return value is <code>0</code> on success and other values on failure.  The
+following <code>errno</code> error conditions are defined for this function:
+</p>
+<dl compact="compact">
+<dt><code>TIME_ERROR</code></dt>
+<dd><p>The high accuracy clock model is not properly set up at the moment, thus the
+clock must be considered unsynchronized, and the values should be
+treated with care.  Another reason could be that the specified new values
+are not allowed.
+</p>
+</dd>
+<dt><code>EPERM</code></dt>
+<dd><p>The process specified a settings update, but is not superuser.
+</p>
+</dd>
+</dl>
+
+<p>For more details see RFC1305 (Network Time Protocol, Version 3) and
+related documents.
+</p>
+<p><strong>Portability note:</strong> Early versions of the GNU C Library did not
+have this function, but did have the synonymous <code>adjtimex</code>.
+</p></dd></dl>
+
+
+<dl>
+<dt id="index-adjtime">Function: <em>int</em> <strong>adjtime</strong> <em>(const struct timeval *<var>delta</var>, struct timeval *<var>olddelta</var>)</em></dt>
+<dd>
+<p>Preliminary:
+| MT-Safe 
+| AS-Safe 
+| AC-Safe 
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>This simpler version of <code>ntp_adjtime</code> speeds up or slows down the
+system clock for a short time, in order to correct it by a small
+amount.  This avoids a discontinuous change in the calendar time
+reported by the <code>CLOCK_REALTIME</code> clock, at the price of having to
+wait longer for the time to become correct.
+</p>
+<p>The <var>delta</var> argument specifies a relative adjustment to be made to
+the clock time.  If negative, the system clock is slowed down for a
+while until it has lost this much elapsed time.  If positive, the system
+clock is speeded up for a while.
+</p>
+<p>If the <var>olddelta</var> argument is not a null pointer, the <code>adjtime</code>
+function returns information about any previous time adjustment that
+has not yet completed.
+</p>
+<p>The return value is <code>0</code> on success and <code>-1</code> on failure.  The
+following <code>errno</code> error condition is defined for this function:
+</p>
+<dl compact="compact">
+<dt><code>EPERM</code></dt>
+<dd><p>This process does not have the privileges required to adjust the
+<code>CLOCK_REALTIME</code> clock.
+</p></dd>
+</dl>
+</dd></dl>
+
+<p>For compatibility, the GNU C Library also provides several older functions
+for controlling the system time.  New programs should prefer to use
+the functions above.
+</p>
+<dl>
+<dt id="index-stime">Function: <em>int</em> <strong>stime</strong> <em>(const time_t *<var>newtime</var>)</em></dt>
+<dd>
+
+<p>Preliminary:
+| MT-Safe 
+| AS-Safe 
+| AC-Safe 
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>Change the <code>CLOCK_REALTIME</code> calendar time to be the simple
+calendar time in <code>*<var>newtime</var></code>.  Calling this function is
+exactly the same as calling &lsquo;<samp><span class="nolinebreak">clock_settime</span>&nbsp;<span class="nolinebreak">(CLOCK_REALTIME)</span></samp>&rsquo;<!-- /@w -->,
+except that the new time can only be set to a precision of one second.
+</p>
+<p>This function is no longer available on GNU systems, but it may be
+the <em>only</em> way to set the time on very old Unix systems, so we
+continue to document it.  If it is available, it is declared in
+<samp>time.h</samp>.
+</p>
+<p>The return value is <code>0</code> on success and <code>-1</code> on failure.  The
+following <code>errno</code> error condition is defined for this function:
+</p>
+<dl compact="compact">
+<dt><code>EPERM</code></dt>
+<dd><p>This process does not have the privileges required to adjust the
+<code>CLOCK_REALTIME</code> clock.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt id="index-adjtimex">Function: <em>int</em> <strong>adjtimex</strong> <em>(struct timex *<var>timex</var>)</em></dt>
+<dd>
+<p>Preliminary:
+| MT-Safe 
+| AS-Safe 
+| AC-Safe 
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p><code>adjtimex</code> is an older name for <code>ntp_adjtime</code>.
+This function is only available on GNU/Linux systems.
+It is declared in <samp>sys/timex.h</samp>.
+</p></dd></dl>
+
+<dl>
+<dt id="index-settimeofday">Function: <em>int</em> <strong>settimeofday</strong> <em>(const struct timeval *<var>tp</var>, const void *<var>tzp</var>)</em></dt>
+<dd>
+<p>Preliminary:
+| MT-Safe 
+| AS-Safe 
+| AC-Safe 
+| See <a href="POSIX-Safety-Concepts.html">POSIX Safety Concepts</a>.
+</p>
+
+<p>Change the <code>CLOCK_REALTIME</code> calendar time to be the simple
+calendar time in <code>*<var>newtime</var></code>.  This function is declared in
+<samp>sys/time.h</samp>.
+</p>
+<p>When <var>tzp</var> is a null pointer, calling this function is exactly the
+same as calling &lsquo;<samp><span class="nolinebreak">clock_settime</span>&nbsp;<span class="nolinebreak">(CLOCK_REALTIME)</span></samp>&rsquo;<!-- /@w -->, except that
+the new time can only be set to a precision of one microsecond.
+</p>
+<p>When <var>tzp</var> is not a null pointer, the data it points to <em>may</em>
+be used to set a system-wide idea of the current timezone.  This
+feature is obsolete and not supported on GNU systems.  Instead, use
+the facilities described in <a href="Time-Zone-Functions.html">Time Zone Functions</a> and in
+<a href="Broken_002ddown-Time.html">Broken-down Time</a> for working with time zones.
+</p>
+<p>The return value is <code>0</code> on success and <code>-1</code> on failure.  The
+following <code>errno</code> error conditions are defined for this function:
+</p>
+<dl compact="compact">
+<dt><code>EPERM</code></dt>
+<dd><p>This process does not have the privileges required to set the
+<code>CLOCK_REALTIME</code> clock.
+</p>
+</dd>
+<dt><code>EINVAL</code></dt>
+<dd><p>Neither <var>tp</var> nor <var>tzp</var> is a null pointer.  (For historical
+reasons, it is not possible to set the current time and the current
+time zone in the same call.)
+</p>
+</dd>
+<dt><code>ENOSYS</code></dt>
+<dd><p>The operating system does not support setting time zone information, and
+<var>tzp</var> is not a null pointer.
+</p></dd>
+</dl>
+</dd></dl>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Broken_002ddown-Time.html" accesskey="n" rel="next">Broken-down Time</a>, Previous: <a href="Getting-the-Time.html" accesskey="p" rel="prev">Getting the Time</a>, Up: <a href="Calendar-Time.html" accesskey="u" rel="up">Calendar Time</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

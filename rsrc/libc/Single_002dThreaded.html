@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is
+The GNU C Library Reference Manual, for version
+2.32.
+
+Copyright (C) 1993-2020 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version
+1.3 or any later version published by the Free
+Software Foundation; with the Invariant Sections being "Free Software
+Needs Free Documentation" and "GNU Lesser General Public License",
+the Front-Cover texts being "A GNU Manual", and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Single-Threaded (The GNU C Library)</title>
+
+<meta name="description" content="Single-Threaded (The GNU C Library)">
+<meta name="keywords" content="Single-Threaded (The GNU C Library)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Non_002dPOSIX-Extensions.html" rel="up" title="Non-POSIX Extensions">
+<link href="Internal-Probes.html" rel="next" title="Internal Probes">
+<link href="Waiting-with-Explicit-Clocks.html" rel="prev" title="Waiting with Explicit Clocks">
+ <link rel="stylesheet" href="../bookstyle.css" type="text/css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css"> <style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<span id="Single_002dThreaded"></span><div class="header">
+<p>
+Previous: <a href="Waiting-with-Explicit-Clocks.html" accesskey="p" rel="prev">Waiting with Explicit Clocks</a>, Up: <a href="Non_002dPOSIX-Extensions.html" accesskey="u" rel="up">Non-POSIX Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Detecting-Single_002dThreaded-Execution"></span><h4 class="subsubsection">35.2.2.4 Detecting Single-Threaded Execution</h4>
+
+<p>Multi-threaded programs require synchronization among threads.  This
+synchronization can be costly even if there is just a single thread
+and no data is shared between multiple processors.  The GNU C Library offers
+an interface to detect whether the process is in single-threaded mode.
+Applications can use this information to avoid synchronization, for
+example by using regular instructions to load and store memory instead
+of atomic instructions, or using relaxed memory ordering instead of
+stronger memory ordering.
+</p>
+<dl>
+<dt id="index-_005f_005flibc_005fsingle_005fthreaded">Variable: <em>char</em> <strong>__libc_single_threaded</strong></dt>
+<dd>
+<p>This variable is non-zero if the current process is definitely
+single-threaded.  If it is zero, the process may be multi-threaded,
+or the GNU C Library cannot determine at this point of the program execution
+whether the process is single-threaded or not.
+</p>
+<p>Applications must never write to this variable.
+</p></dd></dl>
+
+<p>Most applications should perform the same actions whether or not
+<code>__libc_single_threaded</code> is true, except with less
+synchronization.  If this rule is followed, a process that
+subsequently becomes multi-threaded is already in a consistent state.
+For example, in order to increment a reference count, the following
+code can be used:
+</p>
+<div class="example">
+<pre class="example">if (__libc_single_threaded)
+  atomic_fetch_add (&amp;reference_count, 1, memory_order_relaxed);
+else
+  atomic_fetch_add (&amp;reference_count, 1, memory_order_acq_rel);
+</pre></div>
+
+
+<p>This still requires some form of synchronization on the
+single-threaded branch, so it can be beneficial not to declare the
+reference count as <code>_Atomic</code>, and use the GCC <code>__atomic</code>
+built-ins.  See <a href="https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html#g_t_005f_005fatomic-Builtins">Built-in Functions for Memory
+Model Aware Atomic Operations</a> in <cite>Using the GNU Compiler Collection
+(GCC)</cite>.  Then the code to increment a reference count looks like this:
+</p>
+<div class="example">
+<pre class="example">if (__libc_single_threaded)
+  ++refeference_count;
+else
+  __atomic_fetch_add (&amp;reference_count, 1, __ATOMIC_ACQ_REL);
+</pre></div>
+
+<p>(Depending on the data associated with the reference count, it may be
+possible to use the weaker <code>__ATOMIC_RELAXED</code> memory ordering on
+the multi-threaded branch.)
+</p>
+<p>Several functions in the GNU C Library can change the value of the
+<code>__libc_single_threaded</code> variable.  For example, creating new
+threads using the <code>pthread_create</code> or <code>thrd_create</code> function
+sets the variable to false.  This can also happen indirectly, say via
+a call to <code>dlopen</code>.  Therefore, applications need to make a copy
+of the value of <code>__libc_single_threaded</code> if after such a function
+call, behavior must match the value as it was before the call, like
+this:
+</p>
+<div class="example">
+<pre class="example">bool single_threaded = __libc_single_threaded;
+if (single_threaded)
+  prepare_single_threaded ();
+else
+  prepare_multi_thread ();
+
+void *handle = dlopen (shared_library_name, RTLD_NOW);
+lookup_symbols (handle);
+
+if (single_threaded)
+  cleanup_single_threaded ();
+else
+  cleanup_multi_thread ();
+</pre></div>
+
+<p>Since the value of <code>__libc_single_threaded</code> can change from true
+to false during the execution of the program, it is not useful for
+selecting optimized function implementations in IFUNC resolvers.
+</p>
+<p>Atomic operations can also be used on mappings shared among
+single-threaded processes.  This means that a compiler must not use
+<code>__libc_single_threaded</code> to optimize atomic operations, unless it
+is able to prove that the memory is not shared.
+</p>
+<p><strong>Implementation Note:</strong> The <code>__libc_single_threaded</code>
+variable is not declared as <code>volatile</code> because it is expected
+that compilers optimize a sequence of single-threaded checks into one
+check, for example if several reference counts are updated.  The
+current implementation in the GNU C Library does not set the
+<code>__libc_single_threaded</code> variable to a true value if a process
+turns single-threaded again.  Future versions of the GNU C Library may do
+this, but only as the result of function calls which imply an acquire
+(compiler) barrier.  (Some compilers assume that well-known functions
+such as <code>malloc</code> do not write to global variables, and setting
+<code>__libc_single_threaded</code> would introduce a data race and
+undefined behavior.)  In any case, an application must not write to
+<code>__libc_single_threaded</code> even if it has joined the last
+application-created thread because future versions of the GNU C Library may
+create background threads after the first thread has been created, and
+the application has no way of knowning that these threads are present.
+</p>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Waiting-with-Explicit-Clocks.html" accesskey="p" rel="prev">Waiting with Explicit Clocks</a>, Up: <a href="Non_002dPOSIX-Extensions.html" accesskey="u" rel="up">Non-POSIX Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

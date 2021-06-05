@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is
+The GNU C Library Reference Manual, for version
+2.32.
+
+Copyright (C) 1993-2020 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version
+1.3 or any later version published by the Free
+Software Foundation; with the Invariant Sections being "Free Software
+Needs Free Documentation" and "GNU Lesser General Public License",
+the Front-Cover texts being "A GNU Manual", and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Sockets (The GNU C Library)</title>
+
+<meta name="description" content="Sockets (The GNU C Library)">
+<meta name="keywords" content="Sockets (The GNU C Library)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Socket-Concepts.html" rel="next" title="Socket Concepts">
+<link href="Pipe-Atomicity.html" rel="prev" title="Pipe Atomicity">
+ <link rel="stylesheet" href="../bookstyle.css" type="text/css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css"> <style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<span id="Sockets"></span><div class="header">
+<p>
+Next: <a href="Low_002dLevel-Terminal-Interface.html" accesskey="n" rel="next">Low-Level Terminal Interface</a>, Previous: <a href="Pipes-and-FIFOs.html" accesskey="p" rel="prev">Pipes and FIFOs</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Sockets-1"></span><h2 class="chapter">16 Sockets</h2>
+
+<p>This chapter describes the GNU facilities for interprocess
+communication using sockets.
+</p>
+<span id="index-socket"></span>
+<span id="index-interprocess-communication_002c-with-sockets"></span>
+<p>A <em>socket</em> is a generalized interprocess communication channel.
+Like a pipe, a socket is represented as a file descriptor.  Unlike pipes
+sockets support communication between unrelated processes, and even
+between processes running on different machines that communicate over a
+network.  Sockets are the primary means of communicating with other
+machines; <code>telnet</code>, <code>rlogin</code>, <code>ftp</code>, <code>talk</code> and the
+other familiar network programs use sockets.
+</p>
+<p>Not all operating systems support sockets.  In the GNU C Library, the
+header file <samp>sys/socket.h</samp> exists regardless of the operating
+system, and the socket functions always exist, but if the system does
+not really support sockets these functions always fail.
+</p>
+<p><strong>Incomplete:</strong> We do not currently document the facilities for
+broadcast messages or for configuring Internet interfaces.  The
+reentrant functions and some newer functions that are related to IPv6
+aren&rsquo;t documented either so far.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Socket-Concepts.html" accesskey="1">Socket Concepts</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Basic concepts you need to know about.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Communication-Styles.html" accesskey="2">Communication Styles</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Stream communication, datagrams and other styles.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Socket-Addresses.html" accesskey="3">Socket Addresses</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How socket names (&ldquo;addresses&rdquo;) work.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Interface-Naming.html" accesskey="4">Interface Naming</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Identifying specific network interfaces.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Local-Namespace.html" accesskey="5">Local Namespace</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Details about the local namespace.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Internet-Namespace.html" accesskey="6">Internet Namespace</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Details about the Internet namespace.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Misc-Namespaces.html" accesskey="7">Misc Namespaces</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Other namespaces not documented fully here.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Open_002fClose-Sockets.html" accesskey="8">Open/Close Sockets</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Creating sockets and destroying them.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Connections.html" accesskey="9">Connections</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Operations on sockets with connection state.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Datagrams.html">Datagrams</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Operations on datagram sockets.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Inetd.html">Inetd</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Inetd is a daemon that starts servers on request.
+			   The most convenient way to write a server
+			   is to make it work with Inetd.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Socket-Options.html">Socket Options</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Miscellaneous low-level socket options.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Networks-Database.html">Networks Database</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Accessing the database of network names.
+</td></tr>
+</table>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Low_002dLevel-Terminal-Interface.html" accesskey="n" rel="next">Low-Level Terminal Interface</a>, Previous: <a href="Pipes-and-FIFOs.html" accesskey="p" rel="prev">Pipes and FIFOs</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>
