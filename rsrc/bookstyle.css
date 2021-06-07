@@ -26,12 +26,12 @@ ul.no-bullet {list-style: none}
 
 body {
 	text-align: justify; 
-	padding: 5%; 
+	padding: 3%; 
 	background-image: none; 
 	background-color: #000000;
 	color: #ffffff;
 	font-family: 'fira code',serif;
-	font-size: large;
+	font-size: larger;
 	}
 	
 .example {
@@ -53,7 +53,7 @@ body {
     }
 
     li a:link {
-      color: #AFCBF0;
+      color: #1572EB;
       border-color: #0A346B;
       text-decoration: none;
     }

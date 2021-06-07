@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This text is a brief description of the features that are present in
+the Bash shell (version 5.1, 21 December 2020).
+
+This is Edition 5.1, last updated 21 December 2020,
+of The GNU Bash Reference Manual,
+for Bash, Version 5.1.
+
+Copyright (C) 1988-2020 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled
+"GNU Free Documentation License". -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Quoting (Bash Reference Manual)</title>
+
+<meta name="description" content="Quoting (Bash Reference Manual)">
+<meta name="keywords" content="Quoting (Bash Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Indexes.html" rel="index" title="Indexes">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Shell-Syntax.html" rel="up" title="Shell Syntax">
+<link href="Escape-Character.html" rel="next" title="Escape Character">
+<link href="Shell-Operation.html" rel="prev" title="Shell Operation">
+<link rel="stylesheet" href="../bookstyle.css" type="text/css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css"> <style type="text/css">  
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="/software/gnulib/manual.css">
+
+
+</head>
+
+<body lang="en">
+<span id="Quoting"></span><div class="header">
+<p>
+Next: <a href="Comments.html" accesskey="n" rel="next">Comments</a>, Previous: <a href="Shell-Operation.html" accesskey="p" rel="prev">Shell Operation</a>, Up: <a href="Shell-Syntax.html" accesskey="u" rel="up">Shell Syntax</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Indexes.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Quoting-1"></span><h4 class="subsection">3.1.2 Quoting</h4>
+<span id="index-quoting"></span>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Escape-Character.html" accesskey="1">Escape Character</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to remove the special meaning from a single
+			character.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Single-Quotes.html" accesskey="2">Single Quotes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to inhibit all interpretation of a sequence
+			of characters.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Double-Quotes.html" accesskey="3">Double Quotes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to suppress most of the interpretation of a
+			sequence of characters.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="ANSI_002dC-Quoting.html" accesskey="4">ANSI-C Quoting</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to expand ANSI-C sequences in quoted strings.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Locale-Translation.html" accesskey="5">Locale Translation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to translate strings into different languages.
+</td></tr>
+</table>
+
+<p>Quoting is used to remove the special meaning of certain
+characters or words to the shell.  Quoting can be used to
+disable special treatment for special characters, to prevent
+reserved words from being recognized as such, and to prevent
+parameter expansion.
+</p>
+<p>Each of the shell metacharacters (see <a href="Definitions.html">Definitions</a>)
+has special meaning to the shell and must be quoted if it is to
+represent itself.
+When the command history expansion facilities are being used
+(see <a href="History-Interaction.html">History Interaction</a>), the
+<var>history expansion</var> character, usually &lsquo;<samp>!</samp>&rsquo;, must be quoted
+to prevent history expansion.  See <a href="Bash-History-Facilities.html">Bash History Facilities</a>, for
+more details concerning history expansion.
+</p>
+<p>There are three quoting mechanisms: the
+<var>escape character</var>, single quotes, and double quotes.
+</p>
+
+
+
+</body>
+</html>
