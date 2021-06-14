@@ -31,8 +31,8 @@ code {
         background-color:var(--colbl);
         width: 80%;
         top: 10px;
-        text-align: center;
-        transition: 0.5s;
+        text-align:center;
+        transition: 0.7s;
         z-index: 1;
         box-shadow:
           rgba(90,83,184,0.4)
