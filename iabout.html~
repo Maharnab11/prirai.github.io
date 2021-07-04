@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title> 🛸️ About me</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css">
+  </head>
+  <body>
+    <!--Still working on this idea, getting new structures everyday.
+      Color theme being used for this site
+
+    -->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <div id="fixed-top">
+      <div class="upper-text">
+      <header>About</header>
+      <!------------------------------------------------------------------------------------------------------------>
+      <nav class = "Index">
+        <p>
+          <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="iprojects.html">Projects</a></li>
+          <li><a href="iblog.html">βlog</a></li>
+          <li><a href="icontact.html">Contact</a></li>
+          </ul>
+        </p>
+      </nav>
+      </div>
+      <!------------------------------------------------------------------------------------------------------------>
+    </div>
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <div class="mcard">
+        <div class = "main-text">
+          <p>
+            1st year in BS Engineering Sciences, IISER Bhopal <br>
+            Internet privacy and decentralization supporter, Open-Source enthusiast, runs in code.<br>
+            <em>Loves Quizzing, finds alternatives to those commonly found, fond of vector graphics.</em><br>
+            Original. creative, procrastinator.<br>
+          </p>
+        <hr>
+        </div>
+      </div>
+  </body>
+</html>

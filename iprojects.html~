@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>prirai@github</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css">
+  </head>
+  <body>
+    <!--Still working on this idea, getting new structures everyday.
+      Color theme being used for this site
+
+    -->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <div id="fixed-top">
+      <div class="upper-text">
+      <header>Projects</header>
+      <!------------------------------------------------------------------------------------------------------------>
+        <nav class = "Index">
+          <p>
+            <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="iabout.html">About</a></li>
+            <li><a href="iblog.html">Pen</a></li>
+            <li><a href="icontact.html">Contact</a></li>
+            </ul>
+          </p>
+        </nav>
+      </div>
+      <!------------------------------------------------------------------------------------------------------------>
+    </div>
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <div class="mcard">
+        <div class = "main-text">
+          <p>
+            No big projects as of now.
+            Will update you as I get them.
+            In the meantime, check these out.
+            <br>
+            <a href="map3d.html">3D Earth</a>
+            <br>
+            <a href="iiser.html">IISERb</a>
+          </p>
+        <hr>
+        </div>
+      </div>
+  </body>
+</html>
