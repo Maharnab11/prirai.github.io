@@ -38,18 +38,13 @@
         <h1>Sitemap</h1>
         <ul>
         <div>
-        *	<a href="iabout.html">About</a> <br>
-        *	<a href="iprojects.html">Projects</a> <br>
-        *	<a href="iblog.html">Blog</a> <br>
-        *	<a href="icontact.html">Contact</a> <br>
         *	<a href="map2d.html">2d Earth</a> <br>
         *	<a href="map3d.html">3d Earth</a> <br>
         *	<a href="home.html"><small>(in progress)</small> Advanced Search</a> <br>
         *	<a href="404.html">Error page</a> <br>
         *	<a href="iiser.html">IISERb page</a> <br>
-        *	<a href="rsrc/list.html">Docs and resources</a> <br>
+        *	<a href="/list.html">Docs and resources</a> <br>
         *	<a href="simptemplate.html"><small>(in progress)</small> Format for blogs.</a> <br>
-        *	<a href="iabout.html">About</a> <br>
         *   <a href="cs/csdeg.html">CS Resources</a><br>
         *	<a href="https://github.com/prirai/prirai.github.io">This website's source @github <small>(yes, it's open source!)</small></a> <br>
         

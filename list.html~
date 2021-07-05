@@ -8,7 +8,7 @@
   </head>
   <body style="text-align: justify;">
       <div style = "position: fixed; top: 0px; font-size: 160%; z-index: 2;">
-        <a href="../iiser.html">Back</a>
+        <a href="iiser.html">Back</a>
         <a>IISERB</a>
         <a href="icontact.html" style="left: auto;">Contact</a>
       </div>
@@ -20,27 +20,37 @@
             * <a href="https://www.chem.ucla.edu/~harding/IGOC/IGOC.html">Illustrated Glossary of Organic Chemistry</a>
             <br> 
             <small>by Harding, UCLA.</small>
+            </p>
+            <p>
+            * <a href="https://2012books.lardbucket.org/books/macroeconomics-principles-v1.0/index.html">Macroeconomics Principles</a>>
+            <br>
+            <small>a creative commons book for Macroeconomics. Creative Commons.</small>
+            </p>
             <p>
             * <a href="man-c.html">C Reference Manual</a>
             <br>
             <small>This is a reference manual (not a tutorial) for the C programming language as implemented by the GNU Compiler Collection (GCC).</small>
+            </p>
             <p>
             * <a href="libc/index.html">C Library Reference Manual</a>
             <br>
             <small>The GNU C Library project provides the core libraries for the GNU system and GNU/Linux systems, as well as many other systems that use Linux as the kernel.</small>
+            </p>
             <p>
             * <a href="./bash/index.html">Bash Reference Manual</a>
             <br> 
             <small>If, by any chance, you're into the terminal.</small>
+            </p>
             <p>
             * <a href="./python/index.html">Python doc</a>
             <br> 
             <small>For the snaky side of the world.</small>
           </p>
+          <p>
           * <a href="http://www.chem.ucalgary.ca/courses/351/Carey5th/Carey.html">Organic Chemistry On-Line Learning Center</a>
           <br>
           <small>by Carey, UCalgary</small>
-          <small>
+          </p>
         <hr>
         </div>
       </div>
