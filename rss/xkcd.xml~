@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="rssxml.css"?>
+<rss version="2.0">
+<channel>
+<title>
+xkcd.com
+</title>
+<link>
+https://xkcd.com/
+</link>
+<description>
+xkcd.com: A webcomic of romance and math humor.
+</description>
+<language>en</language>
+<item>
+<title>Nightmare Code</title>
+<link>https://xkcd.com/2485/</link>
+<description>&lt;img src="https://imgs.xkcd.com/comics/nightmare_code.png" title="Charsets even used to be known as 'alpha-bets' before that word's obvious negative associations caused it to die out." alt="Charsets even used to be known as 'alpha-bets' before that word's obvious negative associations caused it to die out." /&gt;</description>
+<pubDate>Mon, 05 Jul 2021 04:00:00 -0000</pubDate>
+<guid>https://xkcd.com/2485/</guid>
+</item>
+<item>
+<title>H-alpha</title>
+<link>https://xkcd.com/2484/</link><description>&lt;img src="https://imgs.xkcd.com/comics/h_alpha.png" title="&amp;quot;All the companies whose blimps I shot fireworks at are mad, but MetLife is especially miffed because I dressed up as the Red Baron.&amp;quot;" alt="&amp;quot;All the companies whose blimps I shot fireworks at are mad, but MetLife is especially miffed because I dressed up as the Red Baron.&amp;quot;" /&gt;</description>
+<pubDate>Fri, 02 Jul 2021 04:00:00 -0000</pubDate>
+<guid>https://xkcd.com/2484/</guid>
+</item>
+<item>
+<title>Linked List Interview Problem</title>
+<link>https://xkcd.com/2483/</link>
+<description>&lt;img src="https://imgs.xkcd.com/comics/linked_list_interview_problem.png" title="I'd traverse it myself, but it's singly linked, so I'm worried that I won't be able to find my way back to 2021." alt="I'd traverse it myself, but it's singly linked, so I'm worried that I won't be able to find my way back to 2021." /&gt;</description>
+<pubDate>Wed, 30 Jun 2021 04:00:00 -0000</pubDate>
+<guid>https://xkcd.com/2483/</guid>
+</item>
+<item>
+<title>Indoor Socializing</title>
+<link>https://xkcd.com/2482/</link>
+<description>&lt;img src="https://imgs.xkcd.com/comics/indoor_socializing.png" title="The problem with learning about biology is that everyone you meet is it." alt="The problem with learning about biology is that everyone you meet is it." /&gt;</description>
+<pubDate>Mon, 28 Jun 2021 04:00:00 -0000</pubDate>
+<guid>https://xkcd.com/2482/</guid>
+</item>
+</channel>
+</rss>

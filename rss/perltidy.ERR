@@ -1,0 +1,60 @@
+Perltidy version is 20210402
+
+<stdin>: Begin Error Output Stream
+
+1: <rss version="2.0"><channel><title>xkcd.com</title><link>https:/ ...
+                               -------^
+found bareword where operator expected (previous token underlined)
+
+There is no previous '?' to match a ':' on line 1
+1: ... l><title>xkcd.com</title><link>https://xkcd.com/</link><descript ...
+                                           ^
+1: 
+1: Partial match to quote modifier [msixpodualngc] at word: 'xkcd'
+1: Please put a space between quote modifiers and trailing keywords.
+1: 
+1: Partial match to quote modifier [msixpodualngc] at word: 'link'
+1: Please put a space between quote modifiers and trailing keywords.
+
+1: ... ttps://xkcd.com/</link><description>xkcd.com: A webcomic of roma ...
+                              -------------^
+found bareword where operator expected (previous token underlined)
+
+There is no previous '?' to match a ':' on line 1
+1: ... kcd.com/</link><description>xkcd.com: A webcomic of romance and  ...
+                                           ^
+
+1: ... <language>en</language><item><title>Nightmare Code</title><link> ...
+                                    -------^
+found bareword where operator expected (previous token underlined)
+
+There is no previous '?' to match a ':' on line 1
+1: ... le>Nightmare Code</title><link>https://xkcd.com/2485/</link><des ...
+                                           ^
+1: 
+1: Partial match to quote modifier [msixpodualngc] at word: 'xkcd'
+1: Please put a space between quote modifiers and trailing keywords.
+
+1: ... xkcd.com/comics/nightmare_code.png" title="Charsets even used to ...
+   ----------------------------------------^
+found bareword where operator expected (previous token underlined)
+
+1: ... associations caused it to die out." alt="Charsets even used to b ...
+   ----------------------------------------^
+found bareword where operator expected (previous token underlined)
+
+1: ... /&gt;</description><pubDate>Mon, 05 Jul 2021 04:00:00 -0000</pub ...
+                                        -- ^
+found bareword where operator expected (previous token underlined)
+
+There is no previous '?' to match a ':' on line 1
+1: ... ription><pubDate>Mon, 05 Jul 2021 04:00:00 -0000</pubDate><guid> ...
+                                           ^
+
+There is no previous '?' to match a ':' on line 1
+1: ... tion><pubDate>Mon, 05 Jul 2021 04:00:00 -0000</pubDate><guid>htt ...
+                                           ^
+
+There is no previous '?' to match a ':' on line 1
+1: ... em><title>H-alpha</title><link>https://xkcd.com/2484/</link><des ...
+No further warnings will be given

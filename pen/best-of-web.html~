@@ -31,7 +31,7 @@
         <nav>
           <p>
             <ul>
-            <li><a href="iblog.html">Back</a></li>
+            <li><a href="../iblog.html">Back</a></li>
             <li style="color: #AFCBF0;"><a>Priyanshu</a></li>
             <li><a href="index.html">Home</a></li>
             <li><a href="iabout.html">About</a></li>

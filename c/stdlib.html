@@ -1,0 +1,1043 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="Bluefish 2.2.12" />
+<link rel="stylesheet" href="../cs/bookstyle.css" type="text/css">
+<title>stdlib.h</title>
+</head>
+<!-- Highlighting: "C++" -->
+<body>
+<pre style='color:#cfcfc2;'>
+<span style='color:#7a7c7d;'>/* Copyright (C) 1991-2021 Free Software Foundation, Inc.</span>
+<span style='color:#7a7c7d;'>   This file is part of the GNU C Library.</span>
+
+<span style='color:#7a7c7d;'>   The GNU C Library is free software; you can redistribute it and/or</span>
+<span style='color:#7a7c7d;'>   modify it under the terms of the GNU Lesser General Public</span>
+<span style='color:#7a7c7d;'>   License as published by the Free Software Foundation; either</span>
+<span style='color:#7a7c7d;'>   version 2.1 of the License, or (at your option) any later version.</span>
+
+<span style='color:#7a7c7d;'>   The GNU C Library is distributed in the hope that it will be useful,</span>
+<span style='color:#7a7c7d;'>   but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span style='color:#7a7c7d;'>   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<span style='color:#7a7c7d;'>   Lesser General Public License for more details.</span>
+
+<span style='color:#7a7c7d;'>   You should have received a copy of the GNU Lesser General Public</span>
+<span style='color:#7a7c7d;'>   License along with the GNU C Library; if not, see</span>
+<span style='color:#7a7c7d;'>   &lt;https://www.gnu.org/licenses/&gt;.  */</span>
+
+<span style='color:#7a7c7d;'>/*</span>
+<span style='color:#7a7c7d;'> *	ISO C99 Standard: 7.20 General utilities	&lt;stdlib.h&gt;</span>
+<span style='color:#7a7c7d;'> */</span>
+
+<span style='color:#27ae60;'>#ifndef	_STDLIB_H</span>
+
+<span style='color:#27ae60;'>#define __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/libc-header-start.h&gt;</span>
+
+<span style='color:#7a7c7d;'>/* Get size_t, wchar_t and NULL from &lt;stddef.h&gt;.  */</span>
+<span style='color:#27ae60;'>#define __need_size_t</span>
+<span style='color:#27ae60;'>#define __need_wchar_t</span>
+<span style='color:#27ae60;'>#define __need_NULL</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;stddef.h&gt;</span>
+
+<span style='color:#808080;'>__BEGIN_DECLS</span>
+
+<span style='color:#27ae60;'>#define	_STDLIB_H	</span><span style='color:#f67400;'>1</span>
+
+<span style='color:#27ae60;'>#if (defined __USE_XOPEN || defined __USE_XOPEN2K8) &amp;&amp; !defined _SYS_WAIT_H</span>
+<span style='color:#7a7c7d;'>/* XPG requires a few symbols from &lt;sys/wait.h&gt; being defined.  */</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;bits/waitflags.h&gt;</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;bits/waitstatus.h&gt;</span>
+
+<span style='color:#7a7c7d;'>/* Define the macros &lt;sys/wait.h&gt; also would define this way.  */</span>
+<span style='color:#27ae60;'># define WEXITSTATUS</span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span><span style='color:#27ae60;'>	</span><span style='color:#808080;'>__WEXITSTATUS</span><span style='color:#27ae60;'> </span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span>
+<span style='color:#27ae60;'># define WTERMSIG</span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span><span style='color:#27ae60;'>	</span><span style='color:#808080;'>__WTERMSIG</span><span style='color:#27ae60;'> </span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span>
+<span style='color:#27ae60;'># define WSTOPSIG</span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span><span style='color:#27ae60;'>	</span><span style='color:#808080;'>__WSTOPSIG</span><span style='color:#27ae60;'> </span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span>
+<span style='color:#27ae60;'># define WIFEXITED</span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span><span style='color:#27ae60;'>	</span><span style='color:#808080;'>__WIFEXITED</span><span style='color:#27ae60;'> </span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span>
+<span style='color:#27ae60;'># define WIFSIGNALED</span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span><span style='color:#27ae60;'>	</span><span style='color:#808080;'>__WIFSIGNALED</span><span style='color:#27ae60;'> </span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span>
+<span style='color:#27ae60;'># define WIFSTOPPED</span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span><span style='color:#27ae60;'>	</span><span style='color:#808080;'>__WIFSTOPPED</span><span style='color:#27ae60;'> </span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span>
+<span style='color:#27ae60;'># ifdef __WIFCONTINUED</span>
+<span style='color:#27ae60;'>#  define WIFCONTINUED</span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span><span style='color:#27ae60;'>	</span><span style='color:#808080;'>__WIFCONTINUED</span><span style='color:#27ae60;'> </span><span style='color:#3f8058;'>(</span><span style='color:#27ae60;'>status</span><span style='color:#3f8058;'>)</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif	</span><span style='color:#7a7c7d;'>/* X/Open or XPG7 and &lt;sys/wait.h&gt; not included.  */</span>
+
+<span style='color:#7a7c7d;'>/* _FloatN API tests for enablement.  */</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/floatn.h&gt;</span>
+
+<span style='color:#7a7c7d;'>/* Returned by `div'.  */</span>
+<b>typedef</b> <b>struct</b>
+  <span style='color:#3f8058;'>{</span>
+    <span style='color:#2980b9;'>int</span> quot<span style='color:#3f8058;'>;</span>			<span style='color:#7a7c7d;'>/* Quotient.  */</span>
+    <span style='color:#2980b9;'>int</span> rem<span style='color:#3f8058;'>;</span>			<span style='color:#7a7c7d;'>/* Remainder.  */</span>
+  <span style='color:#3f8058;'>}</span> <span style='color:#2980b9;'>div_t</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Returned by `ldiv'.  */</span>
+<span style='color:#27ae60;'>#ifndef __ldiv_t_defined</span>
+<b>typedef</b> <b>struct</b>
+  <span style='color:#3f8058;'>{</span>
+    <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> quot<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Quotient.  */</span>
+    <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> rem<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Remainder.  */</span>
+  <span style='color:#3f8058;'>}</span> <span style='color:#2980b9;'>ldiv_t</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># define __ldiv_t_defined	</span><span style='color:#f67400;'>1</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if defined __USE_ISOC99 &amp;&amp; !defined __lldiv_t_defined</span>
+<span style='color:#7a7c7d;'>/* Returned by `lldiv'.  */</span>
+<b><i><span style='color:#0099ff;'>__extension__</span></i></b> <b>typedef</b> <b>struct</b>
+  <span style='color:#3f8058;'>{</span>
+    <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> quot<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Quotient.  */</span>
+    <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> rem<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Remainder.  */</span>
+  <span style='color:#3f8058;'>}</span> <span style='color:#2980b9;'>lldiv_t</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># define __lldiv_t_defined	</span><span style='color:#f67400;'>1</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* The largest number rand will return (same as INT_MAX).  */</span>
+<span style='color:#27ae60;'>#define	RAND_MAX	</span><span style='color:#f67400;'>2147483647</span>
+
+
+<span style='color:#7a7c7d;'>/* We define these the same for all machines.</span>
+<span style='color:#7a7c7d;'>   Changes from this to the outside world should be done in `_exit'.  */</span>
+<span style='color:#27ae60;'>#define	EXIT_FAILURE	</span><span style='color:#f67400;'>1</span><span style='color:#27ae60;'>	</span><span style='color:#7a7c7d;'>/* Failing exit status.  */</span>
+<span style='color:#27ae60;'>#define	EXIT_SUCCESS	</span><span style='color:#f67400;'>0</span><span style='color:#27ae60;'>	</span><span style='color:#7a7c7d;'>/* Successful exit status.  */</span>
+
+
+<span style='color:#7a7c7d;'>/* Maximum length of a multibyte character in the current locale.  */</span>
+<span style='color:#27ae60;'>#define	MB_CUR_MAX	</span><span style='color:#3f8058;'>(</span><span style='color:#808080;'>__ctype_get_mb_cur_max</span><span style='color:#27ae60;'> </span><span style='color:#3f8058;'>())</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__ctype_get_mb_cur_max</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+
+<span style='color:#7a7c7d;'>/* Convert a string to a floating-point number.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>double</span> atof <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_pure__</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Convert a string to an integer.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> atoi <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_pure__</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Convert a string to a long integer.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> atol <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_pure__</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_ISOC99</span>
+<span style='color:#7a7c7d;'>/* Convert a string to a long long integer.  */</span>
+<b><i><span style='color:#0099ff;'>__extension__</span></i></b> <span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> atoll <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_pure__</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Convert a string to a floating-point number.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>double</span> strtod <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef	__USE_ISOC99</span>
+<span style='color:#7a7c7d;'>/* Likewise for `float' and `long double' sizes of floating-point numbers.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>float</span> strtof <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>double</span> strtold <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Likewise for '_FloatN' and '_FloatNx'.  */</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT16 &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float16</span> strtof16 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			  <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT32 &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float32</span> strtof32 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			  <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT64 &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float64</span> strtof64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			  <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT128 &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float128</span> strtof128 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT32X &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float32x</span> strtof32x <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT64X &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float64x</span> strtof64x <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT128X &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float128x</span> strtof128x <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			      <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Convert a string to a long integer.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> strtol <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__base</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Convert a string to an unsigned long integer.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> strtoul <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+				  <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__base</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Convert a string to a quadword integer.  */</span>
+<b><i><span style='color:#0099ff;'>__extension__</span></i></b>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> strtoq <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			     <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__base</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Convert a string to an unsigned quadword integer.  */</span>
+<b><i><span style='color:#0099ff;'>__extension__</span></i></b>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> strtouq <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+				       <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__base</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Use misc.  */</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_ISOC99</span>
+<span style='color:#7a7c7d;'>/* Convert a string to a quadword integer.  */</span>
+<b><i><span style='color:#0099ff;'>__extension__</span></i></b>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> strtoll <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			      <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__base</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Convert a string to an unsigned quadword integer.  */</span>
+<b><i><span style='color:#0099ff;'>__extension__</span></i></b>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> strtoull <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+					<span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__base</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* ISO C99 or use MISC.  */</span>
+
+<span style='color:#7a7c7d;'>/* Convert a floating-point number to a string.  */</span>
+<span style='color:#27ae60;'>#if __GLIBC_USE (IEC_60559_BFP_EXT_C2X)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> strfromd <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__dest</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__f</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> strfromf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__dest</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#2980b9;'>float</span> <span style='color:#808080;'>__f</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> strfroml <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__dest</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__f</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT16 &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> strfromf16 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__dest</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+		       <span style='color:#808080;'>_Float16</span> <span style='color:#808080;'>__f</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT32 &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> strfromf32 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__dest</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+		       <span style='color:#808080;'>_Float32</span> <span style='color:#808080;'>__f</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT64 &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> strfromf64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__dest</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+		       <span style='color:#808080;'>_Float64</span> <span style='color:#808080;'>__f</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT128 &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> strfromf128 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__dest</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#808080;'>_Float128</span> <span style='color:#808080;'>__f</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT32X &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> strfromf32x <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__dest</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#808080;'>_Float32x</span> <span style='color:#808080;'>__f</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT64X &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> strfromf64x <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__dest</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#808080;'>_Float64x</span> <span style='color:#808080;'>__f</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __HAVE_FLOAT128X &amp;&amp; __GLIBC_USE (IEC_60559_TYPES_EXT)</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> strfromf128x <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__dest</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+			 <span style='color:#808080;'>_Float128x</span> <span style='color:#808080;'>__f</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<span style='color:#7a7c7d;'>/* Parallel versions of the functions above which take the locale to</span>
+<span style='color:#7a7c7d;'>   use as an additional parameter.  These are GNU extensions inspired</span>
+<span style='color:#7a7c7d;'>   by the POSIX.1-2008 extended locale API.  */</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;bits/types/locale_t.h&gt;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> strtol_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			  <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__base</span><span style='color:#3f8058;'>,</span>
+			  <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> strtoul_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+				    <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span>
+				    <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__base</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<b><i><span style='color:#0099ff;'>__extension__</span></i></b>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> strtoll_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+				<span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__base</span><span style='color:#3f8058;'>,</span>
+				<span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<b><i><span style='color:#0099ff;'>__extension__</span></i></b>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> strtoull_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+					  <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span>
+					  <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__base</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>double</span> strtod_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>float</span> strtof_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+		       <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>double</span> strtold_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			      <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span>
+			      <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'># if __HAVE_FLOAT16</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float16</span> strtof16_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+
+<span style='color:#27ae60;'># if __HAVE_FLOAT32</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float32</span> strtof32_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+
+<span style='color:#27ae60;'># if __HAVE_FLOAT64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float64</span> strtof64_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+
+<span style='color:#27ae60;'># if __HAVE_FLOAT128</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float128</span> strtof128_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			      <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span>
+			      <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+
+<span style='color:#27ae60;'># if __HAVE_FLOAT32X</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float32x</span> strtof32x_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			      <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span>
+			      <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+
+<span style='color:#27ae60;'># if __HAVE_FLOAT64X</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float64x</span> strtof64x_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+			      <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span>
+			      <span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+
+<span style='color:#27ae60;'># if __HAVE_FLOAT128X</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>_Float128x</span> strtof128x_l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span>
+				<span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__endptr</span><span style='color:#3f8058;'>,</span>
+				<span style='color:#2980b9;'>locale_t</span> <span style='color:#808080;'>__loc</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* GNU */</span>
+
+
+<span style='color:#27ae60;'>#ifdef __USE_EXTERN_INLINES</span>
+<span style='color:#808080;'>__extern_inline</span> <span style='color:#2980b9;'>int</span>
+<span style='color:#808080;'>__NTH</span> <span style='color:#3f8058;'>(</span>atoi <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>))</span>
+<span style='color:#3f8058;'>{</span>
+  <b><span style='color:#fdbc4b;'>return</span></b> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span><span style='color:#3f8058;'>)</span> strtol <span style='color:#3f8058;'>(</span><span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**)</span> NULL<span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>10</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#3f8058;'>}</span>
+<span style='color:#808080;'>__extern_inline</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span>
+<span style='color:#808080;'>__NTH</span> <span style='color:#3f8058;'>(</span>atol <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>))</span>
+<span style='color:#3f8058;'>{</span>
+  <b><span style='color:#fdbc4b;'>return</span></b> strtol <span style='color:#3f8058;'>(</span><span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**)</span> NULL<span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>10</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#3f8058;'>}</span>
+
+<span style='color:#27ae60;'># ifdef __USE_ISOC99</span>
+<b><i><span style='color:#0099ff;'>__extension__</span></i></b> <span style='color:#808080;'>__extern_inline</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span>
+<span style='color:#808080;'>__NTH</span> <span style='color:#3f8058;'>(</span>atoll <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>))</span>
+<span style='color:#3f8058;'>{</span>
+  <b><span style='color:#fdbc4b;'>return</span></b> strtoll <span style='color:#3f8058;'>(</span><span style='color:#808080;'>__nptr</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**)</span> NULL<span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>10</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#3f8058;'>}</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Optimizing and Inlining.  */</span>
+
+
+<span style='color:#27ae60;'>#if defined __USE_MISC || defined __USE_XOPEN_EXTENDED</span>
+<span style='color:#7a7c7d;'>/* Convert N to base 64 using the digits &quot;./0-9A-Za-z&quot;, least-significant</span>
+<span style='color:#7a7c7d;'>   digit first.  Returns a pointer to static storage overwritten by the</span>
+<span style='color:#7a7c7d;'>   next call.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>l64a <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Read a number from a string S in base 64 as above.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> a64l <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__s</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_pure__</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#endif	</span><span style='color:#7a7c7d;'>/* Use misc || extended X/Open.  */</span>
+
+<span style='color:#27ae60;'>#if defined __USE_MISC || defined __USE_XOPEN_EXTENDED</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;sys/types.h&gt;</span><span style='color:#27ae60;'>	</span><span style='color:#7a7c7d;'>/* we need int32_t... */</span>
+
+<span style='color:#7a7c7d;'>/* These are the functions that actually do things.  The `random', `srandom',</span>
+<span style='color:#7a7c7d;'>   `initstate' and `setstate' functions are those from BSD Unices.</span>
+<span style='color:#7a7c7d;'>   The `rand' and `srand' functions are required by the ANSI standard.</span>
+<span style='color:#7a7c7d;'>   We provide both interfaces to the same random number generator.  */</span>
+<span style='color:#7a7c7d;'>/* Return a random long integer between 0 and 2^31-1 inclusive.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> random <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Seed the random number generator with the given number.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> srandom <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__seed</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Initialize the random number generator to use state buffer STATEBUF,</span>
+<span style='color:#7a7c7d;'>   of length STATELEN, and seed it with SEED.  Optimal lengths are 8, 16,</span>
+<span style='color:#7a7c7d;'>   32, 64, 128 and 256, the bigger the better; values less than 8 will</span>
+<span style='color:#7a7c7d;'>   cause an error and values greater than 256 will be rounded down.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>initstate <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__seed</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__statebuf</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__statelen</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Switch the random number generator to state buffer STATEBUF,</span>
+<span style='color:#7a7c7d;'>   which should have been previously initialized by `initstate'.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>setstate <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__statebuf</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+
+<span style='color:#27ae60;'># ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Reentrant versions of the `random' family of functions.</span>
+<span style='color:#7a7c7d;'>   These functions all use the following data structure to contain</span>
+<span style='color:#7a7c7d;'>   state, rather than global state variables.  */</span>
+
+<b>struct</b> random_data
+  <span style='color:#3f8058;'>{</span>
+    <span style='color:#2980b9;'>int32_t</span> <span style='color:#3f8058;'>*</span>fptr<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Front pointer.  */</span>
+    <span style='color:#2980b9;'>int32_t</span> <span style='color:#3f8058;'>*</span>rptr<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Rear pointer.  */</span>
+    <span style='color:#2980b9;'>int32_t</span> <span style='color:#3f8058;'>*</span>state<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Array of state values.  */</span>
+    <span style='color:#2980b9;'>int</span> <span style='color:#2980b9;'>rand_type</span><span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Type of random number generator.  */</span>
+    <span style='color:#2980b9;'>int</span> rand_deg<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Degree of random number generator.  */</span>
+    <span style='color:#2980b9;'>int</span> rand_sep<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Distance between front and rear.  */</span>
+    <span style='color:#2980b9;'>int32_t</span> <span style='color:#3f8058;'>*</span>end_ptr<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Pointer behind state table.  */</span>
+  <span style='color:#3f8058;'>}</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> random_r <span style='color:#3f8058;'>(</span><b>struct</b> random_data <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#2980b9;'>int32_t</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__result</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> srandom_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__seed</span><span style='color:#3f8058;'>,</span> <b>struct</b> random_data <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> initstate_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__seed</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__statebuf</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__statelen</span><span style='color:#3f8058;'>,</span>
+			<b>struct</b> random_data <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>2</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> setstate_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__statebuf</span><span style='color:#3f8058;'>,</span>
+		       <b>struct</b> random_data <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif	</span><span style='color:#7a7c7d;'>/* Use misc.  */</span>
+<span style='color:#27ae60;'>#endif	</span><span style='color:#7a7c7d;'>/* Use extended X/Open || misc. */</span>
+
+
+<span style='color:#7a7c7d;'>/* Return a random integer between 0 and RAND_MAX inclusive.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> rand <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Seed the random number generator with the given number.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> srand <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__seed</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_POSIX199506</span>
+<span style='color:#7a7c7d;'>/* Reentrant interface according to POSIX.1.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> rand_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__seed</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#27ae60;'>#if defined __USE_MISC || defined __USE_XOPEN</span>
+<span style='color:#7a7c7d;'>/* System V style 48-bit random number generator functions.  */</span>
+
+<span style='color:#7a7c7d;'>/* Return non-negative, double-precision floating-point value in [0.0,1.0).  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>double</span> drand48 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>double</span> erand48 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__xsubi</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>])</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Return non-negative, long integer in [0,2^31).  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> lrand48 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> nrand48 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__xsubi</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>])</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Return signed, long integers in [-2^31,2^31).  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> mrand48 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> jrand48 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__xsubi</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>])</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Seed random number generator.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> srand48 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__seedval</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span>seed48 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__seed16v</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>])</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> lcong48 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__param</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>7</span><span style='color:#3f8058;'>])</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'># ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Data structure for communication with thread safe versions.  This</span>
+<span style='color:#7a7c7d;'>   type is to be regarded as opaque.  It's only exported because users</span>
+<span style='color:#7a7c7d;'>   have to allocate objects of this type.  */</span>
+<b>struct</b> drand48_data
+  <span style='color:#3f8058;'>{</span>
+    <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__x</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>]</span><span style='color:#3f8058;'>;</span>	<span style='color:#7a7c7d;'>/* Current state.  */</span>
+    <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__old_x</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>]</span><span style='color:#3f8058;'>;</span> <span style='color:#7a7c7d;'>/* Old state.  */</span>
+    <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__c</span><span style='color:#3f8058;'>;</span>	<span style='color:#7a7c7d;'>/* Additive const. in congruential formula.  */</span>
+    <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__init</span><span style='color:#3f8058;'>;</span>	<span style='color:#7a7c7d;'>/* Flag for initializing.  */</span>
+    <b><i><span style='color:#0099ff;'>__extension__</span></i></b> <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__a</span><span style='color:#3f8058;'>;</span>	<span style='color:#7a7c7d;'>/* Factor in congruential</span>
+<span style='color:#7a7c7d;'>						   formula.  */</span>
+  <span style='color:#3f8058;'>}</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Return non-negative, double-precision floating-point value in [0.0,1.0).  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> drand48_r <span style='color:#3f8058;'>(</span><b>struct</b> drand48_data <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buffer</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>double</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__result</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> erand48_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__xsubi</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>]</span><span style='color:#3f8058;'>,</span>
+		      <b>struct</b> drand48_data <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buffer</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>double</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__result</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Return non-negative, long integer in [0,2^31).  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> lrand48_r <span style='color:#3f8058;'>(</span><b>struct</b> drand48_data <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buffer</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__result</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> nrand48_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__xsubi</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>]</span><span style='color:#3f8058;'>,</span>
+		      <b>struct</b> drand48_data <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buffer</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__result</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Return signed, long integers in [-2^31,2^31).  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> mrand48_r <span style='color:#3f8058;'>(</span><b>struct</b> drand48_data <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buffer</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__result</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> jrand48_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__xsubi</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>]</span><span style='color:#3f8058;'>,</span>
+		      <b>struct</b> drand48_data <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buffer</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__result</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Seed random number generator.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> srand48_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__seedval</span><span style='color:#3f8058;'>,</span> <b>struct</b> drand48_data <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__buffer</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> seed48_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__seed16v</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>]</span><span style='color:#3f8058;'>,</span>
+		     <b>struct</b> drand48_data <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__buffer</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> lcong48_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>short</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__param</span><span style='color:#3f8058;'>[</span><span style='color:#f67400;'>7</span><span style='color:#3f8058;'>]</span><span style='color:#3f8058;'>,</span>
+		      <b>struct</b> drand48_data <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__buffer</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif	</span><span style='color:#7a7c7d;'>/* Use misc.  */</span>
+<span style='color:#27ae60;'>#endif	</span><span style='color:#7a7c7d;'>/* Use misc or X/Open.  */</span>
+
+<span style='color:#7a7c7d;'>/* Allocate SIZE bytes of memory.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span>malloc <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_malloc__</span>
+     <span style='color:#808080;'>__attribute_alloc_size__</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Allocate NMEMB elements of SIZE bytes each, all initialized to 0.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span>calloc <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__nmemb</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_malloc__</span> <span style='color:#808080;'>__attribute_alloc_size__</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Re-allocate the previously allocated block</span>
+<span style='color:#7a7c7d;'>   in PTR, making the new block SIZE bytes long.  */</span>
+<span style='color:#7a7c7d;'>/* __attribute_malloc__ is not used, because if realloc returns</span>
+<span style='color:#7a7c7d;'>   the same pointer that was passed to it, aliasing needs to be allowed</span>
+<span style='color:#7a7c7d;'>   between objects pointed by the old and new pointers.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span>realloc <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__ptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_warn_unused_result__</span> <span style='color:#808080;'>__attribute_alloc_size__</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Re-allocate the previously allocated block in PTR, making the new</span>
+<span style='color:#7a7c7d;'>   block large enough for NMEMB elements of SIZE bytes each.  */</span>
+<span style='color:#7a7c7d;'>/* __attribute_malloc__ is not used, because if reallocarray returns</span>
+<span style='color:#7a7c7d;'>   the same pointer that was passed to it, aliasing needs to be allowed</span>
+<span style='color:#7a7c7d;'>   between objects pointed by the old and new pointers.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span>reallocarray <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__ptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__nmemb</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_warn_unused_result__</span>
+     <span style='color:#808080;'>__attribute_alloc_size__</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>2</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Free a block allocated by `malloc', `realloc' or `calloc'.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> free <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__ptr</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;alloca.h&gt;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Use misc.  */</span>
+
+<span style='color:#27ae60;'>#if (defined __USE_XOPEN_EXTENDED &amp;&amp; !defined __USE_XOPEN2K) \</span>
+<span style='color:#27ae60;'>    || defined __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Allocate SIZE bytes on a page boundary.  The storage cannot be freed.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span>valloc <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_malloc__</span>
+     <span style='color:#808080;'>__attribute_alloc_size__</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_XOPEN2K</span>
+<span style='color:#7a7c7d;'>/* Allocate memory of SIZE bytes with an alignment of ALIGNMENT.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> posix_memalign <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>**</span><span style='color:#808080;'>__memptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__alignment</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_ISOC11</span>
+<span style='color:#7a7c7d;'>/* ISO C variant of aligned allocation.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span>aligned_alloc <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__alignment</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_malloc__</span> <span style='color:#808080;'>__attribute_alloc_size__</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Abort execution and generate a core-dump.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> abort <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__noreturn__))</span></i></b><span style='color:#3f8058;'>;</span>
+
+
+<span style='color:#7a7c7d;'>/* Register a function to be called when `exit' is called.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> atexit <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>(*</span><span style='color:#808080;'>__func</span><span style='color:#3f8058;'>)</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#if defined __USE_ISOC11 || defined __USE_ISOCXX11</span>
+<span style='color:#7a7c7d;'>/* Register a function to be called when `quick_exit' is called.  */</span>
+<span style='color:#27ae60;'># ifdef __cplusplus</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#f44f4f;'>&quot;C++&quot;</span> <span style='color:#2980b9;'>int</span> at_quick_exit <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>(*</span><span style='color:#808080;'>__func</span><span style='color:#3f8058;'>)</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>))</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__asm</span> <span style='color:#3f8058;'>(</span><span style='color:#f44f4f;'>&quot;at_quick_exit&quot;</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># else</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> at_quick_exit <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>(*</span><span style='color:#808080;'>__func</span><span style='color:#3f8058;'>)</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef	__USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Register a function to be called with the status</span>
+<span style='color:#7a7c7d;'>   given to `exit' and the given argument.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> on_exit <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>(*</span><span style='color:#808080;'>__func</span><span style='color:#3f8058;'>)</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__status</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Call all functions registered with `atexit' and `on_exit',</span>
+<span style='color:#7a7c7d;'>   in the reverse of the order in which they were registered,</span>
+<span style='color:#7a7c7d;'>   perform stdio cleanup, and terminate program execution with STATUS.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> exit <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__status</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__noreturn__))</span></i></b><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#if defined __USE_ISOC11 || defined __USE_ISOCXX11</span>
+<span style='color:#7a7c7d;'>/* Call all functions registered with `at_quick_exit' in the reverse</span>
+<span style='color:#7a7c7d;'>   of the order in which they were registered and terminate program</span>
+<span style='color:#7a7c7d;'>   execution with STATUS.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> quick_exit <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__status</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__noreturn__))</span></i></b><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_ISOC99</span>
+<span style='color:#7a7c7d;'>/* Terminate the program with STATUS without calling any of the</span>
+<span style='color:#7a7c7d;'>   functions registered with `atexit' or `on_exit'.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> <span style='color:#808080;'>_Exit</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__status</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__noreturn__))</span></i></b><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Return the value of envariable NAME, or NULL if it doesn't exist.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>getenv <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__name</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<span style='color:#7a7c7d;'>/* This function is similar to the above but returns NULL if the</span>
+<span style='color:#7a7c7d;'>   programs is running with SUID or SGID enabled.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>secure_getenv <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__name</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if defined __USE_MISC || defined __USE_XOPEN</span>
+<span style='color:#7a7c7d;'>/* The SVID says this is in &lt;stdio.h&gt;, but this seems a better place.	*/</span>
+<span style='color:#7a7c7d;'>/* Put STRING, which is of the form &quot;NAME=VALUE&quot;, in the environment.</span>
+<span style='color:#7a7c7d;'>   If there is no `=', remove NAME from the environment.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> putenv <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__string</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_XOPEN2K</span>
+<span style='color:#7a7c7d;'>/* Set NAME to VALUE in the environment.</span>
+<span style='color:#7a7c7d;'>   If REPLACE is nonzero, overwrite an existing value.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> setenv <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__name</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__value</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__replace</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Remove the variable NAME from the environment.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> unsetenv <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__name</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef	__USE_MISC</span>
+<span style='color:#7a7c7d;'>/* The `clearenv' was planned to be added to POSIX.1 but probably</span>
+<span style='color:#7a7c7d;'>   never made it.  Nevertheless the POSIX.9 standard (POSIX bindings</span>
+<span style='color:#7a7c7d;'>   for Fortran 77) requires this function.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> clearenv <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#27ae60;'>#if defined __USE_MISC \</span>
+<span style='color:#27ae60;'>    || (defined __USE_XOPEN_EXTENDED &amp;&amp; !defined __USE_XOPEN2K8)</span>
+<span style='color:#7a7c7d;'>/* Generate a unique temporary file name from TEMPLATE.</span>
+<span style='color:#7a7c7d;'>   The last six characters of TEMPLATE must be &quot;XXXXXX&quot;;</span>
+<span style='color:#7a7c7d;'>   they are replaced with a string that makes the file name unique.</span>
+<span style='color:#7a7c7d;'>   Always returns TEMPLATE, it's either a temporary file name or a null</span>
+<span style='color:#7a7c7d;'>   string if it cannot get a unique file name.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>mktemp <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if defined __USE_XOPEN_EXTENDED || defined __USE_XOPEN2K8</span>
+<span style='color:#7a7c7d;'>/* Generate a unique temporary file name from TEMPLATE.</span>
+<span style='color:#7a7c7d;'>   The last six characters of TEMPLATE must be &quot;XXXXXX&quot;;</span>
+<span style='color:#7a7c7d;'>   they are replaced with a string that makes the filename unique.</span>
+<span style='color:#7a7c7d;'>   Returns a file descriptor open on the file for reading and writing,</span>
+<span style='color:#7a7c7d;'>   or -1 if it cannot create a uniquely-named file.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#27ae60;'># ifndef __USE_FILE_OFFSET64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> mkstemp <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># else</span>
+<span style='color:#27ae60;'>#  ifdef __REDIRECT</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>mkstemp<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> mkstemp64<span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#  else</span>
+<span style='color:#27ae60;'>#   define mkstemp mkstemp64</span>
+<span style='color:#27ae60;'>#  endif</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'># ifdef __USE_LARGEFILE64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> mkstemp64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Similar to mkstemp, but the template can have a suffix after the</span>
+<span style='color:#7a7c7d;'>   XXXXXX.  The length of the suffix is specified in the second</span>
+<span style='color:#7a7c7d;'>   parameter.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#27ae60;'># ifndef __USE_FILE_OFFSET64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> mkstemps <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__suffixlen</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># else</span>
+<span style='color:#27ae60;'>#  ifdef __REDIRECT</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>mkstemps<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__suffixlen</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span>
+		       mkstemps64<span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#  else</span>
+<span style='color:#27ae60;'>#   define mkstemps mkstemps64</span>
+<span style='color:#27ae60;'>#  endif</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'># ifdef __USE_LARGEFILE64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> mkstemps64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__suffixlen</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_XOPEN2K8</span>
+<span style='color:#7a7c7d;'>/* Create a unique temporary directory from TEMPLATE.</span>
+<span style='color:#7a7c7d;'>   The last six characters of TEMPLATE must be &quot;XXXXXX&quot;;</span>
+<span style='color:#7a7c7d;'>   they are replaced with a string that makes the directory name unique.</span>
+<span style='color:#7a7c7d;'>   Returns TEMPLATE, or a null pointer if it cannot get a unique name.</span>
+<span style='color:#7a7c7d;'>   The directory is created mode 700.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>mkdtemp <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<span style='color:#7a7c7d;'>/* Generate a unique temporary file name from TEMPLATE similar to</span>
+<span style='color:#7a7c7d;'>   mkstemp.  But allow the caller to pass additional flags which are</span>
+<span style='color:#7a7c7d;'>   used in the open call to create the file..</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#27ae60;'># ifndef __USE_FILE_OFFSET64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> mkostemp <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__flags</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># else</span>
+<span style='color:#27ae60;'>#  ifdef __REDIRECT</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>mkostemp<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__flags</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> mkostemp64<span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#  else</span>
+<span style='color:#27ae60;'>#   define mkostemp mkostemp64</span>
+<span style='color:#27ae60;'>#  endif</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'># ifdef __USE_LARGEFILE64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> mkostemp64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__flags</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+
+<span style='color:#7a7c7d;'>/* Similar to mkostemp, but the template can have a suffix after the</span>
+<span style='color:#7a7c7d;'>   XXXXXX.  The length of the suffix is specified in the second</span>
+<span style='color:#7a7c7d;'>   parameter.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#27ae60;'># ifndef __USE_FILE_OFFSET64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> mkostemps <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__suffixlen</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__flags</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># else</span>
+<span style='color:#27ae60;'>#  ifdef __REDIRECT</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>mkostemps<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__suffixlen</span><span style='color:#3f8058;'>,</span>
+				   <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__flags</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> mkostemps64<span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#  else</span>
+<span style='color:#27ae60;'>#   define mkostemps mkostemps64</span>
+<span style='color:#27ae60;'>#  endif</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'># ifdef __USE_LARGEFILE64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> mkostemps64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__template</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__suffixlen</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__flags</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Execute the given line as a shell command.</span>
+
+<span style='color:#7a7c7d;'>   This function is a cancellation point and therefore not marked with</span>
+<span style='color:#7a7c7d;'>   __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> system <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__command</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+
+<span style='color:#27ae60;'>#ifdef	__USE_GNU</span>
+<span style='color:#7a7c7d;'>/* Return a malloc'd string containing the canonical absolute name of the</span>
+<span style='color:#7a7c7d;'>   existing named file.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>canonicalize_file_name <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__name</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if defined __USE_MISC || defined __USE_XOPEN_EXTENDED</span>
+<span style='color:#7a7c7d;'>/* Return the canonical absolute name of file NAME.  If RESOLVED is</span>
+<span style='color:#7a7c7d;'>   null, the result is malloc'd; otherwise, if the canonical name is</span>
+<span style='color:#7a7c7d;'>   PATH_MAX chars or more, returns null with `errno' set to</span>
+<span style='color:#7a7c7d;'>   ENAMETOOLONG; if the name fits in fewer than PATH_MAX chars,</span>
+<span style='color:#7a7c7d;'>   returns the name in RESOLVED.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>realpath <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__name</span><span style='color:#3f8058;'>,</span>
+		       <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__resolved</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Shorthand for type of comparison functions.  */</span>
+<span style='color:#27ae60;'>#ifndef __COMPAR_FN_T</span>
+<span style='color:#27ae60;'># define __COMPAR_FN_T</span>
+<b>typedef</b> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>(*</span><span style='color:#808080;'>__compar_fn_t</span><span style='color:#3f8058;'>)</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*)</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'># ifdef	__USE_GNU</span>
+<b>typedef</b> <span style='color:#808080;'>__compar_fn_t</span> <span style='color:#2980b9;'>comparison_fn_t</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<b>typedef</b> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>(*</span><span style='color:#808080;'>__compar_d_fn_t</span><span style='color:#3f8058;'>)</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Do a binary search for KEY in BASE, which consists of NMEMB elements</span>
+<span style='color:#7a7c7d;'>   of SIZE bytes each, using COMPAR to perform the comparisons.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span>bsearch <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__key</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__base</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__nmemb</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span> <span style='color:#808080;'>__compar_fn_t</span> <span style='color:#808080;'>__compar</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>5</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_EXTERN_INLINES</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;bits/stdlib-bsearch.h&gt;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Sort NMEMB elements of BASE, of SIZE bytes each,</span>
+<span style='color:#7a7c7d;'>   using COMPAR to perform the comparisons.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> qsort <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__base</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__nmemb</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span>
+		   <span style='color:#808080;'>__compar_fn_t</span> <span style='color:#808080;'>__compar</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> qsort_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__base</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__nmemb</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#808080;'>__compar_d_fn_t</span> <span style='color:#808080;'>__compar</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span>
+  <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Return the absolute value of X.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> abs <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__x</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__const__))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> labs <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__x</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__const__))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_ISOC99</span>
+<b><i><span style='color:#0099ff;'>__extension__</span></i></b> <span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> llabs <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__x</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__const__))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Return the `div_t', `ldiv_t' or `lldiv_t' representation</span>
+<span style='color:#7a7c7d;'>   of the value of NUMER over DENOM. */</span>
+<span style='color:#7a7c7d;'>/* GCC may have built-ins for these someday.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>div_t</span> div <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__numer</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__denom</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__const__))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>ldiv_t</span> ldiv <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__numer</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__denom</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__const__))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_ISOC99</span>
+<b><i><span style='color:#0099ff;'>__extension__</span></i></b> <span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>lldiv_t</span> lldiv <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__numer</span><span style='color:#3f8058;'>,</span>
+				    <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__denom</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__const__))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#27ae60;'>#if (defined __USE_XOPEN_EXTENDED &amp;&amp; !defined __USE_XOPEN2K8) \</span>
+<span style='color:#27ae60;'>    || defined __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Convert floating point numbers to strings.  The returned values are</span>
+<span style='color:#7a7c7d;'>   valid only until another call to the same function.  */</span>
+
+<span style='color:#7a7c7d;'>/* Convert VALUE to a string with NDIGIT digits and return a pointer to</span>
+<span style='color:#7a7c7d;'>   this.  Set *DECPT with the position of the decimal character and *SIGN</span>
+<span style='color:#7a7c7d;'>   with the sign of the number.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>ecvt <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__value</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__ndigit</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__decpt</span><span style='color:#3f8058;'>,</span>
+		   <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__sign</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Convert VALUE to a string rounded to NDIGIT decimal digits.  Set *DECPT</span>
+<span style='color:#7a7c7d;'>   with the position of the decimal character and *SIGN with the sign of</span>
+<span style='color:#7a7c7d;'>   the number.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>fcvt <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__value</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__ndigit</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__decpt</span><span style='color:#3f8058;'>,</span>
+		   <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__sign</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* If possible convert VALUE to a string with NDIGIT significant digits.</span>
+<span style='color:#7a7c7d;'>   Otherwise use exponential representation.  The resulting string will</span>
+<span style='color:#7a7c7d;'>   be written to BUF.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>gcvt <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__value</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__ndigit</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Long double versions of above functions.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>qecvt <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__value</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__ndigit</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__decpt</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__sign</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>qfcvt <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__value</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__ndigit</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__decpt</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__sign</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>qgcvt <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__value</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__ndigit</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+
+<span style='color:#7a7c7d;'>/* Reentrant version of the functions above which provide their own</span>
+<span style='color:#7a7c7d;'>   buffers.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> ecvt_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__value</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__ndigit</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__decpt</span><span style='color:#3f8058;'>,</span>
+		   <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__sign</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>,</span>
+		   <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__len</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>5</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fcvt_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__value</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__ndigit</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__decpt</span><span style='color:#3f8058;'>,</span>
+		   <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__sign</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>,</span>
+		   <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__len</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>5</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> qecvt_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__value</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__ndigit</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__decpt</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__sign</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__len</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>5</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> qfcvt_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__value</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__ndigit</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__decpt</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__sign</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__len</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>3</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>4</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>5</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif	</span><span style='color:#7a7c7d;'>/* misc */</span>
+
+
+<span style='color:#7a7c7d;'>/* Return the length of the multibyte character</span>
+<span style='color:#7a7c7d;'>   in S, which is no longer than N.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> mblen <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Return the length of the given multibyte character,</span>
+<span style='color:#7a7c7d;'>   putting its `wchar_t' representation in *PWC.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> mbtowc <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>wchar_t</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__pwc</span><span style='color:#3f8058;'>,</span>
+		   <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Put the multibyte character represented</span>
+<span style='color:#7a7c7d;'>   by WCHAR in S, returning its length.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> wctomb <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>wchar_t</span> <span style='color:#808080;'>__wchar</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+
+<span style='color:#7a7c7d;'>/* Convert a multibyte string to a wide char string.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>size_t</span> mbstowcs <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>wchar_t</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b>  <span style='color:#808080;'>__pwcs</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span>
+    <span style='color:#808080;'>__attr_access</span> <span style='color:#3f8058;'>((</span><span style='color:#808080;'>__read_only__</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Convert a wide char string to multibyte string.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>size_t</span> wcstombs <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>wchar_t</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__pwcs</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span>
+  <span style='color:#808080;'>__attr_access</span> <span style='color:#3f8058;'>((</span><span style='color:#808080;'>__write_only__</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__attr_access</span> <span style='color:#3f8058;'>((</span><span style='color:#808080;'>__read_only__</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Determine whether the string value of RESPONSE matches the affirmation</span>
+<span style='color:#7a7c7d;'>   or negative response expression as specified by the LC_MESSAGES category</span>
+<span style='color:#7a7c7d;'>   in the program's current locale.  Returns 1 if affirmative, 0 if</span>
+<span style='color:#7a7c7d;'>   negative, and -1 if not matching.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> rpmatch <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__response</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#27ae60;'>#if defined __USE_XOPEN_EXTENDED || defined __USE_XOPEN2K8</span>
+<span style='color:#7a7c7d;'>/* Parse comma separated suboption from *OPTIONP and match against</span>
+<span style='color:#7a7c7d;'>   strings in TOKENS.  If found return index and set *VALUEP to</span>
+<span style='color:#7a7c7d;'>   optional value introduced by an equal sign.  If the suboption is</span>
+<span style='color:#7a7c7d;'>   not part of TOKENS return in *VALUEP beginning of unknown</span>
+<span style='color:#7a7c7d;'>   suboption.  On exit *OPTIONP is set to the beginning of the next</span>
+<span style='color:#7a7c7d;'>   token or at the terminating NUL character.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> getsubopt <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__optionp</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#2980b9;'>const</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__tokens</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__valuep</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* X/Open pseudo terminal handling.  */</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_XOPEN2KXSI</span>
+<span style='color:#7a7c7d;'>/* Return a master pseudo-terminal handle.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> posix_openpt <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__oflag</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_XOPEN_EXTENDED</span>
+<span style='color:#7a7c7d;'>/* The next four functions all take a master pseudo-tty fd and</span>
+<span style='color:#7a7c7d;'>   perform an operation on the associated slave:  */</span>
+
+<span style='color:#7a7c7d;'>/* Chown the slave to the calling user.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> grantpt <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__fd</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Release an internal lock so the slave can be opened.</span>
+<span style='color:#7a7c7d;'>   Call after grantpt().  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> unlockpt <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__fd</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Return the pathname of the pseudo terminal slave associated with</span>
+<span style='color:#7a7c7d;'>   the master FD is open on, or NULL on errors.</span>
+<span style='color:#7a7c7d;'>   The returned storage is good until the next call to this function.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>ptsname <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__fd</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<span style='color:#7a7c7d;'>/* Store at most BUFLEN characters of the pathname of the slave pseudo</span>
+<span style='color:#7a7c7d;'>   terminal associated with the master FD is open on in BUF.</span>
+<span style='color:#7a7c7d;'>   Return 0 on success, otherwise an error number.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> ptsname_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__fd</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__buflen</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span> <span style='color:#808080;'>__attr_access</span> <span style='color:#3f8058;'>((</span><span style='color:#808080;'>__write_only__</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>3</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Open a master pseudo terminal and return its file descriptor.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> getpt <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Put the 1 minute, 5 minute and 15 minute load averages into the first</span>
+<span style='color:#7a7c7d;'>   NELEM elements of LOADAVG.  Return the number written (never more than</span>
+<span style='color:#7a7c7d;'>   three, but may be less than NELEM), or -1 if an error occurred.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> getloadavg <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>double</span> <span style='color:#808080;'>__loadavg</span><span style='color:#3f8058;'>[]</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__nelem</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__nonnull</span> <span style='color:#3f8058;'>((</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if defined __USE_XOPEN_EXTENDED &amp;&amp; !defined __USE_XOPEN2K</span>
+<span style='color:#7a7c7d;'>/* Return the index into the active-logins file (utmp) for</span>
+<span style='color:#7a7c7d;'>   the controlling terminal.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> ttyslot <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/stdlib-float.h&gt;</span>
+
+<span style='color:#7a7c7d;'>/* Define some macros helping to catch buffer overflows.  */</span>
+<span style='color:#27ae60;'>#if __USE_FORTIFY_LEVEL &gt; 0 &amp;&amp; defined __fortify_function</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;bits/stdlib.h&gt;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/floatn.h&gt;</span>
+<span style='color:#27ae60;'>#if defined __LDBL_COMPAT || __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 1</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;bits/stdlib-ldbl.h&gt;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#808080;'>__END_DECLS</span>
+
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* stdlib.h  */</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" href="../cs/bookstyle.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Generator" content="Kate, the KDE Advanced Text Editor" />
+<title>stdio.h</title>
+</head>
+<!-- Highlighting: "C++" -->
+<body>
+<pre style='color:#cfcfc2;'>
+<span style='color:#7a7c7d;'>/* Define ISO C stdio on top of C++ iostreams.</span>
+<span style='color:#7a7c7d;'>   Copyright (C) 1991-2021 Free Software Foundation, Inc.</span>
+<span style='color:#7a7c7d;'>   This file is part of the GNU C Library.</span>
+
+<span style='color:#7a7c7d;'>   The GNU C Library is free software; you can redistribute it and/or</span>
+<span style='color:#7a7c7d;'>   modify it under the terms of the GNU Lesser General Public</span>
+<span style='color:#7a7c7d;'>   License as published by the Free Software Foundation; either</span>
+<span style='color:#7a7c7d;'>   version 2.1 of the License, or (at your option) any later version.</span>
+
+<span style='color:#7a7c7d;'>   The GNU C Library is distributed in the hope that it will be useful,</span>
+<span style='color:#7a7c7d;'>   but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span style='color:#7a7c7d;'>   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<span style='color:#7a7c7d;'>   Lesser General Public License for more details.</span>
+
+<span style='color:#7a7c7d;'>   You should have received a copy of the GNU Lesser General Public</span>
+<span style='color:#7a7c7d;'>   License along with the GNU C Library; if not, see</span>
+<span style='color:#7a7c7d;'>   &lt;https://www.gnu.org/licenses/&gt;.  */</span>
+
+<span style='color:#7a7c7d;'>/*</span>
+<span style='color:#7a7c7d;'> *	ISO C99 Standard: 7.19 Input/output	&lt;stdio.h&gt;</span>
+<span style='color:#7a7c7d;'> */</span>
+
+<span style='color:#27ae60;'>#ifndef _STDIO_H</span>
+<span style='color:#27ae60;'>#define _STDIO_H	</span><span style='color:#f67400;'>1</span>
+
+<span style='color:#27ae60;'>#define __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/libc-header-start.h&gt;</span>
+
+<span style='color:#808080;'>__BEGIN_DECLS</span>
+
+<span style='color:#27ae60;'>#define __need_size_t</span>
+<span style='color:#27ae60;'>#define __need_NULL</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;stddef.h&gt;</span>
+
+<span style='color:#27ae60;'>#define __need___va_list</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;stdarg.h&gt;</span>
+
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/types.h&gt;</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/types/__fpos_t.h&gt;</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/types/__fpos64_t.h&gt;</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/types/__FILE.h&gt;</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/types/FILE.h&gt;</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/types/struct_FILE.h&gt;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;bits/types/cookie_io_functions_t.h&gt;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if defined __USE_XOPEN || defined __USE_XOPEN2K8</span>
+<span style='color:#27ae60;'># ifdef __GNUC__</span>
+<span style='color:#27ae60;'>#  ifndef _VA_LIST_DEFINED</span>
+<b>typedef</b> <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#2980b9;'>va_list</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#   define _VA_LIST_DEFINED</span>
+<span style='color:#27ae60;'>#  endif</span>
+<span style='color:#27ae60;'># else</span>
+<span style='color:#27ae60;'>#  include </span><span style='color:#27ae60;'>&lt;stdarg.h&gt;</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if defined __USE_UNIX98 || defined __USE_XOPEN2K</span>
+<span style='color:#27ae60;'># ifndef __off_t_defined</span>
+<span style='color:#27ae60;'># ifndef __USE_FILE_OFFSET64</span>
+<b>typedef</b> <span style='color:#808080;'>__off_t</span> <span style='color:#2980b9;'>off_t</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># else</span>
+<b>typedef</b> <span style='color:#808080;'>__off64_t</span> <span style='color:#2980b9;'>off_t</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'># define __off_t_defined</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'># if defined __USE_LARGEFILE64 &amp;&amp; !defined __off64_t_defined</span>
+<b>typedef</b> <span style='color:#808080;'>__off64_t</span> <span style='color:#2980b9;'>off64_t</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># define __off64_t_defined</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_XOPEN2K8</span>
+<span style='color:#27ae60;'># ifndef __ssize_t_defined</span>
+<b>typedef</b> <span style='color:#808080;'>__ssize_t</span> <span style='color:#2980b9;'>ssize_t</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># define __ssize_t_defined</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* The type of the second argument to `fgetpos' and `fsetpos'.  */</span>
+<span style='color:#27ae60;'>#ifndef __USE_FILE_OFFSET64</span>
+<b>typedef</b> <span style='color:#808080;'>__fpos_t</span> <span style='color:#2980b9;'>fpos_t</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#else</span>
+<b>typedef</b> <span style='color:#808080;'>__fpos64_t</span> <span style='color:#2980b9;'>fpos_t</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+<span style='color:#27ae60;'>#ifdef __USE_LARGEFILE64</span>
+<b>typedef</b> <span style='color:#808080;'>__fpos64_t</span> <span style='color:#2980b9;'>fpos64_t</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* The possibilities for the third argument to `setvbuf'.  */</span>
+<span style='color:#27ae60;'>#define _IOFBF </span><span style='color:#f67400;'>0</span><span style='color:#27ae60;'>		</span><span style='color:#7a7c7d;'>/* Fully buffered.  */</span>
+<span style='color:#27ae60;'>#define _IOLBF </span><span style='color:#f67400;'>1</span><span style='color:#27ae60;'>		</span><span style='color:#7a7c7d;'>/* Line buffered.  */</span>
+<span style='color:#27ae60;'>#define _IONBF </span><span style='color:#f67400;'>2</span><span style='color:#27ae60;'>		</span><span style='color:#7a7c7d;'>/* No buffering.  */</span>
+
+
+<span style='color:#7a7c7d;'>/* Default buffer size.  */</span>
+<span style='color:#27ae60;'>#define BUFSIZ </span><span style='color:#f67400;'>8192</span>
+
+
+<span style='color:#7a7c7d;'>/* The value returned by fgetc and similar functions to indicate the</span>
+<span style='color:#7a7c7d;'>   end of the file.  */</span>
+<span style='color:#27ae60;'>#define EOF </span><span style='color:#3f8058;'>(-</span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>)</span>
+
+
+<span style='color:#7a7c7d;'>/* The possibilities for the third argument to `fseek'.</span>
+<span style='color:#7a7c7d;'>   These values should not be changed.  */</span>
+<span style='color:#27ae60;'>#define SEEK_SET	</span><span style='color:#f67400;'>0</span><span style='color:#27ae60;'>	</span><span style='color:#7a7c7d;'>/* Seek from beginning of file.  */</span>
+<span style='color:#27ae60;'>#define SEEK_CUR	</span><span style='color:#f67400;'>1</span><span style='color:#27ae60;'>	</span><span style='color:#7a7c7d;'>/* Seek from current position.  */</span>
+<span style='color:#27ae60;'>#define SEEK_END	</span><span style='color:#f67400;'>2</span><span style='color:#27ae60;'>	</span><span style='color:#7a7c7d;'>/* Seek from end of file.  */</span>
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<span style='color:#27ae60;'># define SEEK_DATA	</span><span style='color:#f67400;'>3</span><span style='color:#27ae60;'>	</span><span style='color:#7a7c7d;'>/* Seek to next data.  */</span>
+<span style='color:#27ae60;'># define SEEK_HOLE	</span><span style='color:#f67400;'>4</span><span style='color:#27ae60;'>	</span><span style='color:#7a7c7d;'>/* Seek to next hole.  */</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#27ae60;'>#if defined __USE_MISC || defined __USE_XOPEN</span>
+<span style='color:#7a7c7d;'>/* Default path prefix for `tempnam' and `tmpnam'.  */</span>
+<span style='color:#27ae60;'># define P_tmpdir	</span><span style='color:#f44f4f;'>&quot;/tmp&quot;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Get the values:</span>
+<span style='color:#7a7c7d;'>   L_tmpnam	How long an array of chars must be to be passed to `tmpnam'.</span>
+<span style='color:#7a7c7d;'>   TMP_MAX	The minimum number of unique filenames generated by tmpnam</span>
+<span style='color:#7a7c7d;'>		(and tempnam when it uses tmpnam's name space),</span>
+<span style='color:#7a7c7d;'>		or tempnam (the two are separate).</span>
+<span style='color:#7a7c7d;'>   L_ctermid	How long an array to pass to `ctermid'.</span>
+<span style='color:#7a7c7d;'>   L_cuserid	How long an array to pass to `cuserid'.</span>
+<span style='color:#7a7c7d;'>   FOPEN_MAX	Minimum number of files that can be open at once.</span>
+<span style='color:#7a7c7d;'>   FILENAME_MAX	Maximum length of a filename.  */</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/stdio_lim.h&gt;</span>
+
+
+<span style='color:#7a7c7d;'>/* Standard streams.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>stdin<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Standard input stream.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>stdout<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Standard output stream.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>stderr<span style='color:#3f8058;'>;</span>		<span style='color:#7a7c7d;'>/* Standard error output stream.  */</span>
+<span style='color:#7a7c7d;'>/* C89/C99 say they're macros.  Make them happy.  */</span>
+<span style='color:#27ae60;'>#define stdin stdin</span>
+<span style='color:#27ae60;'>#define stdout stdout</span>
+<span style='color:#27ae60;'>#define stderr stderr</span>
+
+<span style='color:#7a7c7d;'>/* Remove file FILENAME.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> remove <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__filename</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Rename file OLD to NEW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> rename <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__old</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__new</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_ATFILE</span>
+<span style='color:#7a7c7d;'>/* Rename file OLD relative to OLDFD to NEW relative to NEWFD.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> renameat <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__oldfd</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__old</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__newfd</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__new</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<span style='color:#7a7c7d;'>/* Flags for renameat2.  */</span>
+<span style='color:#27ae60;'># define RENAME_NOREPLACE </span><span style='color:#3f8058;'>(</span><span style='color:#f67400;'>1</span><span style='color:#27ae60;'> </span><span style='color:#3f8058;'>&lt;&lt;</span><span style='color:#27ae60;'> </span><span style='color:#f67400;'>0</span><span style='color:#3f8058;'>)</span>
+<span style='color:#27ae60;'># define RENAME_EXCHANGE </span><span style='color:#3f8058;'>(</span><span style='color:#f67400;'>1</span><span style='color:#27ae60;'> </span><span style='color:#3f8058;'>&lt;&lt;</span><span style='color:#27ae60;'> </span><span style='color:#f67400;'>1</span><span style='color:#3f8058;'>)</span>
+<span style='color:#27ae60;'># define RENAME_WHITEOUT </span><span style='color:#3f8058;'>(</span><span style='color:#f67400;'>1</span><span style='color:#27ae60;'> </span><span style='color:#3f8058;'>&lt;&lt;</span><span style='color:#27ae60;'> </span><span style='color:#f67400;'>2</span><span style='color:#3f8058;'>)</span>
+
+<span style='color:#7a7c7d;'>/* Rename file OLD relative to OLDFD to NEW relative to NEWFD, with</span>
+<span style='color:#7a7c7d;'>   additional flags.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> renameat2 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__oldfd</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__old</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__newfd</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__new</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>unsigned</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__flags</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Create a temporary file and open it read/write.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#27ae60;'>#ifndef __USE_FILE_OFFSET64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>tmpfile <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#else</span>
+<span style='color:#27ae60;'># ifdef __REDIRECT</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>tmpfile<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> tmpfile64<span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># else</span>
+<span style='color:#27ae60;'>#  define tmpfile tmpfile64</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_LARGEFILE64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>tmpfile64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Generate a temporary filename.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>tmpnam <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__s</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* This is the reentrant variant of `tmpnam'.  The only difference is</span>
+<span style='color:#7a7c7d;'>   that it does not allow S to be NULL.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>tmpnam_r <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__s</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#27ae60;'>#if defined __USE_MISC || defined __USE_XOPEN</span>
+<span style='color:#7a7c7d;'>/* Generate a unique temporary filename using up to five characters of PFX</span>
+<span style='color:#7a7c7d;'>   if it is not NULL.  The directory to put this file in is searched for</span>
+<span style='color:#7a7c7d;'>   as follows: First the environment variable &quot;TMPDIR&quot; is checked.</span>
+<span style='color:#7a7c7d;'>   If it contains the name of a writable directory, that directory is used.</span>
+<span style='color:#7a7c7d;'>   If not and if DIR is not NULL, that value is checked.  If that fails,</span>
+<span style='color:#7a7c7d;'>   P_tmpdir is tried and finally &quot;/tmp&quot;.  The storage for the filename</span>
+<span style='color:#7a7c7d;'>   is allocated by `malloc'.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>tempnam <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__dir</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__pfx</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__attribute_malloc__</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Close STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fclose <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Flush STREAM, or all streams if STREAM is NULL.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fflush <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Faster versions when locking is not required.</span>
+
+<span style='color:#7a7c7d;'>   This function is not part of POSIX and therefore no official</span>
+<span style='color:#7a7c7d;'>   cancellation point.  But due to similarity with an POSIX interface</span>
+<span style='color:#7a7c7d;'>   or due to the implementation it is a cancellation point and</span>
+<span style='color:#7a7c7d;'>   therefore not marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fflush_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<span style='color:#7a7c7d;'>/* Close all streams.</span>
+
+<span style='color:#7a7c7d;'>   This function is not part of POSIX and therefore no official</span>
+<span style='color:#7a7c7d;'>   cancellation point.  But due to similarity with an POSIX interface</span>
+<span style='color:#7a7c7d;'>   or due to the implementation it is a cancellation point and</span>
+<span style='color:#7a7c7d;'>   therefore not marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fcloseall <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#27ae60;'>#ifndef __USE_FILE_OFFSET64</span>
+<span style='color:#7a7c7d;'>/* Open a file and create a new stream for it.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>fopen <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__filename</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__modes</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Open a file, replacing an existing stream with it.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>freopen <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__filename</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__modes</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#else</span>
+<span style='color:#27ae60;'># ifdef __REDIRECT</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>fopen<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__filename</span><span style='color:#3f8058;'>,</span>
+				 <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__modes</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> fopen64<span style='color:#3f8058;'>)</span>
+  <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>freopen<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__filename</span><span style='color:#3f8058;'>,</span>
+				   <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__modes</span><span style='color:#3f8058;'>,</span>
+				   <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> freopen64<span style='color:#3f8058;'>)</span>
+  <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># else</span>
+<span style='color:#27ae60;'>#  define fopen fopen64</span>
+<span style='color:#27ae60;'>#  define freopen freopen64</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+<span style='color:#27ae60;'>#ifdef __USE_LARGEFILE64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>fopen64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__filename</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__modes</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>freopen64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__filename</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__modes</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef	__USE_POSIX</span>
+<span style='color:#7a7c7d;'>/* Create a new stream that refers to an existing system file descriptor.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>fdopen <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__fd</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__modes</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef	__USE_GNU</span>
+<span style='color:#7a7c7d;'>/* Create a new stream that refers to the given magic cookie,</span>
+<span style='color:#7a7c7d;'>   and uses the given functions for input and output.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>fopencookie <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__magic_cookie</span><span style='color:#3f8058;'>,</span>
+			  <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__modes</span><span style='color:#3f8058;'>,</span>
+			  <span style='color:#2980b9;'>cookie_io_functions_t</span> <span style='color:#808080;'>__io_funcs</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if defined __USE_XOPEN2K8 || __GLIBC_USE (LIB_EXT2)</span>
+<span style='color:#7a7c7d;'>/* Create a new stream that refers to a memory buffer.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>fmemopen <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__len</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__modes</span><span style='color:#3f8058;'>)</span>
+  <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Open a stream that writes into a malloc'd buffer that is expanded as</span>
+<span style='color:#7a7c7d;'>   necessary.  *BUFLOC and *SIZELOC are updated with the buffer's location</span>
+<span style='color:#7a7c7d;'>   and the number of characters written on fflush or fclose.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>open_memstream <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><span style='color:#808080;'>__bufloc</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__sizeloc</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* If BUF is NULL, make STREAM unbuffered.</span>
+<span style='color:#7a7c7d;'>   Else make it use buffer BUF, of size BUFSIZ.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> setbuf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Make STREAM use buffering mode MODE.</span>
+<span style='color:#7a7c7d;'>   If BUF is not NULL, use N bytes of it for buffering;</span>
+<span style='color:#7a7c7d;'>   else allocate an internal buffer N bytes long.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> setvbuf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__modes</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef	__USE_MISC</span>
+<span style='color:#7a7c7d;'>/* If BUF is NULL, make STREAM unbuffered.</span>
+<span style='color:#7a7c7d;'>   Else make it use SIZE bytes of BUF for buffering.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> setbuffer <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__buf</span><span style='color:#3f8058;'>,</span>
+		       <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Make STREAM line-buffered.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> setlinebuf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Write formatted output to STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fprintf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Write formatted output to stdout.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> printf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Write formatted output to S.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> sprintf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span> <span style='color:#808080;'>__THROWNL</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Write formatted output to S from argument list ARG.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> vfprintf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Write formatted output to stdout from argument list ARG.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> vprintf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Write formatted output to S from argument list ARG.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> vsprintf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROWNL</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#if defined __USE_ISOC99 || defined __USE_UNIX98</span>
+<span style='color:#7a7c7d;'>/* Maximum chars of output to write in MAXLEN.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> snprintf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__maxlen</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span>
+     <span style='color:#808080;'>__THROWNL</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__printf__, 3, 4)))</span></i></b><span style='color:#3f8058;'>;</span>
+
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> vsnprintf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__maxlen</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROWNL</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__printf__, 3, 0)))</span></i></b><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#if __GLIBC_USE (LIB_EXT2)</span>
+<span style='color:#7a7c7d;'>/* Write formatted output to a string dynamically allocated with `malloc'.</span>
+<span style='color:#7a7c7d;'>   Store the address of the string in *PTR.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> vasprintf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__ptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__f</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROWNL</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__printf__, 2, 0)))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__asprintf</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__ptr</span><span style='color:#3f8058;'>,</span>
+		       <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__fmt</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span>
+     <span style='color:#808080;'>__THROWNL</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__printf__, 2, 3)))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> asprintf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__ptr</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__fmt</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span>
+     <span style='color:#808080;'>__THROWNL</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__printf__, 2, 3)))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_XOPEN2K8</span>
+<span style='color:#7a7c7d;'>/* Write formatted output to a file descriptor.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> vdprintf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__fd</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__fmt</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span>
+     <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__printf__, 2, 0)))</span></i></b><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> dprintf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__fd</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__fmt</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span>
+     <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__printf__, 2, 3)))</span></i></b><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Read formatted input from STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fscanf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span>
+		   <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Read formatted input from stdin.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> scanf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Read formatted input from S.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> sscanf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span>
+		   <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* For historical reasons, the C99-compliant versions of the scanf</span>
+<span style='color:#7a7c7d;'>   functions are at alternative names.  When __LDBL_COMPAT or</span>
+<span style='color:#7a7c7d;'>   __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI are in effect, this is handled in</span>
+<span style='color:#7a7c7d;'>   bits/stdio-ldbl.h.  */</span>
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/floatn.h&gt;</span>
+<span style='color:#27ae60;'>#if !__GLIBC_USE (DEPRECATED_SCANF) &amp;&amp; !defined __LDBL_COMPAT \</span>
+<span style='color:#27ae60;'>    &amp;&amp; __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 0</span>
+<span style='color:#27ae60;'># ifdef __REDIRECT</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>fscanf<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span>
+				<span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span><span style='color:#3f8058;'>,</span>
+		       <span style='color:#808080;'>__isoc99_fscanf</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>scanf<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span><span style='color:#3f8058;'>,</span>
+		       <span style='color:#808080;'>__isoc99_scanf</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT_NTH</span> <span style='color:#3f8058;'>(</span>sscanf<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span>
+				    <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span><span style='color:#3f8058;'>,</span>
+			   <span style='color:#808080;'>__isoc99_sscanf</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># else</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__isoc99_fscanf</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__isoc99_scanf</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__isoc99_sscanf</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#  define fscanf </span><span style='color:#808080;'>__isoc99_fscanf</span>
+<span style='color:#27ae60;'>#  define scanf </span><span style='color:#808080;'>__isoc99_scanf</span>
+<span style='color:#27ae60;'>#  define sscanf </span><span style='color:#808080;'>__isoc99_sscanf</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef	__USE_ISOC99</span>
+<span style='color:#7a7c7d;'>/* Read formatted input from S into argument list ARG.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> vfscanf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span>
+     <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__scanf__, 2, 0)))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Read formatted input from stdin into argument list ARG.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> vscanf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span>
+     <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__scanf__, 1, 0)))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Read formatted input from S into argument list ARG.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> vsscanf <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span>
+		    <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROW</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__scanf__, 2, 0)))</span></i></b><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Same redirection as above for the v*scanf family.  */</span>
+<span style='color:#27ae60;'># if !__GLIBC_USE (DEPRECATED_SCANF)</span>
+<span style='color:#27ae60;'>#  if defined __REDIRECT &amp;&amp; !defined __LDBL_COMPAT \</span>
+<span style='color:#27ae60;'>      &amp;&amp; __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 0</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>vfscanf<span style='color:#3f8058;'>,</span>
+		       <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span>
+			<span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span>
+		       <span style='color:#808080;'>__isoc99_vfscanf</span><span style='color:#3f8058;'>)</span>
+     <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__scanf__, 2, 0)))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>vscanf<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+				<span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> <span style='color:#808080;'>__isoc99_vscanf</span><span style='color:#3f8058;'>)</span>
+     <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__scanf__, 1, 0)))</span></i></b> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT_NTH</span> <span style='color:#3f8058;'>(</span>vsscanf<span style='color:#3f8058;'>,</span>
+			   <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> <span style='color:#808080;'>__isoc99_vsscanf</span><span style='color:#3f8058;'>)</span>
+     <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__scanf__, 2, 0)))</span></i></b><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#  elif !defined __REDIRECT</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__isoc99_vfscanf</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span>
+			     <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+			     <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__isoc99_vscanf</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__isoc99_vsscanf</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span>
+			     <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+			     <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__arg</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#   define vfscanf </span><span style='color:#808080;'>__isoc99_vfscanf</span>
+<span style='color:#27ae60;'>#   define vscanf </span><span style='color:#808080;'>__isoc99_vscanf</span>
+<span style='color:#27ae60;'>#   define vsscanf </span><span style='color:#808080;'>__isoc99_vsscanf</span>
+<span style='color:#27ae60;'>#  endif</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Use ISO C9x.  */</span>
+
+
+<span style='color:#7a7c7d;'>/* Read a character from STREAM.</span>
+
+<span style='color:#7a7c7d;'>   These functions are possible cancellation points and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fgetc <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> getc <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Read a character from stdin.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> getchar <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_POSIX199506</span>
+<span style='color:#7a7c7d;'>/* These are defined in POSIX.1:1996.</span>
+
+<span style='color:#7a7c7d;'>   These functions are possible cancellation points and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> getc_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> getchar_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Use POSIX.  */</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Faster version when locking is not necessary.</span>
+
+<span style='color:#7a7c7d;'>   This function is not part of POSIX and therefore no official</span>
+<span style='color:#7a7c7d;'>   cancellation point.  But due to similarity with an POSIX interface</span>
+<span style='color:#7a7c7d;'>   or due to the implementation it is a cancellation point and</span>
+<span style='color:#7a7c7d;'>   therefore not marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fgetc_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Use MISC.  */</span>
+
+
+<span style='color:#7a7c7d;'>/* Write a character to STREAM.</span>
+
+<span style='color:#7a7c7d;'>   These functions are possible cancellation points and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.</span>
+
+<span style='color:#7a7c7d;'>   These functions is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fputc <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__c</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> putc <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__c</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Write a character to stdout.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> putchar <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__c</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Faster version when locking is not necessary.</span>
+
+<span style='color:#7a7c7d;'>   This function is not part of POSIX and therefore no official</span>
+<span style='color:#7a7c7d;'>   cancellation point.  But due to similarity with an POSIX interface</span>
+<span style='color:#7a7c7d;'>   or due to the implementation it is a cancellation point and</span>
+<span style='color:#7a7c7d;'>   therefore not marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fputc_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__c</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Use MISC.  */</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_POSIX199506</span>
+<span style='color:#7a7c7d;'>/* These are defined in POSIX.1:1996.</span>
+
+<span style='color:#7a7c7d;'>   These functions are possible cancellation points and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> putc_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__c</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> putchar_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__c</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Use POSIX.  */</span>
+
+
+<span style='color:#27ae60;'>#if defined __USE_MISC \</span>
+<span style='color:#27ae60;'>    || (defined __USE_XOPEN &amp;&amp; !defined __USE_XOPEN2K)</span>
+<span style='color:#7a7c7d;'>/* Get a word (int) from STREAM.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> getw <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Write a word (int) to STREAM.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> putw <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__w</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Get a newline-terminated string of finite length from STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>fgets <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__wur</span> <span style='color:#808080;'>__attr_access</span> <span style='color:#3f8058;'>((</span><span style='color:#808080;'>__write_only__</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#if __GLIBC_USE (DEPRECATED_GETS)</span>
+<span style='color:#7a7c7d;'>/* Get a newline-terminated string from stdin, removing the newline.</span>
+
+<span style='color:#7a7c7d;'>   This function is impossible to use safely.  It has been officially</span>
+<span style='color:#7a7c7d;'>   removed from ISO C11 and ISO C++14, and we have also removed it</span>
+<span style='color:#7a7c7d;'>   from the _GNU_SOURCE feature list.  It remains available when</span>
+<span style='color:#7a7c7d;'>   explicitly using an old ISO C, Unix, or POSIX standard.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>gets <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__s</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span> <span style='color:#808080;'>__attribute_deprecated__</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<span style='color:#7a7c7d;'>/* This function does the same as `fgets' but does not lock the stream.</span>
+
+<span style='color:#7a7c7d;'>   This function is not part of POSIX and therefore no official</span>
+<span style='color:#7a7c7d;'>   cancellation point.  But due to similarity with an POSIX interface</span>
+<span style='color:#7a7c7d;'>   or due to the implementation it is a cancellation point and</span>
+<span style='color:#7a7c7d;'>   therefore not marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>fgets_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>,</span>
+			     <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span>
+    <span style='color:#808080;'>__attr_access</span> <span style='color:#3f8058;'>((</span><span style='color:#808080;'>__write_only__</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>1</span><span style='color:#3f8058;'>,</span> <span style='color:#f67400;'>2</span><span style='color:#3f8058;'>))</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#27ae60;'>#if defined __USE_XOPEN2K8 || __GLIBC_USE (LIB_EXT2)</span>
+<span style='color:#7a7c7d;'>/* Read up to (and including) a DELIMITER from STREAM into *LINEPTR</span>
+<span style='color:#7a7c7d;'>   (and null-terminate it). *LINEPTR is a pointer returned from malloc (or</span>
+<span style='color:#7a7c7d;'>   NULL), pointing to *N characters of space.  It is realloc'd as</span>
+<span style='color:#7a7c7d;'>   necessary.  Returns the number of characters read (not including the</span>
+<span style='color:#7a7c7d;'>   null terminator), or -1 on error or EOF.</span>
+
+<span style='color:#7a7c7d;'>   These functions are not part of POSIX and therefore no official</span>
+<span style='color:#7a7c7d;'>   cancellation point.  But due to similarity with an POSIX interface</span>
+<span style='color:#7a7c7d;'>   or due to the implementation they are cancellation points and</span>
+<span style='color:#7a7c7d;'>   therefore not marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>__ssize_t</span> <span style='color:#808080;'>__getdelim</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__lineptr</span><span style='color:#3f8058;'>,</span>
+                             <span style='color:#2980b9;'>size_t</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__delimiter</span><span style='color:#3f8058;'>,</span>
+                             <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>__ssize_t</span> getdelim <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__lineptr</span><span style='color:#3f8058;'>,</span>
+                           <span style='color:#2980b9;'>size_t</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__delimiter</span><span style='color:#3f8058;'>,</span>
+                           <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Like `getdelim', but reads up to a newline.</span>
+
+<span style='color:#7a7c7d;'>   This function is not part of POSIX and therefore no official</span>
+<span style='color:#7a7c7d;'>   cancellation point.  But due to similarity with an POSIX interface</span>
+<span style='color:#7a7c7d;'>   or due to the implementation it is a cancellation point and</span>
+<span style='color:#7a7c7d;'>   therefore not marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>__ssize_t</span> getline <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>**</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__lineptr</span><span style='color:#3f8058;'>,</span>
+                          <span style='color:#2980b9;'>size_t</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>,</span>
+                          <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Write a string to STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fputs <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Write a string, followed by a newline, to stdout.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> puts <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__s</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+
+<span style='color:#7a7c7d;'>/* Push a character back onto the input buffer of STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> ungetc <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__c</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+
+<span style='color:#7a7c7d;'>/* Read chunks of generic data from STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>size_t</span> fread <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__ptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span>
+		     <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Write chunks of generic data to STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>size_t</span> fwrite <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__ptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span>
+		      <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_GNU</span>
+<span style='color:#7a7c7d;'>/* This function does the same as `fputs' but does not lock the stream.</span>
+
+<span style='color:#7a7c7d;'>   This function is not part of POSIX and therefore no official</span>
+<span style='color:#7a7c7d;'>   cancellation point.  But due to similarity with an POSIX interface</span>
+<span style='color:#7a7c7d;'>   or due to the implementation it is a cancellation point and</span>
+<span style='color:#7a7c7d;'>   therefore not marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fputs_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__s</span><span style='color:#3f8058;'>,</span>
+			   <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Faster versions when locking is not necessary.</span>
+
+<span style='color:#7a7c7d;'>   These functions are not part of POSIX and therefore no official</span>
+<span style='color:#7a7c7d;'>   cancellation point.  But due to similarity with an POSIX interface</span>
+<span style='color:#7a7c7d;'>   or due to the implementation they are cancellation points and</span>
+<span style='color:#7a7c7d;'>   therefore not marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>size_t</span> fread_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__ptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span>
+			      <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>size_t</span> fwrite_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>void</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__ptr</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__size</span><span style='color:#3f8058;'>,</span>
+			       <span style='color:#2980b9;'>size_t</span> <span style='color:#808080;'>__n</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Seek to a certain position on STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fseek <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__off</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__whence</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Return the current position of STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>long</span> <span style='color:#2980b9;'>int</span> ftell <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Rewind to the beginning of STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> rewind <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* The Single Unix Specification, Version 2, specifies an alternative,</span>
+<span style='color:#7a7c7d;'>   more adequate interface for the two functions above which deal with</span>
+<span style='color:#7a7c7d;'>   file offset.  `long int' is not the right type.  These definitions</span>
+<span style='color:#7a7c7d;'>   are originally defined in the Large File Support API.  */</span>
+
+<span style='color:#27ae60;'>#if defined __USE_LARGEFILE || defined __USE_XOPEN2K</span>
+<span style='color:#27ae60;'># ifndef __USE_FILE_OFFSET64</span>
+<span style='color:#7a7c7d;'>/* Seek to a certain position on STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fseeko <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#808080;'>__off_t</span> <span style='color:#808080;'>__off</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__whence</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Return the current position of STREAM.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>__off_t</span> ftello <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># else</span>
+<span style='color:#27ae60;'>#  ifdef __REDIRECT</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>fseeko<span style='color:#3f8058;'>,</span>
+		       <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#808080;'>__off64_t</span> <span style='color:#808080;'>__off</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__whence</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span>
+		       fseeko64<span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>__off64_t</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>ftello<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> ftello64<span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#  else</span>
+<span style='color:#27ae60;'>#   define fseeko fseeko64</span>
+<span style='color:#27ae60;'>#   define ftello ftello64</span>
+<span style='color:#27ae60;'>#  endif</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifndef __USE_FILE_OFFSET64</span>
+<span style='color:#7a7c7d;'>/* Get STREAM's position.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fgetpos <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>fpos_t</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__pos</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Set STREAM's position.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fsetpos <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>fpos_t</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__pos</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#else</span>
+<span style='color:#27ae60;'># ifdef __REDIRECT</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>fgetpos<span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span>
+				 <span style='color:#2980b9;'>fpos_t</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__pos</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> fgetpos64<span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__REDIRECT</span> <span style='color:#3f8058;'>(</span>fsetpos<span style='color:#3f8058;'>,</span>
+		       <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>fpos_t</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__pos</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>,</span> fsetpos64<span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'># else</span>
+<span style='color:#27ae60;'>#  define fgetpos fgetpos64</span>
+<span style='color:#27ae60;'>#  define fsetpos fsetpos64</span>
+<span style='color:#27ae60;'># endif</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_LARGEFILE64</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fseeko64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#808080;'>__off64_t</span> <span style='color:#808080;'>__off</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__whence</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#808080;'>__off64_t</span> ftello64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fgetpos64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>fpos64_t</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__pos</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fsetpos64 <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>fpos64_t</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__pos</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Clear the error and EOF indicators for STREAM.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> clearerr <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Return the EOF indicator for STREAM.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> feof <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#7a7c7d;'>/* Return the error indicator for STREAM.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> ferror <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Faster versions when locking is not required.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> clearerr_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> feof_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> ferror_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#7a7c7d;'>/* Print a message describing the meaning of the value of errno.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> perror <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__s</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+
+<span style='color:#27ae60;'>#ifdef	__USE_POSIX</span>
+<span style='color:#7a7c7d;'>/* Return the system file descriptor for STREAM.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fileno <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Use POSIX.  */</span>
+
+<span style='color:#27ae60;'>#ifdef __USE_MISC</span>
+<span style='color:#7a7c7d;'>/* Faster version when locking is not required.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> fileno_unlocked <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#27ae60;'>#ifdef __USE_POSIX2</span>
+<span style='color:#7a7c7d;'>/* Create a new stream connected to a pipe running the given command.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span>popen <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__command</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__modes</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Close a stream opened by popen and return the status of its child.</span>
+
+<span style='color:#7a7c7d;'>   This function is a possible cancellation point and therefore not</span>
+<span style='color:#7a7c7d;'>   marked with __THROW.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> pclose <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+
+<span style='color:#27ae60;'>#ifdef	__USE_POSIX</span>
+<span style='color:#7a7c7d;'>/* Return the name of the controlling terminal.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>ctermid <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__s</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Use POSIX.  */</span>
+
+
+<span style='color:#27ae60;'>#if (defined __USE_XOPEN &amp;&amp; !defined __USE_XOPEN2K) || defined __USE_GNU</span>
+<span style='color:#7a7c7d;'>/* Return the name of the current user.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span>cuserid <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__s</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Use X/Open, but not issue 6.  */</span>
+
+
+<span style='color:#27ae60;'>#ifdef	__USE_GNU</span>
+<b>struct</b> obstack<span style='color:#3f8058;'>;</span>			<span style='color:#7a7c7d;'>/* See &lt;obstack.h&gt;.  */</span>
+
+<span style='color:#7a7c7d;'>/* Write formatted output to an obstack.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> obstack_printf <span style='color:#3f8058;'>(</span><b>struct</b> obstack <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__obstack</span><span style='color:#3f8058;'>,</span>
+			   <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span> <span style='color:#3f8058;'>...)</span>
+     <span style='color:#808080;'>__THROWNL</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__printf__, 2, 3)))</span></i></b><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> obstack_vprintf <span style='color:#3f8058;'>(</span><b>struct</b> obstack <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__obstack</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#2980b9;'>const</span> <span style='color:#2980b9;'>char</span> <span style='color:#3f8058;'>*</span><b><i><span style='color:#0099ff;'>__restrict</span></i></b> <span style='color:#808080;'>__format</span><span style='color:#3f8058;'>,</span>
+			    <span style='color:#808080;'>__gnuc_va_list</span> <span style='color:#808080;'>__args</span><span style='color:#3f8058;'>)</span>
+     <span style='color:#808080;'>__THROWNL</span> <b><i><span style='color:#0099ff;'>__attribute__ ((__format__ (__printf__, 2, 0)))</span></i></b><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* Use GNU.  */</span>
+
+
+<span style='color:#27ae60;'>#ifdef __USE_POSIX199506</span>
+<span style='color:#7a7c7d;'>/* These are defined in POSIX.1:1996.  */</span>
+
+<span style='color:#7a7c7d;'>/* Acquire ownership of STREAM.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> flockfile <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Try to acquire ownership of STREAM but do not block if it is not</span>
+<span style='color:#7a7c7d;'>   possible.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> ftrylockfile <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span> <span style='color:#808080;'>__wur</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* Relinquish the ownership granted for STREAM.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>void</span> funlockfile <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#808080;'>__stream</span><span style='color:#3f8058;'>)</span> <span style='color:#808080;'>__THROW</span><span style='color:#3f8058;'>;</span>
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* POSIX */</span>
+
+<span style='color:#27ae60;'>#if defined __USE_XOPEN &amp;&amp; !defined __USE_XOPEN2K &amp;&amp; !defined __USE_GNU</span>
+<span style='color:#7a7c7d;'>/*  X/Open Issues 1-5 required getopt to be declared in this</span>
+<span style='color:#7a7c7d;'>   header.  It was removed in Issue 6.  GNU follows Issue 6.  */</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;bits/getopt_posix.h&gt;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#7a7c7d;'>/* Slow-path routines used by the optimized inline functions in</span>
+<span style='color:#7a7c7d;'>   bits/stdio.h.  */</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__uflow</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*)</span><span style='color:#3f8058;'>;</span>
+<span style='color:#2980b9;'>extern</span> <span style='color:#2980b9;'>int</span> <span style='color:#808080;'>__overflow</span> <span style='color:#3f8058;'>(</span><span style='color:#2980b9;'>FILE</span> <span style='color:#3f8058;'>*</span><span style='color:#3f8058;'>,</span> <span style='color:#2980b9;'>int</span><span style='color:#3f8058;'>)</span><span style='color:#3f8058;'>;</span>
+
+<span style='color:#7a7c7d;'>/* If we are compiling with optimizing read this file.  It contains</span>
+<span style='color:#7a7c7d;'>   several optimizing inline functions and macros.  */</span>
+<span style='color:#27ae60;'>#ifdef __USE_EXTERN_INLINES</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;bits/stdio.h&gt;</span>
+<span style='color:#27ae60;'>#endif</span>
+<span style='color:#27ae60;'>#if __USE_FORTIFY_LEVEL &gt; 0 &amp;&amp; defined __fortify_function</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;bits/stdio2.h&gt;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#27ae60;'>#include </span><span style='color:#27ae60;'>&lt;bits/floatn.h&gt;</span>
+<span style='color:#27ae60;'>#if defined __LDBL_COMPAT || __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 1</span>
+<span style='color:#27ae60;'># include </span><span style='color:#27ae60;'>&lt;bits/stdio-ldbl.h&gt;</span>
+<span style='color:#27ae60;'>#endif</span>
+
+<span style='color:#808080;'>__END_DECLS</span>
+
+<span style='color:#27ae60;'>#endif </span><span style='color:#7a7c7d;'>/* &lt;stdio.h&gt; included.  */</span>
+</pre>
+</body>
+</html>
