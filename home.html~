@@ -7,13 +7,10 @@
     	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css">
   	</head>
   	<body style="background-image: repeating-linear-gradient(#0E4D9E, #0A346B);">
-   <div style="position: fixed; width: 100%; top: 1%;">
-   	<div style="font-size: 1000%; position: fixed; text-align: center; font-style: bold; color: white;">
+   	<div class="main-title">
    	HOME
    	</div>
-   </div>
-	<div class="mcard">
-  	<div class="main-text">
+  	<div class="main-text" style="color: white;">
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -44,7 +41,6 @@
    		<input type="hidden" id="sci-hub-plugin-check" name="sci-hub-plugin-check" value="">
    		<input class="search inp-box" type="textbox" name="request" placeholder="enter URL, PMID / DOI or search string">
  		</form>
-	</div>
 	</div>
 	<div>
    	<!------------------------------------------------------------------------------------------------------------>

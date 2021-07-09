@@ -48,6 +48,18 @@ code {
         margin-right: 10%;
         margin-left: 10%;
         }
+        
+        .main-title {
+        	position: fixed; 
+        	width: 100%; 
+        	top: 1%;
+        	font-size: 1000%; 
+        	position: fixed; 
+        	text-align: center; 
+        	font-style: bold; 
+        	color: white; 
+        	z-index: 1;
+        	}
 
     nav ul {
       margin: 0px;
@@ -272,6 +284,18 @@ code {
           padding: 0px;
           text-align: center;
         }
+        
+        .main-title {
+        	position: fixed; 
+        	width: 100%; 
+        	top: 1%;
+        	font-size: 1000%; 
+        	position: fixed; 
+        	text-align: center; 
+        	font-style: bold; 
+        	color: white; 
+        	z-index: 1;
+        	}
 
         nav ul {
           margin: 0px;
@@ -293,8 +317,9 @@ code {
 
         .mcard{
           background-color: black;
-          color: white;
           position: relative;
+          color: white;
+          margin-top: 80%;
           padding-top: 20%;
           min-height: 200%;
           border-radius: 0.4em;
