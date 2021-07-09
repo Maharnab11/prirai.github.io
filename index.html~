@@ -7,7 +7,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css">
     
   </head>
-  <body>
+  <body style="background-color: #E4E4D9;
+  					background-image: linear-gradient(175deg, rgba(0,0,0,0) 95%, #8da389 95%),
+                    linear-gradient( 85deg, rgba(0,0,0,0) 95%, #8da389 95%),
+                    linear-gradient(175deg, rgba(0,0,0,0) 90%, #b4b07f 90%),
+                    linear-gradient( 85deg, rgba(0,0,0,0) 92%, #b4b07f 92%),
+                    linear-gradient(175deg, rgba(0,0,0,0) 85%, #c5a68e 85%),
+                    linear-gradient( 85deg, rgba(0,0,0,0) 89%, #c5a68e 89%),
+                    linear-gradient(175deg, rgba(0,0,0,0) 80%, #ba9499 80%),
+                    linear-gradient( 85deg, rgba(0,0,0,0) 86%, #ba9499 86%),
+                    linear-gradient(175deg, rgba(0,0,0,0) 75%, #9f8fa4 75%),
+                    linear-gradient( 85deg, rgba(0,0,0,0) 83%, #9f8fa4 83%),
+                    linear-gradient(175deg, rgba(0,0,0,0) 70%, #74a6ae 70%),
+                    linear-gradient( 85deg, rgba(0,0,0,0) 80%, #74a6ae 80%);">
     <!--Still working on this idea, getting new structures everyday.
       Color theme being used for this site
 
@@ -54,7 +66,7 @@
 *	<a href="iiser.html">IISERb page</a> <br>
 *	<a href="list.html">Docs and resources</a> <br>
 *	<a href="simptemplate.html"><small>(in progress)</small> Format for blogs.</a> <br>
-*   <a href="cs/csdeg.html">CS Resources</a><br>
+*  <a href="cs/csdeg.html">CS Resources</a><br>
 *	<a href="https://github.com/prirai/prirai.github.io">This website's source @github <small>(yes, it's open source!)</small></a> <br>
         
         </div>

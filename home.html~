@@ -13,7 +13,7 @@
 		<link rel="stylesheet" href="style.css" type="text/css">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css">
 	</head>
-	<body style="background-image: url("images/bgblu.png");">
+	<body style="ackground-image: repeating-linear-gradient(#0E4D9E, #0A346B);">
 		<div class="main-title" style="position: relative;">HOME</div>
 		<div class="main-text" style="color: white;">
 		<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->

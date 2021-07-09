@@ -50,7 +50,7 @@ code {
         }
         
         .main-title {
-        	position: fixed; 
+        	position: relative; 
         	width: 100%; 
         	top: 1%;
         	font-size: 1000%; 
@@ -150,6 +150,7 @@ code {
       color: #2644FF;
       text-align: center;
       font-size: large;
+      padding: 20% 20% 20% 20%;
     }
 
     header {
@@ -317,6 +318,7 @@ code {
         }
 
         .mcard{
+        	margin-top: 250px;
           background-color: black;
           position: relative;
           color: white;
