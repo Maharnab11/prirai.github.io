@@ -18,7 +18,6 @@
 
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 		<br>
-		<h1>Search for ... 🔍️</h1>
 		<form method="get" action="https://search.disroot.org">
 		<input class="search inp-box" name="q" id="q" placeholder="Meta Search" autocomplete="off" value="" accesskey="s">
 		</form>
