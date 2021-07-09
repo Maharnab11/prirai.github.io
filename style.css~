@@ -273,6 +273,7 @@ code {
         }
 
         #fixed-top {
+        	position: fixed;
           background-color:var(--colbl);
           border-bottom-left-radius: 20%;
           border-bottom-right-radius: 20%;
@@ -319,8 +320,6 @@ code {
           background-color: black;
           position: relative;
           color: white;
-          margin-top: 80%;
-          padding-top: 20%;
           min-height: 200%;
           border-radius: 0.4em;
           z-index: 2;

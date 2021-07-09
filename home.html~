@@ -1,63 +1,57 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  	<head>
-    	<meta charset="utf-8">
-    	<title>Home</title>
-    	<link rel="stylesheet" href="style.css" type="text/css">
-    	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css">
-  	</head>
-  	<body style="background-image: repeating-linear-gradient(#0E4D9E, #0A346B);">
-   	<div class="main-title">
-   	HOME
-   	</div>
-  	<div class="main-text" style="color: white;">
-    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-
-    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+	<head>
+		<meta name="generator" content="Bluefish 2.2.12" >
+		<meta charset="utf-8">
+		<title>Home</title>
+		<style type="text/css">
+		 @keyframes mymove {
+  		from {background-color: red;}
+  		to {background-color: blue;}
+		}
+		</style>
+		<link rel="stylesheet" href="style.css" type="text/css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css">
+	</head>
+	<body style="background-image: url("images/bgblu.png");">
+		<div class="main-title" style="position: relative;">HOME</div>
+		<div class="main-text" style="color: white;">
+		<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+		<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 		<br>
-		<h1>Search for ... 🔍️</h1>
+		<h2>Search for ... 🔍️</h2>
 		<form method="get" action="https://search.disroot.org">
-		<input class="search inp-box" name="q" id="q" placeholder="Meta Search" autocomplete="off" value="" accesskey="s">
-		</form>
+			<input class="search inp-box" name="q" id="q" placeholder="Meta Search" autocomplete="off" value="" accesskey="s"></form>
 		<form method="get" action="https://duckduckgo.com">
-   		<input class="search inp-box" maxlength="2048" name="q" type="text" title="Search" placeholder="Search DuckDuckGo">
- 		</form>
-		<form method="GET" action="https://www.bing.com/search">
-			<input class="search inp-box" name="q" placeholder="Search Bing" title="Search on bing.com" type="text">
-   	</form>
+			<input class="search inp-box" maxlength="2048" name="q" type="text" title="Search" placeholder="Search DuckDuckGo"></form>
+		<form method="get" action="https://www.bing.com/search">
+			<input class="search inp-box" name="q" placeholder="Search Bing" title="Search on bing.com" type="text"></form>
 		<form method="get" action="https://www.google.com/search">
-			<input class="search inp-box" maxlength="2048" name="q" type="text" title="Search on google.com" placeholder="Search Google">
-		</form>
-		<form method="GET" action="https://www.urbandictionary.com/define.php">
-			<input class="search inp-box" name="term" placeholder="Search for slangs" type="text">
-   	</form>
- 		<h1>Find a research paper. 🔬️</h1>
- 		<strong>Step 1:</strong> Search for a research paper and enter the title of the research paper here. Look for the doi link in this page.
- 		<form method="GET" action="https://academic.microsoft.com/search">
-			<input class="search inp-box" maxlength="2048" name="q" type="text" title="Type in some keywords for the research paper you're looking for." placeholder="Search for keywords">
- 		</form>
- 		<strong>Step 2:</strong> Paste the doi link you got from the above search here. <em>Fingers crossed!</em> 🤞️
- 		<form method="POST" action="https://sci-hub.st/">
-   		<input type="hidden" id="sci-hub-plugin-check" name="sci-hub-plugin-check" value="">
-   		<input class="search inp-box" type="textbox" name="request" placeholder="enter URL, PMID / DOI or search string">
- 		</form>
-	</div>
-	<div>
-   	<!------------------------------------------------------------------------------------------------------------>
-   	<nav>
-      	<p>
-         	<ul>
-         	<li><a href="../iblog.html">Back</a></li>
-            <li style="color: #AFCBF0;"><a>Priyanshu</a></li>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="iabout.html">About</a></li>
-            <li><a href="iprojects.html">Projects</a></li>
-            <li><a href="iblog.html">βlog</a></li>
-            <li><a href="icontact.html">Contact</a></li>
-            </ul>
-          </p>
-        </nav>
-        <!------------------------------------------------------------------------------------------------------------>
-	</div>
+			<input class="search inp-box" maxlength="2048" name="q" type="text" title="Search on google.com" placeholder="Search Google"></form>
+		<form method="get" action="https://www.urbandictionary.com/define.php">
+			<input class="search inp-box" name="term" placeholder="Search for slangs" type="text"></form>
+		<h2>Find a research paper. 🔬️</h2>
+		<strong>Step 1:</strong> Search for a research paper and enter the title of the research paper here. Look for the doi link in this page.
+		<form method="get" action="https://academic.microsoft.com/search">
+			<input class="search inp-box" maxlength="2048" name="q" type="text" title="Type in some keywords for the research paper you're looking for." placeholder="Search for keywords"></form>
+		<strong>Step 2:</strong> Paste the doi link you got from the above search here. <em>Fingers crossed!</em> 🤞️
+		<form method="post" action="https://sci-hub.st/"><input type="hidden" id="sci-hub-plugin-check" name="sci-hub-plugin-check" value=""> 
+			<input class="search inp-box" type="textbox" name="request" placeholder="enter URL, PMID / DOI or search string"></form>
+		</div>
+		<div>
+		<!------------------------------------------------------------------------------------------------------------>
+			<nav>
+				<ul>
+					<li><a href="../iblog.html">Back</a></li>
+					<li style="color: #AFCBF0;"><a>Priyanshu</a></li>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="iabout.html">About</a></li>
+					<li><a href="iprojects.html">Projects</a></li>
+					<li><a href="iblog.html">βlog</a></li>
+					<li><a href="icontact.html">Contact</a></li>
+				</ul>
+			</nav>
+			<!------------------------------------------------------------------------------------------------------------>
+		</div>
 	</body>
 </html>
