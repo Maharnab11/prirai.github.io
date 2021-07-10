@@ -238,27 +238,36 @@ code {
         left:70%;
       }
 
-
       .inp-box {
-        background-color: var(--colbd);
-        border: none;
-        border-radius: 50%;
-        width: 60%;
-        color: var(--colwh);
-        margin: 1% 2% 1% 2%;
-        word-wrap: break-word;
-        outline: none;
-        display: inline;
-        flex: 100%;
-        height: 10%;
-        font-size: medium;
-        box-shadow:  var(--colbd);
-        border-color: var(--colwh);
-        font-size: x-large;
-        border-width: 1em;
-        border-bottom-width: 0.3em;
-        border-style: solid;
-        text-align: center;
+			background-color: var(--colwh);
+			color: var(--colbd);
+        	width: 100%;
+        	padding: 2% 0 2% 0;
+        	font-size: inherit;
+        	margin: 1% 2% 1% 2%;
+        	word-wrap: break-word;
+        	display: inline;
+        	flex: 100%;
+        	box-shadow:  var(--colbd);
+        	border-style: solid;
+        	text-align: center;
+        	border-color: var(--colwh);
+        	border-radius: 50px;
+		}
+			
+		.inp-box:hover {
+			background-color: var(--colbd);
+			color: var(--colwh);
+			border-style: solid;
+			text-align: center;
+			border-color: var(--colwh);
+			border-radius: 50px;
+		}
+		
+		.inp-box:focus {
+			border-width: 10px;
+			padding: 2% 0 2% 0;
+			width: 99%;
 			}
     }
 
@@ -411,19 +420,32 @@ code {
 
 
      .inp-box {
-       background-color: var(--colbd);
-       color: var(--colwh);
-       word-wrap: break-word;
-       box-shadow:
-       var(--colbd);
-		
-		margin: 2% 2% 2% 2%;
-		min-width: 90%;
-    	border-color: var(--colwh);
-     	border-width: 0.5em;
-     	border-bottom-width: 0.3em;
-     	border-style: groove;
-     	text-align: center;
-     	font-size: 1em;
+      	background-color: var(--colwh);
+      	color: var(--colbd);
+      	word-wrap: break-word;
+			margin: 2%;
+			min-width: 90%;
+    		border-color: var(--colwh);
+     		border-width: 0.5em;
+     		border-bottom-width: 0.3em;
+     		border-style: groove;
+     		border-radius: 30px;
+     		text-align: center;
+     		font-size: inherit;
+     	}
+     	
+     	.inp-box:hover {
+      	background-color: var(--colbd);
+      	color: var(--colwh);
+      	word-wrap: break-word;
+			margin: 2%;
+			min-width: 90%;
+    		border-color: var(--colwh);
+     		border-width: 0.5em;
+     		border-bottom-width: 0.3em;
+     		border-style: groove;
+     		border-radius: 30px;
+     		text-align: center;
+     		font-size: inherit;
      	}
 	}
