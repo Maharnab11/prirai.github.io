@@ -347,15 +347,6 @@ code {
         width: 100%;
       }
 
-      nav ul {
-        margin: 0px;
-        padding: 5px 0px 5px 30px;
-      }
-
-      nav li {
-        display: inline-table;
-        margin-right: 0px;
-      }
       a:link {
         color: var(--colgr);
         text-decoration: none;
@@ -447,5 +438,9 @@ code {
      		border-radius: 30px;
      		text-align: center;
      		font-size: inherit;
+     	}
+     	
+     	.bottom-menu {
+     		padding-top: 45%;
      	}
 	}

@@ -13,7 +13,7 @@
 		<link rel="stylesheet" href="style.css" type="text/css">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css">
 	</head>
-	<body style="background-image: repeating-linear-gradient(#0E4D9E, #0A346B);">
+	<body style="background-image: repeating-linear-gradient(#0E4D9E, #0A346B); min-height: 100%;">
 		<div class="main-title" style="position: relative;">HOME</div>
 		<div class="main-text" style="color: white;">
 		<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -23,22 +23,22 @@
 		<form method="get" action="https://search.disroot.org">
 			<input class="search inp-box" name="q" id="q" placeholder="Meta Search" autocomplete="off" value="" accesskey="s"></form>
 		<form method="get" action="https://duckduckgo.com">
-			<input class="search inp-box" maxlength="2048" name="q" type="text" title="Search" placeholder="Search DuckDuckGo"></form>
+			<input class="search inp-box" maxlength="2048" name="q" type="text" title="Search" placeholder="Search DuckDuckGo" autocomplete="off"></form>
 		<form method="get" action="https://www.bing.com/search">
-			<input class="search inp-box" name="q" placeholder="Search Bing" title="Search on bing.com" type="text"></form>
+			<input class="search inp-box" name="q" placeholder="Search Bing" title="Search on bing.com" type="text" autocomplete="off"></form>
 		<form method="get" action="https://www.google.com/search">
-			<input class="search inp-box" maxlength="2048" name="q" type="text" title="Search on google.com" placeholder="Search Google"></form>
+			<input class="search inp-box" maxlength="2048" name="q" type="text" title="Search on google.com" placeholder="Search Google" autocomplete="off"></form>
 		<form method="get" action="https://www.urbandictionary.com/define.php">
-			<input class="search inp-box" name="term" placeholder="Search for slangs" type="text"></form>
+			<input class="search inp-box" name="term" placeholder="Search for slangs" type="text" autocomplete="off"></form>
 		<h2>Find a research paper. 🔬️</h2>
 		<strong>Step 1:</strong> Search for a research paper and enter the title of the research paper here. Look for the doi link in this page.
 		<form method="get" action="https://academic.microsoft.com/search">
-			<input class="search inp-box" maxlength="2048" name="q" type="text" title="Type in some keywords for the research paper you're looking for." placeholder="Search for keywords"></form>
+			<input class="search inp-box" maxlength="2048" name="q" type="text" title="Type in some keywords for the research paper you're looking for." placeholder="Search for keywords" autocomplete="off"></form>
 		<strong>Step 2:</strong> Paste the doi link you got from the above search here. <em>Fingers crossed!</em> 🤞️
-		<form method="post" action="https://sci-hub.st/"><input type="hidden" id="sci-hub-plugin-check" name="sci-hub-plugin-check" value=""> 
+		<form method="post" action="https://sci-hub.st/"><input type="hidden" id="sci-hub-plugin-check" name="sci-hub-plugin-check" value="" autocomplete="off"> 
 			<input class="search inp-box" type="textbox" name="request" placeholder="enter URL, PMID / DOI or search string"></form>
 		</div>
-		<div>
+		<div class="bottom-menu">
 		<!------------------------------------------------------------------------------------------------------------>
 			<nav>
 				<ul>
