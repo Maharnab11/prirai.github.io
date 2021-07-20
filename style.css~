@@ -442,5 +442,5 @@ code {
      	
      	.bottom-menu {
      		padding-top: 45%;
-     		}
+     	}
 	}

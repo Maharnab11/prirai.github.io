@@ -270,14 +270,11 @@ code {
 			width: 99%;
 			}
     }
-
+/*-----------------------------------------------------For smaller screens---------------------------------------------------------------*/
       @media only screen and (max-width: 1000px) {
         body {
           font-family: 'Fira Code';
           background-color: var(--colgr);
-          padding: 0em;
-          min-height: 100%;
-          margin: 0em;
           max-width: 100%;
         }
 
