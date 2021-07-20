@@ -38,7 +38,7 @@ code {
           rgba(90,83,184,0.4)
           10px 10px;
 
-        border-radius: 0em 2em 3em 4em;
+        border-radius: 0 0 30px 30px;
         border-color: var(--colwh);
         border-width: 0.8em;
         border-top-width: 0em;
@@ -139,7 +139,7 @@ code {
       margin-top: 300px;
       min-height: 50em;
       border-radius: 1em;
-      background-color: var(--colwh);
+      background-color: yellow;
       box-shadow:
            inset 0 -3em 3em rgba(0,0,0,0.2),
                  0 0  0 4px rgb(255,255,255),
@@ -157,12 +157,14 @@ code {
       font-family: 'Fira Code';
       text-align: center;
       width: 100%;
+      background-color: red;
     }
 
       .main-text {
         width: 70%;
         padding: 2% 20% 10% 20%;
-        color: var(--colbd);
+        margin: 2% 2% 2% 2%;
+        color: black;
         font-size: 200%;
         font-weight: 300;
       }
@@ -293,7 +295,7 @@ code {
         	position: fixed; 
         	width: 100%; 
         	top: 1%;
-        	font-size: 1000%; 
+        	font-size: 48px; 
         	position: fixed; 
         	text-align: center; 
         	font-style: bold; 
@@ -304,7 +306,7 @@ code {
         	.Index {
       		color: #2644FF;
       		text-align: center;
-      		font-size: 200%;
+      		font-size: 48px;
    		 }
 
         nav ul {
@@ -322,7 +324,8 @@ code {
           color: var(--colwh);
           font-family: 'Fira Code';
           text-align: center;
-          font-size: 280%;
+          font-size: 48px;
+          background-color: red;
         }
 
         .mcard{

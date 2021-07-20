@@ -31,11 +31,13 @@
     </div>
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <div class="mcard">
+      <div class="round-img-box">
 			<div class=".mcard">        
         <a href="https://github.com/prirai" style="left: auto"><img src="images/github-logo.png" unselectable="on" width="200px" class="round-img"></a>
 			</div>        
         <a href="mailto:idealpriyanshu@gmail.com?subject=Feedback for Website" style="left: auto;"><img src="images/email.svg" unselectable="on" width="200px" class="round-img"></a>
         <a href="https://www.linkedin.com/in/prirai/" style="left: auto;"><img src="images/linkedin-logo.png" unselectable="on" width="200px" class="round-img"></a>
+      </div>
     </div>
   </body>
 </html>
