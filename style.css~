@@ -270,19 +270,15 @@ code {
 			width: 99%;
 			}
     }
-
+/*-----------------------------------------------------For smaller screens---------------------------------------------------------------*/
       @media only screen and (max-width: 1000px) {
         body {
           font-family: 'Fira Code';
           background-color: var(--colgr);
-          padding: 0em;
-          min-height: 100%;
-          margin: 0em;
           max-width: 100%;
         }
 
         #fixed-top {
-        	position: fixed;
           background-color:var(--colbl);
           border-bottom-left-radius: 20%;
           border-bottom-right-radius: 20%;
@@ -290,8 +286,6 @@ code {
           top: 0px;
           left: 0px;
           width: 100%;
-          z-index: 1;
-          padding: 0px;
           text-align: center;
         }
         
@@ -306,6 +300,12 @@ code {
         	color: white; 
         	z-index: 1;
         	}
+        	
+        	.Index {
+      		color: #2644FF;
+      		text-align: center;
+      		font-size: 200%;
+   		 }
 
         nav ul {
           margin: 0px;
@@ -314,7 +314,7 @@ code {
         }
 
         nav li {
-          display: contents;
+          display: block;
           margin-right: 0px;
         }
 
@@ -326,17 +326,19 @@ code {
         }
 
         .mcard{
-        	margin-top: 250px;
-          background-color: black;
+        	padding: 10% 0 10% 0;
+        	border-width: 20px; 
+        	border-radius: 50px; 
+        	border-color: green; 
+        	max-width: 100%; 
+        	background-color: yellow;
+        	margin-top: 50px;
           position: relative;
-          color: white;
-          min-height: 200%;
-          border-radius: 0.4em;
-          z-index: 2;
+          color: black;
         }
 
         .main-text {
-        	color: white;
+        	color: black;
         padding: 2% 2% 10% 2%;
         font-size: 200%;
         font-weight: 300;

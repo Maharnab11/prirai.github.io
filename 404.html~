@@ -34,7 +34,7 @@
     <br>
     <br>
 	<div style="border-width: 20px; border-radius: 50px; border-color: green; max-width: 100%; background-color: yellow; z-index: 2;">
-    <p style="text-align: center; font-size: 1500%;">404</p>
+    <p style="text-align: center; font-size: 2000%;">404</p>
     <i><p class="main-text" style="color: black;;">It seems you're lost.</p></i>
     </div>
   </body>

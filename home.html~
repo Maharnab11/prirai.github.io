@@ -38,7 +38,7 @@
 		<form method="post" action="https://sci-hub.st/"><input type="hidden" id="sci-hub-plugin-check" name="sci-hub-plugin-check" value="" autocomplete="off"> 
 			<input class="search inp-box" type="textbox" name="request" placeholder="enter URL, PMID / DOI or search string"></form>
 		</div>
-		<div style="padding-top: 45%;">
+		<div class="bottom-menu">
 		<!------------------------------------------------------------------------------------------------------------>
 			<nav>
 				<ul>
