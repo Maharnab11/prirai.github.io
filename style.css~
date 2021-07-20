@@ -6,6 +6,7 @@
 	--colbd: #0A346B;
 	--colbl: #0E4D9E;
 	--colpu: #1572EB;
+	--headercol: #1E8D5B;
 	}
 
 code {
@@ -158,7 +159,7 @@ code {
       font-family: 'Fira Code';
       text-align: center;
       width: 100%;
-      background-color: brown;
+      background-color: var(--headercol);
     }
 
       .main-text {
@@ -312,7 +313,7 @@ code {
           font-family: 'Fira Code';
           text-align: center;
           font-size: 48px;
-          background-color: red;
+          background-color: var(--headercol);
         }
 
         .mcard{

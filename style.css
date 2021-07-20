@@ -264,7 +264,7 @@ code {
       @media only screen and (max-width: 1000px) {
         body {
           font-family: 'Fira Code';
-          background-color: white;;
+          background-color: black;
           max-width: 100%;
         }
 
