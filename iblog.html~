@@ -31,17 +31,22 @@
     </div>
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <div class="mcard">
-        <div>
+        <div class="main-text">
+        <h2><a href="pen/nepaldata.html">Nepal Earthquake</a></h2>
+        <p>
+        	-	Took a dataset of Nepal Earthquake and did some exploration with python. Interested in taking up more of this in the future.
+        </p>
+        <hr>
         <h2><a href="pen/best-of-web.html">The best of web</a></h2>
 			<p>
-          <small>Jun 14, 2021</small>	-	The internet is becoming more and more closed and the variety that we used to enjoy once has shrunk down into a handful of bigTech companies. 
+          	-	The internet is becoming more and more closed and the variety that we used to enjoy once has shrunk down into a handful of bigTech companies. 
           Find websites should still not be quite difficult but we often tend to forget stuff easily. Well, here's my effort to creating a list of such
-           sites for quick reference. 
+           sites for quick reference. The list is very incomplete and vague as of now. Will be adding stuff gradually.
           </p> 
           <hr>
           <h2><a href="pen/c/competitive-coding-sites.html">Competitive coding sites</a></h2>         
           <p>
-          <small>Jun 14, 2021</small>	-	Wanted to do some competitive programming or already doing? This article will surely help you in getting the best. 
+          	-	Wanted to do some competitive programming or already doing? This article will surely help you in getting the best. 
           </p>
           <hr>
         </div>
