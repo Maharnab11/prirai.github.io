@@ -31,13 +31,28 @@
     </div>
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <div class="mcard">
-      <div class="round-img-box">
-			<div class=".mcard">        
-        <a href="https://github.com/prirai" style="left: auto"><img src="images/github-logo.png" unselectable="on" width="200px" class="round-img"></a>
-			</div>        
-        <a href="mailto:idealpriyanshu@gmail.com?subject=Feedback for Website" style="left: auto;"><img src="images/email.svg" unselectable="on" width="200px" class="round-img"></a>
-        <a href="https://www.linkedin.com/in/prirai/" style="left: auto;"><img src="images/linkedin-logo.png" unselectable="on" width="200px" class="round-img"></a>
-      </div>
+    <script type="text/javascript">
+    function myhref(web){
+      window.location.href = web;}
+	</script>
+    <nav class="Index">
+        <ul>
+          <li>
+          	<div class="round-box"><a href="https://github.com/prirai">
+          	<img src="images/github-ico.png" alt="" height="500px">
+          	</div>
+          </li>
+          <li>
+          	<div class="round-box">
+          		<a href="mailto:idealpriyanshu@gmail.com?subject=Feedback for website">
+          			<img src="images/email-ico.png" height="500px">
+          		</a>
+          	</div>
+          </li>
+          <li><div class="round-box"><a href="https://www.linkedin.com/in/prirai/"><img src="images/linked-ico.png" height="500px"></div></li>
+          <li><div class="round-box"><a href="https://code.swecha.org/prirai"><img src="images/gitlab-ico.png" height="500px"></div></li>
+          </ul>
+          </nav>
     </div>
   </body>
 </html>
