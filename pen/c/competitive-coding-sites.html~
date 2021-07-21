@@ -6,9 +6,8 @@
     <link rel="stylesheet" href="../../style.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css">
   </head>
-  <body>
+  <body class="main-text">
   <div class="mcard" style="background-color: red;">
-  	<div class="main-text">
   	<h1>Competitive Coding Sites</h1>
    <a href="https://www.topcoder.com/challenges/?pageIndex=1">TopCoder</a><br>
 	<a href="https://www.coderbyte.com/">CoderByte</a><br>
@@ -24,7 +23,7 @@
 	<a href="https://hackerearth.com">HackerEarth</a>
 	
 	</div>
-    <div id="footer">
+      <div id="footer">
         <!------------------------------------------------------------------------------------------------------------>
         <nav>
           <p>
@@ -40,7 +39,6 @@
           </p>
         </nav>
         <!------------------------------------------------------------------------------------------------------------>
-      </div>
       </div>
     </body>
 </html>
