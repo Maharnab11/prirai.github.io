@@ -122,7 +122,7 @@ code {
         font-size: 160%;
       }
 
-/*----------------------------------------------------------------------------------------------------------------------------------*/
+		/*----------------------------------------------------------------------------------------------------------------------------------*/
 
 
     .bu:hover {
@@ -173,59 +173,12 @@ code {
         background-color: white;;
         border-radius: 30px;
         text-align: center;
-        margin: 10% 10% 10% 10%;
+        margin: 5%;
         background-repeat: no-repeat;
-      }
-
-      .round-img {
-        border-radius: 50%;
-        border-width: 2em;
-        padding: 0% 5% 0% 5%;
-        opacity: 0.5;
-      }
-
-      .round-img:hover {
-        border-width: 2em;
-        border-radius: 10%;
-        animation: shake 0.5s;
-        opacity: 1;
       }
 
       .upper-text {
         font-size: 3em;
-      }
-
-      .schedule {
-        position: fixed;
-        top: 0%;
-        border-color: var(--colgr);
-        border-radius: 0.4em;
-        border-width: 0.1em;
-        border-style: dashed;
-        color: var(--colwh);
-        font-weight: 100;
-        text-align: left;
-        z-index: 99;
-
-        height:100%;
-        color: var(--colbd);
-        min-width: 30%;
-        background-color: black;
-      }
-
-      #sc-left {
-        left: 0%;
-        margin-right: 2%;
-      }
-
-      #sc-mid {
-        left:32%;
-        max-width: 36%;
-        margin-right: 2%;
-      }
-
-      #sc-right {
-        left:70%;
       }
 
       .inp-box {
@@ -292,9 +245,8 @@ code {
         	}
         	
         	.Index {
-      		color: #2644FF;
       		text-align: center;
-      		font-size: 48px;
+      		font-size: 30px;
    		 }
 
         nav ul {
@@ -329,9 +281,9 @@ code {
         }
 
         .main-text {
-        	color: black;
+        color: black;
         padding: 2% 2% 10% 2%;
-        font-size: 200%;
+        font-size: 70px;
         font-weight: 300;
       }
       
@@ -374,15 +326,7 @@ code {
       }
 
       li {
-        font-size: 160%;
-      }
-
-      #embedded-feed {
-        visibility: hidden;
-      }
-
-      .schedule {
-        font-weight: 100;
+        font-size: 38px;
       }
 
       .p-light-text {
