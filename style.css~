@@ -283,7 +283,7 @@ code {
         .main-text {
         color: black;
         padding: 2% 2% 10% 2%;
-        font-size: 28px;
+        font-size: 70px;
         font-weight: 300;
       }
       

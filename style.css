@@ -325,10 +325,6 @@ code {
         background-color: var(--colwh);
       }
 
-      li {
-        font-size: 38px;
-      }
-
       .p-light-text {
         color : var(--colwh);
       }
