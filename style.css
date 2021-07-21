@@ -148,12 +148,6 @@ code {
                  0.3em 0.3em 1em rgba(0,0,0,0.5);
     }
 
-    .Index {
-      color: #2644FF;
-      text-align: center;
-      font-size: large;
-    }
-
     header {
       color: var(--colwh);
       font-family: 'Fira Code';
@@ -212,6 +206,11 @@ code {
 			padding: 2% 0 2% 0;
 			width: 99%;
 			}
+			
+			.Index {
+      		text-align: center;
+      		font-size: 35px;
+   		 }
     }
 /*-----------------------------------------------------For smaller screens---------------------------------------------------------------*/
       @media only screen and (max-width: 1000px) {
@@ -236,7 +235,7 @@ code {
         	position: fixed; 
         	width: 100%; 
         	top: 1%;
-        	font-size: 48px; 
+        	font-size: 72px; 
         	position: fixed; 
         	text-align: center; 
         	font-style: bold; 
@@ -246,7 +245,7 @@ code {
         	
         	.Index {
       		text-align: center;
-      		font-size: 30px;
+      		font-size: 76px;
    		 }
 
         nav ul {
