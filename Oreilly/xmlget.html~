@@ -13,7 +13,7 @@ url
 out
  = "";
 request = new asyncRequest()
-request.open("GET", "https://xmlget.php?url=" + url + nocache, true)
+request.open("GET", "xmlget.php?url=" + url + nocache, true)
 request.onreadystatechange = function()
 {
 if (this.readyState == 4)

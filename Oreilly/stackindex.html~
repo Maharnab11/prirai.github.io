@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>Easy JS - Priyanshu</title>
+  </head>
+  <body>
+    <header>This code has been made using HTML and JavaScript.</header>
+    	<main>    
+    		<script type="text/javascript" src="test.js"></script>
+    	</main>
+    <footer></footer>
+  </body>
+</html>

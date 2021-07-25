@@ -1,0 +1,27 @@
+Perltidy version is 20210402
+
+<stdin>: Begin Error Output Stream
+
+5: <h1>Card Flip with Text</h1>
+   ----^
+found bareword where operator expected (previous token underlined)
+
+There is no previous '?' to match a ':' on line 6
+6: <h3>Hover over the image below:</h3>
+                                 ^
+
+14:       <h1>John Doe</h1> 
+                        ^
+found bareword where operator expected
+
+15: <p>Architect & Engineer</p> 
+    ---^
+found bareword where operator expected (previous token underlined)
+18: 
+18: Partial match to quote modifier [msixpodualngc] at word: 'div'
+18: Please put a space between quote modifiers and trailing keywords.
+
+21: </html>
+      ^
+found bareword where operator expected
+21: To save a full .LOG file rerun with -g

@@ -1,0 +1,32 @@
+<html> 
+	<head>
+	<link rel="stylesheet" href="cards.css" type="text/css" /> 
+	</head> 
+	<body> 
+		 <div class = "flip-card"> 
+		 	<div class="flip-card-inner"> 
+		 		<div class = "flip-card-front" >
+					<img src="assets/owl.png" alt="Avatar" style="width: 300px; height: 300px; border-radius: 20px;"> 
+				</div>
+				<div class="flip-card-back">
+					<h1>Mr. Owl</h1> 
+					<p> Local Bhillage sharpshooters Corp. </p> 
+					<p> Stay up all night 😨️ </p> 
+				</div>
+			</div> 
+		</div>
+		<br>
+		<div class = "flip-card"> 
+		 	<div class="flip-card-inner"> 
+		 		<div class = "flip-card-front" >
+					<img src="assets/girl.jpg" alt="Avatar" style="width: 300px; height: 300px; border-radius: 20px;"> 
+				</div>
+				<div class="flip-card-back">
+					<h1>Ms. Unknown</h1> 
+					<p> No records anywhere</p> 
+					<p> Loves colors and we know nothing else.. really 🤔️</p> 
+				</div>
+			</div> 
+		</div>
+	</body>
+</html>
