@@ -62,15 +62,6 @@ code {
         	z-index: 1;
         	}
 
-    nav ul {
-      margin: 0px;
-      padding: 5px 0px 5px 30px;
-    }
-
-    nav li {
-      display: inline-table;
-      margin-right: 70px;
-    }
     /*------------------------------------Links Styling----------------------------------------------------------------------*/
       a:link {
         color: var(--colgr);
@@ -88,13 +79,13 @@ code {
       }
 
       li a:link {
-        color: var(--colwh);
+        color: black;
         border-color: var(--colbd);
         text-decoration: none;
       }
 
       li a:visited {
-        color: var(--colwh);
+        color: black;
         border-color: var(--colbd);
         text-decoration: solid;
       }
@@ -120,6 +111,20 @@ code {
 
       li {
         font-size: 160%;
+      }
+
+      nav ul {
+        margin: 0px;
+        padding: 5px 0px 5px 30px;
+      }
+  
+      nav li {
+        display: inline-table;
+        margin-right: 70px;
+      }
+
+      nav li a {
+        color: var(--colwh);
       }
 
 		/*----------------------------------------------------------------------------------------------------------------------------------*/
