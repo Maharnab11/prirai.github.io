@@ -272,6 +272,7 @@ code {
         	border-width: 20px; 
         	border-radius: 50px; 
         	border-color: green; 
+          min-width: 95%;
         	max-width: 100%; 
         	background-color: yellow;
         	margin-top: 50px;
