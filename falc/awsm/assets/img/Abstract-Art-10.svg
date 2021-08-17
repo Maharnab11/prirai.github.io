@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://web.resource.org/cc/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns1="http://sozi.baierouge.fr" version="1.1" viewBox="0 0 500 400">
+  <desc>This is a minimal abstract art test</desc>
+  <rect y="0" x="0" style="fill:rgb(100,100,100)" height="400" width="500"/>
+  <rect y="144" x="119" style="fill:rgb(100,100,100)" height="76" width="113"/>
+  <rect y="146" x="121" style="fill:rgb(241,61,100)" height="72" width="109"/>
+  <rect y="125" x="360" style="fill:rgb(100,100,100)" height="149" width="22"/>
+  <rect y="127" x="362" style="fill:rgb(71,51,100)" height="145" width="18"/>
+  <ellipse cy="44" cx="448" rx="64" ry="121" style="stroke:rgb(100,100,100);stroke-width:2;fill:rgb(46,86,100)"/>
+  <ellipse cy="313" cx="480" rx="12" ry="5" style="stroke:rgb(100,100,100);stroke-width:2;fill:rgb(249,249,100)"/>
+  <path style="stroke:rgb(100,100,100);stroke-width:2;fill:rgb(249,249,100)" d="m99.682 175.34-3.977 13.12 2.599 13.19 9.076 13.18 15.18 13.09 20.69 12.9 25.37 12.65 29.04 12.3 31.55 11.88 32.81 11.39 32.75 10.82 31.39 10.17 28.79 9.48 25.02 8.71 20.27 7.89 14.7 7.01 8.55 6.11 2.06 5.15-4.51 4.16-10.9 3.14-16.87 2.12-22.15 1.06-26.55 0.01-29.9-1.04-32.05-2.09-32.93-3.13-32.49-4.14-30.76-5.13-27.79-6.08-23.73-7.01-18.72-7.87-12.96-8.69-6.677-9.46-0.138-10.17 6.405-10.8 12.71-11.37 18.48-11.88 23.54-12.29 27.65-12.64 30.65-12.91 32.44-13.08 32.94-13.18 32.11-13.19 30.02-13.12 26.72-12.96 22.35-12.72 17.1-12.41 11.17-12 4.79-11.53-1.79-10.98-8.28-10.353-14.46-9.67-20.05-8.922-24.84-8.116-28.65-7.258-31.3-6.354-32.72-5.41-32.83-4.431-31.64-3.423-29.17-2.393-25.54-1.349-20.91-0.295-15.43 0.759-9.333 1.811-2.876 2.849 3.702 3.869 10.137 4.866 16.15 5.83 21.54 6.758 26.07 7.642 29.54 8.477 31.86 9.259 32.89 9.98 32.61 10.634 31.04 11.23 28.23 11.75 24.28 12.19 19.39 12.55 13.7 12.84 7.48 13.04 0.95 13.17-5.6 13.19-11.95 13.15-17.81 13.01-22.95 12.8-27.2 12.5-30.35 12.12-32.29 11.66-32.94 11.13-32.29 10.53-30.34 9.86-27.19 9.13-22.94 8.34-17.8 7.5-11.93 6.6-5.591 5.67 0.969 4.7 7.492 3.69 13.72 2.68 19.39 1.63 24.3 0.58"/>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dc:publisher>
+          <cc:Agent rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>Abstract Art 10</dc:title>
+        <dc:date>2011-02-05T19:20:45</dc:date>
+        <dc:description>Abstract Art created using AskWhy! Original SVG Abstract Art (http://www.askwhy.co.uk/awgames/svgart.php)</dc:description>
+        <dc:source>https://openclipart.org/detail/117145/abstract-art-10-by-meticulous</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>meticulous</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>abstract</rdf:li>
+            <rdf:li>abstract art</rdf:li>
+            <rdf:li>meticulous</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

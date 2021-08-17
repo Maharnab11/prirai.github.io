@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://web.resource.org/cc/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns1="http://sozi.baierouge.fr" version="1.1" viewBox="0 0 500 400">
+  <desc>Computer Generated Abstract Art</desc>
+  <defs>
+    <linearGradient id="grad">
+      <stop style="stop-color:rgb(51,51,51)" offset="0"/>
+      <stop style="stop-color:rgb(204,204,204)" offset="1"/>
+    </linearGradient>
+  </defs>
+  <rect y="0" x="0" style="stroke:rgb(204,204,204);stroke-width:3;fill:url(#grad)" height="400" width="500"/>
+  <defs>
+    <linearGradient id="grad">
+      <stop style="stop-color:rgb(189,147,231)" offset="0"/>
+      <stop style="stop-color:rgb(51,51,51)" offset="1"/>
+    </linearGradient>
+  </defs>
+  <rect y="307" x="302" style="stroke:rgb(51,51,51);stroke-width:3;fill:url(#grad)" height="55" width="151"/>
+  <ellipse cy="119" cx="177" rx="178" ry="136" style="stroke:rgb(51,51,51);stroke-width:3;fill:rgb(105,21,126)"/>
+  <rect y="115" x="70" style="stroke:rgb(51,51,51);stroke-width:3;fill:rgb(210,204,189)" height="136" width="245"/>
+  <defs>
+    <linearGradient id="grad" x2="0%" y2="100%">
+      <stop style="stop-color:rgb(189,189,126)" offset="0"/>
+      <stop style="stop-color:rgb(51,51,51)" offset="1"/>
+    </linearGradient>
+  </defs>
+  <circle cy="253" cx="117" r="59" style="stroke:rgb(51,51,51);stroke-width:3;fill:url(#grad)"/>
+  <ellipse cy="136" cx="220" rx="189" ry="3" style="stroke:rgb(51,51,51);stroke-width:3;fill:rgb(189,189,126)"/>
+  <ellipse cy="198" cx="334" rx="13" ry="100" style="stroke:rgb(51,51,51);stroke-width:3;fill:rgb(210,42,63)"/>
+  <path style="stroke:rgb(51,51,51);stroke-width:3;fill:rgb(210,42,63)" d="m396.07 350.42-2.61 0.54-3.61-1.28-4.52-3.09-5.42-4.87-6.29-6.58-7.21-8.21-8.16-9.74-9.16-11.17-10.22-12.44-11.31-13.57-12.41-14.55-13.47-15.33-14.45-15.94-15.3-16.35-15.96-16.57-16.39-16.58-16.56-16.4-16.43-16.02-15.99-15.44-15.26-14.67-14.25-13.73-12.98-12.631-11.53-11.368-9.91-9.97-8.22-8.453-6.5-6.833-4.79-5.131-3.16-3.366-1.64-1.562-0.23 0.262 1.03 2.083 2.17 3.879 3.2 5.627 4.15 7.307 5.05 8.9 5.93 10.385 6.82 11.744 7.75 12.957 8.74 14.03 9.78 14.91 10.85 15.62 11.96 16.15 13.03 16.47 14.06 16.6 14.97 16.53 15.7 16.25 16.25 15.78 16.52 15.13 16.52 14.28 16.21 13.27 15.6 12.09 14.7 10.77 13.54 9.31 12.15 7.75 10.6 6.1 8.93 4.36 7.21 2.57 5.5 0.76 3.83-1.06 2.25-2.88 0.81-4.65-0.52-6.38-1.72-8.02-2.78-9.57-3.76-11-4.68-12.3-5.56-13.44-6.45-14.44-7.36-15.25-8.33-15.87-9.33-16.32-10.41-16.55-11.49-16.59-12.59-16.43-13.65-16.07-14.6-15.52-15.42-14.78-16.05-13.85-16.44-12.771-16.56-11.526-16.38-10.145-15.89-8.64-15.11-7.032-14.05-5.339-12.75-3.58-11.26-1.78-9.63 0.044-7.93 1.865-6.21 3.665-4.51 5.421-2.9 7.11-1.39 8.715-0.01 10.213 1.23 11.588 2.35 12.822 3.36 13.9 4.31 14.82 5.19 15.55 6.08 16.09 6.98 16.44"/>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dc:publisher>
+          <cc:Agent rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>Abstract Art 9</dc:title>
+        <dc:date>2011-02-05T19:20:45</dc:date>
+        <dc:description>Abstract Art created using AskWhy! Original SVG Abstract Art (http://www.askwhy.co.uk/awgames/svgart.php)</dc:description>
+        <dc:source>https://openclipart.org/detail/117139/abstract-art-9-by-meticulous</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>meticulous</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>abstract</rdf:li>
+            <rdf:li>abstract art</rdf:li>
+            <rdf:li>meticulous</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>
