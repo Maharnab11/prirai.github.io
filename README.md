@@ -1,7 +1,7 @@
 # prirai.github.io
 My website
 
-##Color-scheme being used:
+## Color-scheme being used:
 
 | HEX code | Tint |
 |------------|---------|
